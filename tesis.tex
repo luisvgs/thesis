@@ -1,0 +1,174 @@
+\documentclass[a4paper,12pt]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{stmaryrd}
+\usepackage{proof}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{biblatex}
+
+\geometry{margin=2.5cm}
+
+% === Theorem environments ===
+\theoremstyle{definition}
+\newtheorem{definition}{Definici\'on}[chapter]
+\newtheorem{example}{Ejemplo}[chapter]
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Teorema}[chapter]
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{proposition}[theorem]{Proposici\'on}
+\newtheorem{corollary}[theorem]{Corolario}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Observaci\'on}[chapter]
+
+% === Typing judgments / inference rules ===
+\newcommand{\ctx}{\Gamma}
+\newcommand{\entails}{\vdash}
+\newcommand{\chk}{\Leftarrow}
+\newcommand{\syn}{\Rightarrow}
+\newcommand{\Type}{\mathsf{Type}}
+\newcommand{\Set}{\mathsf{Set}}
+\newcommand{\Nat}{\mathsf{Nat}}
+\newcommand{\zero}{\mathsf{zero}}
+\newcommand{\suc}{\mathsf{suc}}
+\newcommand{\elim}[1]{\mathsf{elim}_{#1}}
+\newcommand{\refl}{\mathsf{refl}}
+\newcommand{\Id}{\mathsf{Id}}
+\newcommand{\transport}{\mathsf{transport}}
+\newcommand{\ap}{\mathsf{ap}}
+\newcommand{\Quotient}[2]{#1 / #2}
+\newcommand{\qclass}[1]{[#1]}
+\newcommand{\qelim}{\mathsf{Q\text{-}elim}}
+\newcommand{\qintro}{\mathsf{Q\text{-}intro}}
+\newcommand{\sound}{\mathsf{sound}}
+
+% === Code listings ===
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape\color{gray},
+  breaklines=true,
+  frame=single,
+  columns=flexible
+}
+
+\begin{document}
+
+% ============================================================
+% PORTADA
+% ============================================================
+\begin{titlepage}
+  \centering
+
+  \begin{minipage}{0.45\textwidth}
+    \raggedright
+    % \includegraphics[width=3.5cm]{logos/upv.png}
+    \textbf{UNIVERSITAT POLIT\`ECNICA DE VAL\`ENCIA}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.45\textwidth}
+    \raggedleft
+    % \includegraphics[width=3cm]{logos/dsic.png}
+    \textbf{DSIC}
+  \end{minipage}
+
+  \vspace{2cm}
+
+  {\LARGE UNIVERSITAT POLIT\`ECNICA DE VAL\`ENCIA}
+
+  \vspace{0.5cm}
+
+  {\Large Dpto. de Sistemas Inform\'aticos y Computaci\'on}
+
+  \vspace{1.5cm}
+
+  {\huge\bfseries Tipos Cociente en un Lenguaje\\[0.3cm]
+    Dependientemente Tipado}
+
+  \vspace{1.5cm}
+
+  {\Large Trabajo Fin de M\'aster}
+
+  \vspace{0.5cm}
+
+  {\large M\'aster Universitario en Ingenier\'ia y Tecnolog\'ia\\
+    de Sistemas Software}
+
+  \vfill
+
+  \begin{flushright}
+    AUTOR/A: Vegas, Luis\\[0.3cm]
+    Tutor/a: Escobar Rom\'an, Santiago\\[0.3cm]
+    CURSO ACAD\'EMICO: 2025-2026
+  \end{flushright}
+
+\end{titlepage}
+
+% ============================================================
+% FRONT MATTER
+% ============================================================
+\pagenumbering{roman}
+
+\tableofcontents
+
+% ============================================================
+% MAIN MATTER
+% ============================================================
+\cleardoublepage
+\pagenumbering{arabic}
+
+\chapter{Introducci\'on}
+    \section{Motivaci\'on}
+    \section{Objetivos}
+    \section{Estructura del trabajo}
+
+\chapter{Fundamentos te\'oricos}
+    \section{Lambda c\'alculo}
+    \section{Teoria de tipos}
+    \section{Lambda c\'alculo simplemente tipado}
+    \section{Tipos dependientes}
+    \section{Teoria de tipos de Martin-Löf}
+    \section{Reescritura de terminos en Maude}
+    \section{Tipos Cociente}
+
+\chapter{Un lenguaje dependientemente tipado}
+    \section{Sintaxis}
+    \section{Sustitucion}
+    \section{Normalizacion}
+    \section{Verificacion de tipos}
+
+\chapter{Extension con tipos cociente}
+    \section{Formacion}
+    \section{Introduccion}
+    \section{Eliminacion}
+    \section{Computacion}
+    
+\chapter{Conclusiones}
+
+% ============================================================
+% BACK MATTER
+% ============================================================
+\appendix
+
+\chapter{C\'odigo Maude}
+
+TODO
+
+\printbibliography[heading=bibintoc]
+
+\end{document}
