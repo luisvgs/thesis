@@ -7,4 +7,5 @@ tesis.run.xml
 tesis.synctex.gz
 tesis.toc
 *.blb
+*.bbl
 *.blg
