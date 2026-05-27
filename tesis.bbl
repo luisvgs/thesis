@@ -1,0 +1,24 @@
+\begin{thebibliography}{3}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Norell(2007)]{norell2007}
+Ulf Norell.
+\newblock \emph{Towards a Practical Programming Language Based on Dependent
+  Type Theory}.
+\newblock PhD thesis, Chalmers University of Technology, 2007.
+
+\bibitem[Pierce(2002)]{pierce2002}
+Benjamin~C. Pierce.
+\newblock \emph{Types and Programming Languages}.
+\newblock MIT Press, 2002.
+
+\bibitem[Rob~Nederpelt(2014)]{geuvers2014}
+German~Geuvers Rob~Nederpelt.
+\newblock \emph{Type Theory and Formal Proof}.
+\newblock Cambride University Press, 2014.
+
+\end{thebibliography}

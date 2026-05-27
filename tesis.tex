@@ -18,8 +18,8 @@
 \usepackage{listings}
 \usepackage{fancyhdr}
 \usepackage{setspace}
-\usepackage{biblatex}
-
+\usepackage[round]{natbib}
+\bibliographystyle{plainnat}
 \geometry{margin=2.5cm}
 
 % === Theorem environments ===
@@ -135,10 +135,40 @@
 \chapter{Introducci\'on}
     \section{Motivaci\'on}
     \section{Objetivos}
-    \section{Estructura del trabajo}
+    \section{Estructura del la tesis}
 
 \chapter{Fundamentos te\'oricos}
-    \section{Lambda c\'alculo}
+\section{El Lambda c\'alculo}
+El lambda cálculo fue inventado por Alonzo Church con el fin de capturar la nocion abstracta de la aplicabilidad de una funcion. Posteriormente, fue adoptado como un sistema formal de lógica matemática, pues con un conjunto mínimo de reglas es posible modelar y estudiar cómo se computan las funciones matemáticas dada una teoría.
+
+Este sistema es ampliamente utilizado en el diseño de lenguajes de programación. De forma análoga, la forma en la que se programa en el mismo es muy similar a cómo se programa en un lenguaje funcional hoy en dia. Lenguajes como Haskell, Agda, la familia de lenguajes basados en ML, y LISP, están ampliamente inspirados en un pequeño conjunto del cálculo lambda.
+
+El lambda calculo es un lenguaje muy potente y, a su vez, sumamente simple. Un término puede estar compuesto, o bien, formarse, de tres elementos: variables, aplicacion y abstracción lambda. De forma inductiva, su sintaxis se describe como sigue:
+\begin{align}
+  M := \quad & x & \tag{1}\\
+  \mid \quad & \lambda x.\, M & \tag{2}\\
+  \mid \quad & M \; N \tag{3}&
+\end{align}
+
+Donde, siendo $\Lambda$ el conjunto de términos lambda válidos, $(1)$ es un conjunto infinito de variables, tal que si $x, y, z \in \textit{V}$ y $V \in \Lambda$, entonces $V \in \Lambda$. $(2)$ es una abstracción lambda, si $x \in V$ y además $M \in \Lambda$, entonces $\lambda x.\, M \in \Lambda $. $(3)$ Es una aplicación de dos términos, si $M, N \in \Lambda$ entonces $M N \in \Lambda$.
+\newline
+\newline
+A continuación, se detallan propiedades de sumo interés que, posteriormente, formarán parte de los fundamentos en los que el lenguaje que se describe en esta tésis, están basados.
+
+\subsection{$\beta$-reducción}
+La noción de evaluacion de un término viene dada por beta-reducción, donde la notación $\to_\beta$ es empleada. La $\to_\beta$ está basada en la \textit{sustitución}, formalmente expresada como \textit{M[x := N]}, significando que \textit{M} es un término donde \textit{x} ha sido reemplazado por \textit{N}.
+
+Por tanto, una expresión de la forma $(\lambda x.\, M)\, N$ puede ser reescrita como \textit{M[ x := N]}, donde toda ocurrencia de \textit{x} en \textit{M} (estando \textit{x} libre en \textit{M}), debe ser reemplazada por \textit{N} \citep{geuvers2014}.
+
+\begin{example} % TODO: mas ejemplos
+  $(\lambda x.\, x + 1)\, 5$ reduce a $x[x := 5] = 6$
+\end{example}
+
+\subsection{Sustitución}
+Anteriormente, definimos la sustitución en términos de $\to_\beta$ reducción, sin embargo, la sustitucion posee en si reglas de computo que valen la pena considerar pues, dependiendo del término que se esté evaluando, la sustitución tendrá, o no, efecto del todo.
+\\newline
+\\newline
+
     \section{Teoria de tipos}
     \section{Lambda c\'alculo simplemente tipado}
     \section{Tipos dependientes}
@@ -168,7 +198,6 @@
 \chapter{C\'odigo Maude}
 
 TODO
-
-\printbibliography[heading=bibintoc]
-
+\nocite{*}
+\bibliography{references}
 \end{document}
