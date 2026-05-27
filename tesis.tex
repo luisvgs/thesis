@@ -112,8 +112,8 @@
   \vfill
 
   \begin{flushright}
-    AUTOR/A: Vegas, Luis\\[0.3cm]
-    Tutor/a: Escobar Rom\'an, Santiago\\[0.3cm]
+    AUTOR: Vegas, Luis\\[0.3cm]
+    Tutor: Escobar Rom\'an, Santiago\\[0.3cm]
     CURSO ACAD\'EMICO: 2025-2026
   \end{flushright}
 
@@ -164,10 +164,25 @@ Por tanto, una expresión de la forma $(\lambda x.\, M)\, N$ puede ser reescrita
   $(\lambda x.\, x + 1)\, 5$ reduce a $x[x := 5] = 6$
 \end{example}
 
+
+\subsection{Variables libres y ligadas}
+
 \subsection{Sustitución}
 Anteriormente, definimos la sustitución en términos de $\to_\beta$ reducción, sin embargo, la sustitucion posee en si reglas de computo que valen la pena considerar pues, dependiendo del término que se esté evaluando, la sustitución tendrá, o no, efecto del todo.
-\\newline
-\\newline
+\newline
+\newline
+Se definen, pues, las reglas de computo de la sustitucion de acuerdo a lo discutido por \cite{pierce2002}. Más formalmente:
+
+\begin{align}
+& (1) \; x[x := N] \equiv N, \notag \\
+& (2) \; y[x := N] \equiv y \text{ if } x \not\equiv y, \notag \\
+& (3) \; (PQ)[x := N] \equiv (P[x := N])(Q[x := N]), \notag \\
+& (4) \; (\lambda y.\, P)[x := N] \equiv \lambda z.\, (P^{y \to z}[x := N]),
+  \text{ if } \lambda z.\, P^{y \to z} \text{ is an } \alpha\text{-variant of } \notag \\
+& \quad \lambda y.\, P \text{ such that } z \notin FV(N). \notag
+\end{align}
+
+Para (1), sustituyendo x, por N dentro de x, siendo x el termino que buscamos sustituir, obtenemos N. De forma analoga, sustituyendo cada ocurrencia de x en el termino y, por N, si x e y no son iguales, el termino intacto, y, sera retornado. El caso de (3), tiene sentido cuando P es una abstraccion aplicada a un termino Q. Concretamente, se reduce a la sustitucion de x por N, en ambos P y Q. (4) ----> TODO
 
     \section{Teoria de tipos}
     \section{Lambda c\'alculo simplemente tipado}
