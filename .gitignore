@@ -6,3 +6,5 @@ tesis.out
 tesis.run.xml
 tesis.synctex.gz
 tesis.toc
+*.blb
+*.blg
