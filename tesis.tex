@@ -18,6 +18,7 @@
 \usepackage{listings}
 \usepackage{fancyhdr}
 \usepackage{setspace}
+\usepackage{tikz}
 \usepackage[round]{natbib}
 \bibliographystyle{plainnat}
 \geometry{margin=2.5cm}
@@ -139,34 +140,84 @@
 
 \chapter{Fundamentos te\'oricos}
 \section{El Lambda c\'alculo}
-El lambda cálculo fue inventado por Alonzo Church con el fin de capturar la nocion abstracta de la aplicabilidad de una funcion. Posteriormente, fue adoptado como un sistema formal de lógica matemática, pues con un conjunto mínimo de reglas es posible modelar y estudiar cómo se computan las funciones matemáticas dada una teoría.
-
-Este sistema es ampliamente utilizado en el diseño de lenguajes de programación. De forma análoga, la forma en la que se programa en el mismo es muy similar a cómo se programa en un lenguaje funcional hoy en dia. Lenguajes como Haskell, Agda, la familia de lenguajes basados en ML, y LISP, están ampliamente inspirados en un pequeño conjunto del cálculo lambda.
-
-El lambda calculo es un lenguaje muy potente y, a su vez, sumamente simple. Un término puede estar compuesto, o bien, formarse, de tres elementos: variables, aplicacion y abstracción lambda. De forma inductiva, su sintaxis se describe como sigue:
+El lambda cálculo fue inventado por Alonzo Church en la decada de los 80 con el proposito de capturar la nocion abstracta de la aplicabilidad de una funcion, sin embargo, conviene precisar en qué sentido. Una función puede entenderse de dos maneras: de forma extensional, como el conjunto de pares entrada–salida que la determina, o de forma intensional, como la regla o el proceso de cómputo que, dado un argumento, prescribe cómo obtener el resultado \citep{geuvers2014}. Es esta segunda lectura, la de la función como algoritmo, la que el lambda cálculo formaliza \citep{barendregt1984, geuvers2014}. En su origen, Church concibió el sistema como parte de una fundamentación de la lógica y las matemáticas; dicha formulación resultó ser inconsistente, tal y como evidenciaron Kleene y Rosser, por lo que Church aisló su núcleo puramente computacional, libre de constantes lógicas, dando lugar al lambda cálculo tal y como se conoce hoy (Barendregt, 1984), siendo ampliamente adoptado como un sistema formal de lógica matemática.
+\newline
+\newline
+Este sistema ocupa, además, un lugar cenral el diseño de lenguajes de programación. De forma análoga, la manera en la que se programa en el mismo es muy similar a cómo se programa en un lenguaje funcional hoy en dia. De hecho, lenguajes como Haskell, Agda, la familia de lenguajes basados en ML, y LISP, estan ampliamente inspirados en un conjunto del lambda calculus y, pueden entenderse, en buena medida, como extensiones  dotadas de azucar sintactico, sistemas de tipos y otras primitivas \citep{pierce2002}.
+\newline
+\newline
+El lambda calculo es un lenguaje muy potente y, a su vez, sumamente simple. Un término puede estar compuesto, o bien, formarse, de tres elementos: variables, aplicacion y abstracción lambda. De forma inductiva, fijado un conjunto infinito numerable de variables V, el conjunto $\Lambda$ de los términos lambda se define como el menor conjunto cerrado bajo las siguientes reglas \citep{barendregt1984, pierce2002}:
 \begin{align}
   M := \quad & x & \tag{1}\\
   \mid \quad & \lambda x.\, M & \tag{2}\\
   \mid \quad & M \; N \tag{3}&
 \end{align}
 
-Donde, siendo $\Lambda$ el conjunto de términos lambda válidos, $(1)$ es un conjunto infinito de variables, tal que si $x, y, z \in \textit{V}$ y $V \in \Lambda$, entonces $V \in \Lambda$. $(2)$ es una abstracción lambda, si $x \in V$ y además $M \in \Lambda$, entonces $\lambda x.\, M \in \Lambda $. $(3)$ Es una aplicación de dos términos, si $M, N \in \Lambda$ entonces $M N \in \Lambda$.
+Donde, $(1)$ es un conjunto infinito de variables, tal que si $x, y, z \in \textit{V}$ y $V \in \Lambda$, entonces $V \in \Lambda$. $(2)$ es una abstracción lambda, si $x \in V$ y además $M \in \Lambda$, entonces $\lambda x.\, M \in \Lambda $. $(3)$ Es una aplicación de dos términos, si $M, N \in \Lambda$ entonces $M N \in \Lambda$.
 \newline
 \newline
-A continuación, se detallan propiedades de sumo interés que, posteriormente, formarán parte de los fundamentos en los que el lenguaje que se describe en esta tésis, están basados.
+A continuación se detallan propiedades de sumo interés que articulan, posteriormente, los fundamentos del lenguaje que describe esta tésis: la distinción entre variables libres y ligadas, junto con la $\alpha$-equivalencia que de ella se deriva; la operación de sustitución que evita la captura de variables; y la $\beta$-reducción como noción primaria de cómputo. Se mencionará igualmente la $\eta$-conversión, que captura la extensionalidad de las funciones.
 
 \subsection{$\beta$-reducción}
 La noción de evaluacion de un término viene dada por beta-reducción, donde la notación $\to_\beta$ es empleada. La $\to_\beta$ está basada en la \textit{sustitución}, formalmente expresada como \textit{M[x := N]}, significando que \textit{M} es un término donde \textit{x} ha sido reemplazado por \textit{N}.
 
 Por tanto, una expresión de la forma $(\lambda x.\, M)\, N$ puede ser reescrita como \textit{M[ x := N]}, donde toda ocurrencia de \textit{x} en \textit{M} (estando \textit{x} libre en \textit{M}), debe ser reemplazada por \textit{N} \citep{geuvers2014}.
 
-\begin{example} % TODO: mas ejemplos
-  $(\lambda x.\, x + 1)\, 5$ reduce a $x[x := 5] = 6$
+\begin{example}
+  $(\lambda x.\, x + 1)\, 5$ reduce a $(x + 1)[x := 5] = 5 + 1 = 6$.
 \end{example}
 
+\begin{example}
+  La función identidad aplicada a un término cualquiera devuelve dicho término:
+  $(\lambda x.\, x)\, y \to_\beta x[x := y] = y$.
+\end{example}
+
+\begin{example}
+  La $\beta$-reducción puede encadenarse, reduciendo paso a paso hasta que no queden
+  más redexes. considérese el combinador $k \equiv \lambda x.\, \lambda y.\, x$ aplicado a
+  dos argumentos:
+  \begin{align}
+    (\lambda x.\, \lambda y.\, x)\, a\, b
+      & \to_\beta (\lambda y.\, x)[x := a]\, b \notag \\
+      & = (\lambda y.\, a)\, b \notag \\
+      & \to_\beta a[y := b] = a. \notag
+  \end{align}
+  N\'otese que el segundo argumento, $b$, es descartado, pues $y$ no ocurre en el cuerpo.
+\end{example}
 
 \subsection{Variables libres y ligadas}
+La abstracci\'on $\lambda x.\, M$ introduce un \textit{binder} sobre la variable
+$x$, cuyo \textit{alcance} es el cuerpo $M$. Decimos, pues, que una ocurrencia de
+una variable $x$ est\'a \textit{ligada} cuando aparece dentro del alcance de un $\lambda x$
+que la introduce; en caso contrario, dicha ocurrencia se dice \textit{libre}.
+\newline
+\newline
+Conviene resaltar que una misma variable puede ocurrir libre y ligada dentro de un mismo
+t\'ermino. En $(\lambda x.\, x)\, x$, por ejemplo, la primera ocurrencia de $x$ est\'a
+ligada por el $\lambda x$, mientras que la segunda, externa a la abstracci\'on, permanece
+libre. Formalmente, el conjunto de variables libres de un t\'ermino, denotado $FV(M)$, se define
+de forma inductiva sobre la estructura del t\'ermino \citep{pierce2002}:
+\begin{align}
+& (1) \; FV(x) = \{x\}, \notag \\
+& (2) \; FV(\lambda x.\, M) = FV(M) \setminus \{x\}, \notag \\
+& (3) \; FV(M\,N) = FV(M) \cup FV(N). \notag
+\end{align}
 
+$(1)$ indica que una variable, por s\'i sola, es libre. $(2)$ establece
+que al abstraer sobre $x$, esta deja de ser libre en $\lambda x.\, M$, pues queda ligada por
+el nuevo binder; por ello se retira del conjunto. $(3)$ recoge que las variables libres de
+una aplicaci\'on son, simplemente, la uni\'on de las libres de cada subt\'ermino. Un t\'ermino
+$M$ tal que $FV(M) = \emptyset$ se denomina \textit{cerrado} (closed) o \textit{combinador}.
+\newline
+\newline
+Por \'ultimo, el nombre concreto de una variable ligada carece de relevancia: lo \'unico que
+importa es la estructura de ligaduras que establece. As\'i, $\lambda x.\, x$ y
+$\lambda y.\, y$ denotan exactamente la misma funci\'on identidad. A esta noci\'on, que
+identifica t\'erminos que difieren \'unicamente en el nombre de sus variables ligadas, se le
+conoce como \textit{$\alpha$-equivalencia}, y se denota $=_\alpha$. El proceso de renombrar
+una variable ligada para obtener un t\'ermino $\alpha$-equivalente recibe el nombre de
+\textit{$\alpha$-conversi\'on}, y ser\'a fundamental para definir correctamente la
+sustituci\'on bajo un binder.
 \subsection{Sustitución}
 Anteriormente, definimos la sustitución en términos de $\to_\beta$ reducción, sin embargo, la sustitucion posee en si reglas de computo que valen la pena considerar pues, dependiendo del término que se esté evaluando, la sustitución tendrá, o no, efecto del todo.
 \newline
@@ -182,9 +233,92 @@ Se definen, pues, las reglas de computo de la sustitucion de acuerdo a lo discut
 & \quad \lambda y.\, P \text{ such that } z \notin FV(N). \notag
 \end{align}
 
-Para (1), sustituyendo x, por N dentro de x, siendo x el termino que buscamos sustituir, obtenemos N. De forma analoga, sustituyendo cada ocurrencia de x en el termino y, por N, si x e y no son iguales, el termino intacto, y, sera retornado. El caso de (3), tiene sentido cuando P es una abstraccion aplicada a un termino Q. Concretamente, se reduce a la sustitucion de x por N, en ambos P y Q. (4) ----> TODO
+Para (1), sustituyendo x, por N dentro de x, siendo x el termino que buscamos sustituir, obtenemos N. De forma analoga, sustituyendo cada ocurrencia de x en el termino y, por N, si x e y no son iguales, el termino intacto, y, sera retornado. El caso de (3), tiene sentido cuando P es una abstraccion aplicada a un termino Q. Concretamente, se reduce a la sustitucion de x por N, en ambos P y Q. $(4)$ contempla la sustituci\'on bajo un binder. Lo que se busca es
+sustituir $x$ por $N$ dentro del cuerpo $P$ de la abstracci\'on $\lambda y.\, P$. Sin embargo,
+si proced\'ieramos de forma ingenua y $N$ contuviera a $y$ como variable libre, dicha $y$
+quedar\'ia inadvertidamente atrapada por el ligador $\lambda y$, alterando por completo el
+significado del t\'ermino. A este fen\'omeno se le conoce como \textit{captura de variables}.
 
-    \section{Teoria de tipos}
+Para evitarlo, antes de sustituir se renombra la variable ligada $y$ por una variable fresca
+$z$, mediante $\alpha$-conversi\'on, escogida de modo que $z \notin FV(N)$ (y, por extensi\'on,
+que no genere conflicto con las variables ya presentes en $P$). Solo entonces se procede a
+sustituir $x$ por $N$ dentro del cuerpo ya renombrado. De esta manera, la sustituci\'on
+preserva el significado del t\'ermino original, raz\'on por la cual se la describe como una
+sustituci\'on \textit{que evita la captura} \citep{pierce2002}.
+
+\begin{example}
+  Sup\'ongase la sustituci\'on $(\lambda y.\, x)[x := y]$. Si sustituy\'eramos directamente,
+  obtendr\'iamos $\lambda y.\, y$, es decir, la identidad: la $y$ libre que introdujimos
+  habr\'ia sido capturada por el binder. Renombrando primero la variable ligada a una
+  fresca $z$, obtenemos $(\lambda z.\, x)[x := y] = \lambda z.\, y$, que es el resultado
+  correcto, pues la $y$ permanece libre.
+\end{example}
+
+\subsection{Confluencia}
+Anteriormente mencionamos como la beta-reduccion emula, de cierta manera, el proceso de computacion de una expresion dada: evaluado un termino, es seguro obtener la forma normal del mismo, es decir, no existe un redex en la expression que permita seguir reduciendola.
+\newline
+El orden en que se evaluen estos redexes es importante: los mismos pueden influir en si el computo termina o, mejor dicho, alcanza una forma normal concreta. Por tanto, dado un termino $t$, y dos terminos $\to_\beta t\_1$ y $\to_\beta t\_2$ que derivan del mismo $t$ en uno o varios pasos de beta-reduccion, ¿es posible llegar a un termino comun $u$ alcanzable desde $t\_1$ y $t\_2$? Si existe tal $u$, se dice, por tanto, que $t$ es confluente. 
+\newline
+\newline
+En el presente capitulo, describimos esta propiedad con detenimiento, y estudiaremos (?) como la beta reduccion es confluente.
+\newline
+\newline
+La confluencia, tambien conocida como el teorema de Church-Rosser, es una propiedad de los sistemas de reescritura que describe cuales terminos en un sistema puede ser reescrito (reducido en uno o más pasos) para producir el mismo resultado. La importancia del teorema redica en que el resultado del computo, debe ser independiente del orden en que se ejecutaron los pasos de reduccion. Formalmente, se describe como sigue:
+\newline
+\begin{theorem} (Church-Rosser) -- Citar: Barendregt, 1981, p. 62
+  Dado un termino $\lambda$$M$, tenemos que $M\to_\beta^{\ast}N_1$ y $M\to_\beta^{\ast}N_2$, entonces existe un termino $\lambda$$N_3$ tal que $N_1\to_\beta^{\ast}N_3$ y $N_2\to_\beta^{\ast}N_3$.
+\end{theorem}
+\newline
+\begin{lemma}
+  \begin{enumerate}
+    \item $M$ es una forma normal si $M$ no contiene mas redexes.
+    \item $M$ tiene una forma normal si existe un $N$, en forma normal, tal que $M =_\beta N$. Tal $N$ es la forma normal de $M$.
+\end{enumerate}
+\end{lemma}
+
+La confluencia es representada por el siguiente diagrama:
+--diagrama aqui--
+\begin{example}
+  Ejemplo de diamante con una lambda exprsion
+\end{example}
+
+De aqui, se desprende el problemas como la terminacion. La terminacion, determina cuando el computo de una funcion termina, o no. En el contexto del lambda calculo, un redex puede no terminar de reducirse o bien, puede entrar en un ciclo infinito de pasos de reduccion, siendo imposible alcanzar una forma normal. 
+
+\begin{example}
+  Ejemplo de diamante con una lambda exprsion no terminante
+\end{example}
+
+Aun asi, es importante notar que el lambda calculo es terminante por beta-reduccion.
+\begin{example}
+  insertar prueba
+\end{example}
+\section{Teoria de tipos}
+Los tipos, pese a que son similares a los conjuntos, son ligeramente distintos. Por conjunto, lo entendemos con una coleccion de elementos, similares, o no, que poseen una propiedad concreta, de donde es posible extenderlos y razonar sobre mas relaciones de pertenencia y formar, por ejemplo, conjuntos dentro de otros conjuntos. Los tipos, a diferencia de los conjuntos que dan informacion semantica, proveen informacion sintactica de los elementos. Usualmente en la teoria de conjuntos definimos que un elemento forma parte de un junto, como sigue:
+\begin{align}
+  4 \in \{\,n \in \mathbb{N} | x > 5 \,\}\
+\end{align}
+
+En la teoria de tipos, las relaciones de pertenencia:
+\begin{align}
+  3 + 1 : \mathbb{N}
+\end{align}
+Esto puede interpretarse, desde el lente de teoria de tipos, como 3 + 1 es un termino en los naturales, o bien, de tipo N.
+
+La nocion de tipos es atribuida a Bertrand Russell, quien desarrollo la teoria de tipos en respuesta a las contradicciones que, para entonces, en la teoria de conjuntos y la logica formal existian, como la paradoja de Russell, donde era posible definir, por ejemplo, el conjunto que contiene a todos los conjuntos que no son miembros de si mismo:
+
+\begin{align}
+  R = \{\,x | x \in x \,\}\
+\end{align}
+entonces
+\begin{align}
+  R \in R \iff  R \notin R
+\end{align}
+
+Es, por tanto, de forma contradictoria, un conjunto que es elemento de sí mismo. La solucion para evitar esta paradoja fue emplear una teoria que tuviese una jerarquia de tipos y que, de esta forma, ningún tipo se contuviese a sí mismo.
+
+Los tipos son ubicuos en computación,  pues, numerosos lenguajes tienen su propio sistema de tipos, unos mas avanzados que otros y, otros muchos mas simples. Tan simples que, la manipulacion de tipos es casi perceptible. Tales lenguajes son conocidos como lenguajes de alto nivel, o untyped. C++ es un claro ejemplo de un sistema de tipos complejo, pero sumamente rico, que facilita posteriormente, una distincion semantica. Java está dotado de un sistema de tipos ligeramente más robusto que C++, 
+
+
     \section{Lambda c\'alculo simplemente tipado}
     \section{Tipos dependientes}
     \section{Teoria de tipos de Martin-Löf}
