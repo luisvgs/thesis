@@ -1,28 +1,26 @@
 \documentclass[a4paper,12pt]{report}
-
+\usepackage[a4paper, top=3cm, bottom=3cm, inner=3.5cm, outer=2.5cm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{proof}
 \usepackage[spanish]{babel}
 \usepackage{graphicx}
-\usepackage{geometry}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
 \usepackage{stmaryrd}
 \usepackage{proof}
-\usepackage{hyperref}
-\usepackage{cleveref}
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{tikz}
 \usepackage{tikz-cd}
+\usetikzlibrary{arrows.meta,positioning,matrix}
 \usepackage{listings}
 \usepackage{fancyhdr}
 \usepackage{setspace}
-\usepackage{tikz}
 \usepackage[round]{natbib}
 \bibliographystyle{plainnat}
-\geometry{margin=2.5cm}
-
+\usepackage{hyperref}
+\usepackage{cleveref}
 % === Theorem environments ===
 \theoremstyle{definition}
 \newtheorem{definition}{Definici\'on}[chapter]
@@ -174,7 +172,7 @@ Por tanto, una expresión de la forma $(\lambda x.\, M)\, N$ puede ser reescrita
 
 \begin{example}
   La $\beta$-reducción puede encadenarse, reduciendo paso a paso hasta que no queden
-  más redexes. considérese el combinador $k \equiv \lambda x.\, \lambda y.\, x$ aplicado a
+  más redexes. considérese el combinador $K \equiv \lambda x.\, \lambda y.\, x$ aplicado a
   dos argumentos:
   \begin{align}
     (\lambda x.\, \lambda y.\, x)\, a\, b
@@ -182,13 +180,13 @@ Por tanto, una expresión de la forma $(\lambda x.\, M)\, N$ puede ser reescrita
       & = (\lambda y.\, a)\, b \notag \\
       & \to_\beta a[y := b] = a. \notag
   \end{align}
-  N\'otese que el segundo argumento, $b$, es descartado, pues $y$ no ocurre en el cuerpo.
+  N\'otese que el segundo argumento, $b$, es descartado, pues $y$ no ocurre en el  del lambda.
 \end{example}
 
 \subsection{Variables libres y ligadas}
 La abstracci\'on $\lambda x.\, M$ introduce un \textit{binder} sobre la variable
-$x$, cuyo \textit{alcance} es el cuerpo $M$. Decimos, pues, que una ocurrencia de
-una variable $x$ est\'a \textit{ligada} cuando aparece dentro del alcance de un $\lambda x$
+$x$, cuyo \textit{alcance} es el cuerpo de $M$. Decimos, pues, que una ocurrencia de
+una variable $x$ est\'a \textit{ligada} cuando aparece dentro del alcance del $\lambda x$
 que la introduce; en caso contrario, dicha ocurrencia se dice \textit{libre}.
 \newline
 \newline
@@ -206,8 +204,8 @@ de forma inductiva sobre la estructura del t\'ermino \citep{pierce2002}:
 $(1)$ indica que una variable, por s\'i sola, es libre. $(2)$ establece
 que al abstraer sobre $x$, esta deja de ser libre en $\lambda x.\, M$, pues queda ligada por
 el nuevo binder; por ello se retira del conjunto. $(3)$ recoge que las variables libres de
-una aplicaci\'on son, simplemente, la uni\'on de las libres de cada subt\'ermino. Un t\'ermino
-$M$ tal que $FV(M) = \emptyset$ se denomina \textit{cerrado} (closed) o \textit{combinador}.
+una aplicaci\'on son, simplemente, la uni\'on de las libres de cada subt\'ermino $M$ y $N$ respectivamente. Un t\'ermino
+$M$ tal que $FV(M) = \emptyset$ se denomina \textit{cerrado}.
 \newline
 \newline
 Por \'ultimo, el nombre concreto de una variable ligada carece de relevancia: lo \'unico que
@@ -219,7 +217,7 @@ una variable ligada para obtener un t\'ermino $\alpha$-equivalente recibe el nom
 \textit{$\alpha$-conversi\'on}, y ser\'a fundamental para definir correctamente la
 sustituci\'on bajo un binder.
 \subsection{Sustitución}
-Anteriormente, definimos la sustitución en términos de $\to_\beta$ reducción, sin embargo, la sustitucion posee en si reglas de computo que valen la pena considerar pues, dependiendo del término que se esté evaluando, la sustitución tendrá, o no, efecto del todo.
+Anteriormente, definimos la sustitución en términos de $\to_\beta$ reducción, sin embargo, la sustitucion posee en sí reglas de computo que valen la pena considerar pues, dependiendo del término que se esté evaluando, la sustitución tendrá, o no, efecto del todo.
 \newline
 \newline
 Se definen, pues, las reglas de computo de la sustitucion de acuerdo a lo discutido por \cite{pierce2002}. Más formalmente:
@@ -236,7 +234,7 @@ Se definen, pues, las reglas de computo de la sustitucion de acuerdo a lo discut
 Para (1), sustituyendo x, por N dentro de x, siendo x el termino que buscamos sustituir, obtenemos N. De forma analoga, sustituyendo cada ocurrencia de x en el termino y, por N, si x e y no son iguales, el termino intacto, y, sera retornado. El caso de (3), tiene sentido cuando P es una abstraccion aplicada a un termino Q. Concretamente, se reduce a la sustitucion de x por N, en ambos P y Q. $(4)$ contempla la sustituci\'on bajo un binder. Lo que se busca es
 sustituir $x$ por $N$ dentro del cuerpo $P$ de la abstracci\'on $\lambda y.\, P$. Sin embargo,
 si proced\'ieramos de forma ingenua y $N$ contuviera a $y$ como variable libre, dicha $y$
-quedar\'ia inadvertidamente atrapada por el ligador $\lambda y$, alterando por completo el
+quedar\'ia inadvertidamente atrapada por el binder $\lambda y$, alterando por completo el
 significado del t\'ermino. A este fen\'omeno se le conoce como \textit{captura de variables}.
 
 Para evitarlo, antes de sustituir se renombra la variable ligada $y$ por una variable fresca
@@ -255,56 +253,109 @@ sustituci\'on \textit{que evita la captura} \citep{pierce2002}.
 \end{example}
 
 \subsection{Confluencia}
-Anteriormente mencionamos como la beta-reduccion emula, de cierta manera, el proceso de computacion de una expresion dada: evaluado un termino, es seguro obtener la forma normal del mismo, es decir, no existe un redex en la expression que permita seguir reduciendola.
-\newline
-El orden en que se evaluen estos redexes es importante: los mismos pueden influir en si el computo termina o, mejor dicho, alcanza una forma normal concreta. Por tanto, dado un termino $t$, y dos terminos $\to_\beta t\_1$ y $\to_\beta t\_2$ que derivan del mismo $t$ en uno o varios pasos de beta-reduccion, ¿es posible llegar a un termino comun $u$ alcanzable desde $t\_1$ y $t\_2$? Si existe tal $u$, se dice, por tanto, que $t$ es confluente. 
+Anteriormente señalamos cómo la $\beta$-reducción emula, en cierto sentido, el proceso de cómputo de una expresión dada: evaluado un término, aspiramos a obtener su forma normal, esto es, un término en el que ya no resta redex alguno que permita seguir reduciendo \citep{barendregt1984, pierce2002}.
 \newline
 \newline
-En el presente capitulo, describimos esta propiedad con detenimiento, y estudiaremos (?) como la beta reduccion es confluente.
+Ahora bien, el orden en que se contraen tales redexes no es indiferente, pues puede influir en si el cómputo termina o, mejor dicho, en si alcanza una forma normal. Surge así una pregunta natural. Dado un término $t$ del que divergen dos reducciones, $t \to_\beta^{\ast} t_1$ y $t \to_\beta^{\ast} t_2$, en uno o varios pasos, ¿es posible reconciliar ambas ramas en un término común $u$ alcanzable tanto desde $t_1$ como desde $t_2$? Cuando tal $u$ existe para cualquier par de reducciones divergentes, decimos que la reducción es \textit{confluente} sobre $t$.
 \newline
 \newline
-La confluencia, tambien conocida como el teorema de Church-Rosser, es una propiedad de los sistemas de reescritura que describe cuales terminos en un sistema puede ser reescrito (reducido en uno o más pasos) para producir el mismo resultado. La importancia del teorema redica en que el resultado del computo, debe ser independiente del orden en que se ejecutaron los pasos de reduccion. Formalmente, se describe como sigue:
+En el presente apartado describimos con detenimiento la propiedad de confluencia y exponemos por qué la $\beta$-reducción la satisface.
 \newline
-\begin{theorem} (Church-Rosser) -- Citar: Barendregt, 1981, p. 62
-  Dado un termino $\lambda$$M$, tenemos que $M\to_\beta^{\ast}N_1$ y $M\to_\beta^{\ast}N_2$, entonces existe un termino $\lambda$$N_3$ tal que $N_1\to_\beta^{\ast}N_3$ y $N_2\to_\beta^{\ast}N_3$.
+\newline
+La confluencia, conocida también como teorema de Church-Rosser, es una propiedad de los sistemas de reescritura que caracteriza cuándo dos términos obtenidos de uno dado, por reducción en uno o más pasos, convergen a un mismo resultado. Su relevancia radica en que el resultado del cómputo queda determinado con independencia del orden en que se ejecuten los pasos de reducción \citep{barendregt1984}. Formalmente:
+\newline
+\begin{theorem}[Church-Rosser]
+  Sea $M$ un término del $\lambda$-cálculo. Si $M\to_\beta^{\ast}N_1$ y $M\to_\beta^{\ast}N_2$, entonces existe un término $N_3$ tal que $N_1\to_\beta^{\ast}N_3$ y $N_2\to_\beta^{\ast}N_3$ \citep[p.~62]{barendregt1984}.
 \end{theorem}
+\newline
+\newline
+Conviene precisar que el teorema habla de la \textit{clausura reflexivo-transitiva} de la reducción, $\to_\beta^{\ast}$, es decir, de cero o más pasos de $\beta$-reducción. Esta distinción no es superflua, pues la $\beta$-reducción no cumple la versión más fuerte de la propiedad, conocida como \textit{propiedad del diamante} en un solo paso: si de $M$ contraemos dos redexes distintos en un único paso para obtener $N_1$ y $N_2$, no siempre existe un $N_3$ alcanzable desde ambos en un solo paso. La razón es la duplicación, pues un redex puede copiar a otro cuando el argumento contiene, a su vez, redexes, de modo que un lado de la bifurcación necesita varios pasos para reabsorber las copias que el otro lado ya había contraído. Lo que el teorema de Church-Rosser garantiza es la versión global, sobre $\to_\beta^{\ast}$, que sí se sostiene.
+\newline
+\newline
+Ademas, por simplicidad, hasta ahora hemos equivocadamente abusado del término de confluencia. Resulta importante separar dos nociones de la misma: la confluencia local y la confluencia global. Decimos que un sistema es \textit{localmente confluente} cuando, partiendo de $M$ y dando un paso hacia $N_1$ y otro hacia $N_2$, existe un término común alcanzable desde ambos en cero o máas pasos. La confluencia local es más débil que la confluencia global, y la implicación de la primera a la segunda no siempre se cumple, pues solo se obtiene bajo hipótesis adicionales, como la terminación, de acuerdo al lema de Newman (aca citar o mencionar luego??). \citep{barendregt1984}. 
 \newline
 \begin{lemma}
   \begin{enumerate}
-    \item $M$ es una forma normal si $M$ no contiene mas redexes.
+    \item $M$ es una forma normal si $M$ no contiene más redexes.
     \item $M$ tiene una forma normal si existe un $N$, en forma normal, tal que $M =_\beta N$. Tal $N$ es la forma normal de $M$.
 \end{enumerate}
 \end{lemma}
 
-La confluencia es representada por el siguiente diagrama:
---diagrama aqui--
+Una consecuencia inmediata, y quizá la más útil en la práctica, es la unicidad de la forma normal. Si un término admite forma normal, esta es única salvo $\alpha$-equivalencia.
+
+\begin{corollary}
+  Si $M$ posee una forma normal, esta es única salvo $\alpha$-equivalencia. En efecto, supóngase que $N_1$ y $N_2$ son ambas formas normales de $M$, de modo que $M\to_\beta^{\ast}N_1$ y $M\to_\beta^{\ast}N_2$. Por el teorema de Church-Rosser existe $N_3$ con $N_1\to_\beta^{\ast}N_3$ y $N_2\to_\beta^{\ast}N_3$. Pero $N_1$ y $N_2$ están en forma normal, luego no contienen redex alguno y no pueden reducirse en pasos no triviales, de donde $N_1 =_\alpha N_3 =_\alpha N_2$.
+\end{corollary}
+
+El interés de este corolario es doble. Por un lado, justifica que hablemos de \textit{la} forma normal de un término, en singular, cuando esta existe. Por otro, garantiza que el valor de un cómputo, entendido como su forma normal, queda determinado por el término de partida y no por la estrategia de evaluación escogida, de modo que el orden en que decidamos contraer los redexes solo puede afectar a si terminamos, mas no al resultado al que llegamos.
+\newline
+\newline
+La confluencia se representa mediante el siguiente diagrama, cuya forma de rombo explica que la propiedad reciba también el nombre de \textit{propiedad del diamante}. El vértice superior es el término de partida $M$, las dos diagonales descendentes son las reducciones divergentes hacia los terminos $N_1$ y $N_2$, y las diagonales punteadas representan los pasos que aún restan, garantizados por el teorema, para reconciliar ambas ramas en un término común $N_3$.
+
+\[
+\begin{tikzcd}[row sep=2.4em, column sep=2.4em]
+ & M \arrow[dl, twoheadrightarrow, "\ast"'] \arrow[dr, twoheadrightarrow, "\ast"] & \\
+N_1 \arrow[dr, twoheadrightarrow, dashed, "\ast"'] & & N_2 \arrow[dl, twoheadrightarrow, dashed, "\ast"] \\
+ & N_3 &
+\end{tikzcd}
+\]
+
 \begin{example}
-  Ejemplo de diamante con una lambda exprsion
+  Considérese el término $M \equiv (\lambda x.\, x\,x)\,((\lambda y.\, y)\, z)$, que presenta
+  dos redexes: el externo, que aplica $\lambda x.\, x\,x$ a su argumento, y el interno,
+  $(\lambda y.\, y)\, z$. Contrayendo primero el redex externo, el argumento se duplica y
+  obtenemos $N_1 \equiv ((\lambda y.\, y)\, z)\,((\lambda y.\, y)\, z)$, que aún requiere dos
+  pasos para resolver las dos copias del redex interno. Contrayendo primero el redex interno,
+  en cambio, llegamos en un solo paso a $N_2 \equiv (\lambda x.\, x\,x)\, z$. Ambas ramas
+  convergen en $z\,z$:
+
+
+  Obsérvese cómo la rama izquierda necesita más de un paso para alcanzar la confluencia, lo
+  cual ilustra por qué el teorema se enuncia sobre $\to_\beta^{\ast}$ y no sobre la reducción
+  en un único paso.
 \end{example}
 
-De aqui, se desprende el problemas como la terminacion. La terminacion, determina cuando el computo de una funcion termina, o no. En el contexto del lambda calculo, un redex puede no terminar de reducirse o bien, puede entrar en un ciclo infinito de pasos de reduccion, siendo imposible alcanzar una forma normal. 
+De aquí emerge un problema de naturaleza distinta: la terminación. La terminación determina si el cómputo de un término concluye o no. En el $\lambda$-cálculo, una secuencia de reducciones puede no detenerse, entrando en un ciclo infinito de pasos que impide alcanzar forma normal alguna, como ilustra el siguiente ejemplo.
 
 \begin{example}
-  Ejemplo de diamante con una lambda exprsion no terminante
+  El ejemplo canónico de término sin forma normal es el combinador $\Omega \equiv
+  (\lambda x.\, x\,x)\,(\lambda x.\, x\,x)$. Al contraer su único redex, el argumento
+  $\lambda x.\, x\,x$ se sustituye en el cuerpo $x\,x$, devolviendo de nuevo $\Omega$:
+  \[
+  (\lambda x.\, x\,x)\,(\lambda x.\, x\,x) \to_\beta
+  (x\,x)[x := \lambda x.\, x\,x] = (\lambda x.\, x\,x)\,(\lambda x.\, x\,x) \equiv \Omega.
+  \]
+  La reducción se cierra pues, sobre sí misma:
+  \[
+  \begin{tikzcd}[column sep=3em]
+  \Omega \equiv (\lambda x.\, x\,x)\,(\lambda x.\, x\,x) \arrow[loop right, "\beta", distance=2.4em]
+  \end{tikzcd}
+  \]
+  El término es trivialmente confluente, ya que su única reducción conduce siempre a sí mismo,
+  y sin embargo carece de forma normal. Este ejemplo evidencia que la confluencia y la
+  terminación son propiedades independientes: un sistema puede ser confluente sin ser
+  terminante.
 \end{example}
 
-Aun asi, es importante notar que el lambda calculo es terminante por beta-reduccion.
-\begin{example}
-  insertar prueba
-\end{example}
-\section{Teoria de tipos}
-Los tipos, pese a que son similares a los conjuntos, son ligeramente distintos. Por conjunto, lo entendemos con una coleccion de elementos, similares, o no, que poseen una propiedad concreta, de donde es posible extenderlos y razonar sobre mas relaciones de pertenencia y formar, por ejemplo, conjuntos dentro de otros conjuntos. Los tipos, a diferencia de los conjuntos que dan informacion semantica, proveen informacion sintactica de los elementos. Usualmente en la teoria de conjuntos definimos que un elemento forma parte de un junto, como sigue:
+El ejemplo de $\Omega$ pone de manifiesto que el $\lambda$-cálculo sin tipos no es terminante, pues existen términos que carecen de forma normal y cuya reducción no se detiene jamás. La terminación, entendida como normalización fuerte, se recupera al imponer una disciplina de tipos sobre los términos. En particular, el $\lambda$-cálculo simplemente tipado sí es fuertemente normalizante, propiedad que abordaremos en un capitulo posterior, al tratar dicho sistema.\citep{geuvers2014, pierce2002}.
+
+\section{Teoría de Tipos}
+La teoria de tipos es una rama de las matematicas y la logica que tiene como objeto formalizar no solo terminos matematicos, tales como una variable $x$ o una funcion cualquiera $f$ y las operaciones entre ambas, si no tambien, la idea de que cada termino forma parte o tiene un tipo concreto, es decir, que el tipo de una variable $x : \mathbb{N}$ en el dominio de los numeros naturales, es completamente distinguible al tipo de una funcion $f : \mathbb{N} \to \mathbb{N}$.
+\newline
+\newline
+Los tipos, pese a que son similares a los conjuntos, son ligeramente distintos. Por conjunto, entiendase ocmo una coleccion de elementos, similares, o no, que poseen una propiedad concreta, de donde es posible extenderlos y razonar sobre mas relaciones de pertenencia y formar, por ejemplo, conjuntos dentro de otros conjuntos y definir que un elemento pertenece a varios conjuntos a la vez, cosa que, en los tipos, no es posible pues, un termino es (pertenece a) un tipo unico. Otra caracteristica que los distingue, es que los conjuntos dan informacion semantica y, los tipos por otro lado, proveen informacion sintactica de los objetos. Por ejemplo, comunmente en la teoria de conjuntos definimos que una relacion de pertenencia como sigue:
 \begin{align}
   4 \in \{\,n \in \mathbb{N} | x > 5 \,\}\
 \end{align}
 
-En la teoria de tipos, las relaciones de pertenencia:
+En la teoria de tipos, un typing judgement, sigue la siguiente notacion que, a lo largo de la presente tesis estaremos empleando:
 \begin{align}
   3 + 1 : \mathbb{N}
 \end{align}
-Esto puede interpretarse, desde el lente de teoria de tipos, como 3 + 1 es un termino en los naturales, o bien, de tipo N.
-
-La nocion de tipos es atribuida a Bertrand Russell, quien desarrollo la teoria de tipos en respuesta a las contradicciones que, para entonces, en la teoria de conjuntos y la logica formal existian, como la paradoja de Russell, donde era posible definir, por ejemplo, el conjunto que contiene a todos los conjuntos que no son miembros de si mismo:
+Esto puede interpretarse, desde el lente de teoria de tipos, como $3 + 1$ es un termino en los naturales, o bien, de tipo $\mathbb{N}$.
+\newline
+\newline
+La nocion de tipos se atribuye a Bertrand Russell, quien desarrollo la teoria de tipos en respuesta a las contradicciones que, para entonces, en la teoria de conjuntos y la logica formal existian, como la paradoja de Russell, donde era posible definir, por ejemplo, el conjunto que contiene a todos los conjuntos que no son miembros de sí mismo (TODO: Desarrollar mas esta parte)\citep{sep-type-theory}.
 
 \begin{align}
   R = \{\,x | x \in x \,\}\
@@ -314,11 +365,58 @@ entonces
   R \in R \iff  R \notin R
 \end{align}
 
-Es, por tanto, de forma contradictoria, un conjunto que es elemento de sí mismo. La solucion para evitar esta paradoja fue emplear una teoria que tuviese una jerarquia de tipos y que, de esta forma, ningún tipo se contuviese a sí mismo.
-
-Los tipos son ubicuos en computación,  pues, numerosos lenguajes tienen su propio sistema de tipos, unos mas avanzados que otros y, otros muchos mas simples. Tan simples que, la manipulacion de tipos es casi perceptible. Tales lenguajes son conocidos como lenguajes de alto nivel, o untyped. C++ es un claro ejemplo de un sistema de tipos complejo, pero sumamente rico, que facilita posteriormente, una distincion semantica. Java está dotado de un sistema de tipos ligeramente más robusto que C++, 
+Es, por tanto, de forma contradictoria, un conjunto que es elemento de sí mismo. Para evitar esta paradoja, Russell propuso la distincion entre objetos, predicados, predicados de predicados, etc. Es donde, en esta teoria de tipos, donde la distincion es internalizada por tipos. En esta teoria, a cada objeto se le asigna un tipo, de forma jerargica, de manera tal que conjuntos grandes y pequeños residen en niveles distintos de la teoria. 
 
 
+Los tipos son ubicuos en computación, y numerosos lenguajes tienen su propio sistema de tipos, unos mas avanzados que otros y, otros mas simples. Tan simples que, la manipulacion de tipos es casi perceptible o inextistente. Lenguajes con esta capacidad de omitir tipos son conocidos como lenguajes dinamicamente tipados, donde en casos, es completamente opcional tipar expresiones y en caso contrario, el compilador infiere un tipo adecuado para una expresion. Haskell por ejemplo, es un lenguaje de alto nivel, ampliamente utilizado por grupos de investigacion y academicos, su sistema de tipos esta inicialmente basado en el lambda calculus simplemente tipado, también llamado System F. Hoy en dia su sistema de tipos ha madurado lo suficiente para dejar de considerarle con un sistema de tipos simple. C++ es un claro ejemplo de un sistema de tipos, quiza, mucho mas complejo, pero sumamente rico, que facilita posteriormente, una distincion semantica y rechaza programas que son imposibles de evaluar correctamente. De forma muy general, un sistema de tipos permite al lenguaje alcanzar capacidades de expresividad bastante amplias y, a su vez, evitar que programas errones se ejecuten.
+
+El problema que intenta resolver la teoria de tipos, no es solo encontrar un tipo para un termino concreto, sino tambien, determinar (si lo hay) un termino para un tipo.
+
+-Ejemplo de Gueuvers aca-
+
+
+A lo largo de los años numerosos esfuerzos se han hecho para desarrollar distintos sabores (sabores es la palabra? quiza extensiones) de la teoria de tipos y poder dar suficiente poder expresivo al lambda calculo. Estos sistemas de tipos fueron explorados por H. Barendregt en el Cubo Lambda \citep{barendregt1991}, para investigar las diferentes dimensiones en las que puede extenderse el sistema formal. En su paper describe como cada dimension del cubo representa una dependencia entre terminos y tipos, y sus posibles combinaciones. Entiendase por dependencia con la dependencia mutua, valga la reduncancia, que existe entre tipos y terminos: terminos que dependen de otros terminos, terminos dependientes de tipos, tipos dependientes de terminos, y tipos dependientes de otros tipos. Los ocho vertices del cubo, consecuencia de combinar cada posible dimension, resultan en diferentes sistemas de tipos y expresividad. Concretamente, abordaremos en el presente trabajo, en la extension del vertice inferior derecho, que corresponde a la extension de tipos dependientes, concreamente, $\lambda P$ .
+
+
+\begin{tikzpicture}
+\matrix (m) [matrix of math nodes,
+row sep=3em, column sep=3em,
+text height=1.5ex,
+text depth=0.25ex]{
+            & \lambda\omega             &              & \lambda\Pi\omega             \\
+\lambda 2   &                           & \lambda\Pi 2                                \\
+            & \lambda\underline{\omega} &              & \lambda\Pi\underline{\omega} \\
+\lambda{\to}&                           & \lambda\Pi  \\
+};
+\path[-{Latex[length=2.5mm, width=1.5mm]}]
+(m-1-2) edge (m-1-4)
+(m-2-1) edge (m-2-3)
+        edge (m-1-2)
+(m-3-2) edge (m-1-2)
+        edge (m-3-4)
+(m-4-1) edge (m-2-1)
+        edge (m-3-2)
+        edge (m-4-3)
+(m-3-4) edge (m-1-4)
+(m-2-3) edge (m-1-4)
+(m-4-3) edge (m-3-4)
+        edge (m-2-3);
+        \end{tikzpicture}
+        \newline
+
+Se empleara, a lo largo de la tesis, la siguiente notacion para definir las derivaciones en la teoria de tipos, donde la parte superior es una lista de premisas y la parte inferior, la conclusion:
+
+\begin{align}
+\infer{\Gamma \vdash a : A}{% 
+    \Gamma \vdash A
+    & \deduce{\Gamma, a : A}
+  }
+  \end{align}
+
+Que puede leerse como: si, dado que en el contexto $\Gamma$, $A$ es un tipo bien formado y, ademas, en el mismo contexto $\Gamma$ extendido con $a : A$, entonces podemos inferir que $a$ es de tipo $A$.
+
+\subsection{Tipos a la Curry}
+\subsection{Tipos a la Church} 
     \section{Lambda c\'alculo simplemente tipado}
     \section{Tipos dependientes}
     \section{Teoria de tipos de Martin-Löf}
