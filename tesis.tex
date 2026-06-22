@@ -471,7 +471,7 @@ Dentro de la teoria de tipos existen seis tipos de juicios que seran de utilidad
 
 Adicionalmente, independientemente del sistema de tipos que se describa, las mismas reglas estructurales se adoptan, como describe \citealp{hoffman2009}.
 
-\begin{gather*}
+\begin{gather}
   \infer[\text{C-Emp}]{\vdash \emptyset}{}
   \qquad
   \infer[\text{C-Ext}]{\vdash, \Gamma\;x : \sigma}{\Gamma \vdash \sigma}
@@ -483,8 +483,57 @@ Adicionalmente, independientemente del sistema de tipos que se describa, las mis
   \\[2ex]
   \infer[\text{Var}]{\Gamma \vdash x : \sigma}{\vdash \Gamma, x : \sigma}
 \end{gather*}
+Para las reglas que expresan la igualdad definicional como una relación de equivalencia
+\begin{gather}
+  \infer[\text{C-Eq-R}]
+  {\vdash \Gamma = \Gamma\;ctxt}
+  {\vdash \Gamma\;ctxt}
+  \\[2ex]
+  \infer[\text{C-Eq-S}]
+  {\vdash \Delta = \Gamma\;ctxt}
+  {\vdash \Gamma = \Delta\;ctxt}
+  \\[2ex]
+  \infer[\text{C-Eq-T}]
+  {\vdash \Gamma = \Theta\;ctxt}
+  {\vdash \Gamma = \Delta\;ctxt & \vdash \Delta = \Theta\;ctxt}
+  \\[2ex]
+  \infer[\text{Ty-Eq-R}]
+  {\Gamma \vdash \sigma = \sigma\;\mathsf{type}}
+  {\Gamma \vdash \sigma\;\mathsf{type}}
+  \\[2ex]
+  \infer[\text{Ty-Eq-S}]
+  {\Gamma \vdash \tau = \sigma\;\mathsf{type}}
+  {\Gamma \vdash \sigma = \tau\;\mathsf{type}}
+  \\[2ex]
+  \infer[\text{Ty-Eq-T}]
+  {\Gamma \vdash \sigma = \rho\;\mathsf{type}}
+  {\Gamma \vdash \sigma = \tau\;\mathsf{type} & \Gamma \vdash \tau = \rho\;\mathsf{type}}
+  \\[2ex]
+  \infer[\text{Tm-Eq-R}]
+  {\Gamma \vdash M = M : \sigma}
+  {\Gamma \vdash M : \sigma}
+  \\[2ex]
+  \infer[\text{Tm-Eq-S}]
+  {\Gamma \vdash N = M : \sigma}
+  {\Gamma \vdash M = N : \sigma}
+  \\[2ex]
+  \infer[\text{Tm-Eq-T}]
+  {\Gamma \vdash M = O : \sigma}
+  {\Gamma \vdash M = N : \sigma & \Gamma \vdash N = O : \sigma}
+  \\[2ex]
+  \infer[\text{Tm-Conv}]
+  {\Delta \vdash M : \tau}
+  {\Gamma \vdash M : \sigma & \vdash \Gamma = \Delta\;ctxt & \Gamma \vdash \sigma = \tau\;\mathsf{type}}
+  \\[2ex]
+  \infer[\text{Ty-Conv}]
+  {\Delta \vdash \sigma\;\mathsf{type}}
+  {\vdash \Gamma = \Delta\;ctxt & \Gamma \vdash \sigma\;\mathsf{type}}
+\end{gather*}
 \newline
-A lo largo de los años numerosos esfuerzos se han realizado para desarrollar distintos sabores (sabores es la palabra? quiza extensiones) de la teoria de tipos y poder dar suficiente poder expresivo al lambda calculo. Estos sistemas de tipos fueron explorados por H. Barendregt en el Cubo Lambda \citep{barendregt1991}, para investigar las diferentes dimensiones en las que puede extenderse el sistema formal. En su paper describe como cada dimension del cubo representa una dependencia entre terminos y tipos, y sus posibles combinaciones. Entiendase por dependencia como la dependencia mutua, valga la reduncancia, que existe entre tipos y terminos: terminos que dependen de otros terminos, terminos dependientes de tipos, tipos dependientes de terminos, y tipos dependientes de otros tipos. Los ocho vertices del cubo, consecuencia de combinar cada posible dimension, resultan en diferentes sistemas de tipos y niveles de expresividad. Concretamente, abordaremos en el presente trabajo, la extension del vertice inferior derecho, que corresponde a la extension de tipos dependientes, concreamente, $\lambda P$ .
+A lo largo de los años numerosos esfuerzos se han realizado para desarrollar distintos sabores (sabores es la palabra? quiza extensiones) de la teoria de tipos y poder dar suficiente poder expresivo al lambda calculo. Estos sistemas de tipos fueron explorados por H. Barendregt en el Cubo Lambda \citep{barendregt1991}, para investigar las diferentes dimensiones en las que puede extenderse el sistema formal. En su paper describe como cada dimension del cubo representa una dependencia entre terminos y tipos, y sus posibles combinaciones.
+\newline
+\newline
+Entiendase por dependencia como la dependencia mutua, valga la reduncancia, que existe entre tipos y terminos: terminos que dependen de otros terminos, terminos dependientes de tipos, tipos dependientes de terminos, y tipos dependientes de otros tipos. Los ocho vertices del cubo, consecuencia de combinar cada posible dimension, resultan en diferentes sistemas de tipos y niveles de expresividad. Concretamente, abordaremos en el presente trabajo, la extension del vertice inferior derecho, que corresponde a la extension de tipos dependientes, concreamente, $\lambda P$ .
 \newline
 \newline
 
@@ -539,7 +588,130 @@ $\lambda\mathrm{P}\omega = \lambda\mathrm{C}$ & $(\ast,\ast)$ & $(\square,\ast)$
     
     \section{Tipos dependientes}
     \section{Teoria de tipos de Martin-Löf}
-    \section{Reescritura de terminos en Maude}
+\section{Reescritura de t\'erminos en Maude}
+La reescritura de t\'erminos constituye, a la luz de los cap\'itulos anteriores, una generalizaci\'on natural de la $\beta$-reducci\'on del $\lambda$-c\'alculo. Donde antes orient\'abamos un redex de la forma $(\lambda x.\, M)\, N$ hacia $M[x := N]$, ahora disponemos de un conjunto arbitrario de ecuaciones $l = r$, le\'idas como reglas $l \to r$, y las aplicamos a un t\'ermino siempre que en \'el aparezca una instancia del lado izquierdo. El proceso de c\'omputo se reduce, entonces, a buscar redexes y a contraerlos, exactamente igual que antes, pero en un marco mucho m\'as flexible que permite especificar tipos de datos, funciones y, como veremos, sistemas concurrentes enteros.
+\newline
+\newline
+Maude es un lenguaje declarativo de alto rendimiento, dise\~nado y mantenido a lo largo de m\'as de dos d\'ecadas por un consorcio en el que participan SRI International, la Universitat Polit\`ecnica de Val\`encia, la Universidad Complutense de Madrid, la Universidad de M\'alaga, la Universidad de Illinois en Urbana-Champaign y la Universidad de Stanford \citep{duran2019, clavel2007}. Su fundamento te\'orico es la l\'ogica de reescritura, que admite simult\'aneamente dos lecturas. Por un lado, es un marco sem\'antico en el que pueden especificarse de modo natural una amplia variedad de sistemas concurrentes, desde redes de Petri hasta c\'alculos de procesos. Por otro, es un marco l\'ogico en el que se pueden codificar otras l\'ogicas tomando sus reglas de inferencia como reglas de reescritura. La m\'axima que sintetiza esta dualidad, y que articula buena parte del dise\~no del lenguaje, es la equivalencia
+\[
+\text{C\'omputo} \;=\; \text{Deducci\'on}
+\]
+de modo que un programa Maude no es otra cosa que una teor\'ia de reescritura, y la ejecuci\'on del programa coincide con la b\'usqueda de derivaciones en dicha teor\'ia \citep{clavel2007}. Esta correspondencia es la que hace de Maude un candidato especialmente adecuado para implementar prototipos ejecutables de sistemas de tipos, pues la sintaxis abstracta del lenguaje que se quiera modelar y sus reglas de tipado pueden trasladarse de manera casi directa a Maude.
+
+\subsection{Sorts y l\'ogica ecuacional ordenada}
+La primera diferencia notable respecto del $\lambda$-c\'alculo es que Maude obliga a tipar los t\'erminos desde la propia signatura. Cada constante y cada operaci\'on declara expl\'icitamente los sorts de sus argumentos y de su resultado, donde por \textit{sort} entendemos lo que en la teor\'ia de tipos llamar\'iamos un tipo b\'asico. La idea de organizar el universo de discurso en sorts disjuntos proviene de la l\'ogica many-sorted, una variante de la l\'ogica de primer orden en la que el dominio se descompone en una colecci\'on indexada de subdominios y cada s\'imbolo de funci\'on o predicado especifica el sort de cada uno de sus argumentos \citep{sep-logic-many-sorted}. Esta restricci\'on sint\'actica es liviana en apariencia, pero tiene consecuencias profundas: permite distinguir, por ejemplo, los t\'erminos aritm\'eticos de los t\'erminos booleanos sin necesidad de codificarlos en un dominio com\'un, y descarta de ra\'iz expresiones sin sentido como sumar un valor de verdad a un n\'umero natural.
+\newline
+\newline
+Maude va, sin embargo, un paso m\'as all\'a de la l\'ogica many-sorted habitual y adopta la l\'ogica ecuacional \textit{order-sorted}. En esta variante, los sorts forman un conjunto parcialmente ordenado $(S, \leq)$ en el que la relaci\'on $s \leq s'$ se interpreta como inclusi\'on de subsort. La idea es la siguiente: si declaramos que $\mathsf{NzNat} \leq \mathsf{Nat}$, todo n\'umero natural no nulo es tambi\'en, autom\'aticamente, un n\'umero natural, sin necesidad de coerciones expl\'icitas. Las operaciones pueden adem\'as estar sobrecargadas a lo largo de la jerarqu\'ia de subsorts, de manera que una misma suma puede declararse a la vez sobre $\mathsf{Nat}$ y sobre $\mathsf{NzNat}$, y el sistema seleccionar\'a en cada caso el sort m\'as preciso para el resultado. Esta capacidad de refinamiento, conocida como inferencia del menor sort, es lo que permite, por ejemplo, que la expresi\'on $3/(2 - 7)$ se parsee con sort gen\'erico $[\mathsf{Rat}]$ y se simplifique despu\'es a $-3/5$ con sort $\mathsf{NzRat}$, m\'as restrictivo, una vez completada la evaluaci\'on \citep{clavel2007}.
+
+\subsection{M\'odulos funcionales}
+La unidad b\'asica de especificaci\'on en Maude es el m\'odulo. Un m\'odulo funcional, declarado entre las palabras clave \texttt{fmod} y \texttt{endfm}, agrupa una signatura de sorts y operaciones junto con un conjunto de ecuaciones que se interpretan como reglas de reescritura de izquierda a derecha. Es la unidad an\'aloga, en este lenguaje, a lo que en programaci\'on funcional ser\'ia un m\'odulo con sus tipos algebraicos y sus funciones puras. Considerese el siguiente ejemplo, en el que especificamos los n\'umeros naturales en notaci\'on de Peano:
+
+\begin{lstlisting}
+fmod NAT-PEANO is
+  sorts NzNat Nat .
+  subsorts NzNat < Nat .
+  op 0 : -> Nat [ctor] .
+  op s : Nat -> NzNat [ctor] .
+  op _+_ : Nat Nat -> Nat .
+  vars N M : Nat .
+  eq 0 + N = N .
+  eq s(N) + M = s(N + M) .
+endfm
+\end{lstlisting}
+
+El m\'odulo declara dos sorts, $\mathsf{NzNat}$ y $\mathsf{Nat}$, con la inclusi\'on $\mathsf{NzNat} \leq \mathsf{Nat}$. La constante $0$ se introduce con el atributo \texttt{ctor}, que la marca como constructor del tipo, y el sucesor $s$ se declara con el mismo atributo. La suma se especifica con notaci\'on infija mediante guiones bajos, y sus dos ecuaciones recogen, casi literalmente, la definici\'on est\'andar por inducci\'on sobre el primer argumento. Una vez introducido el m\'odulo en el int\'erprete, podemos solicitar la evaluaci\'on de una expresi\'on mediante el comando \texttt{reduce}:
+
+\begin{lstlisting}
+Maude> reduce s(s(0)) + s(s(s(0))) .
+result NzNat: s(s(s(s(s(0)))))
+\end{lstlisting}
+
+El int\'erprete aplica las ecuaciones como reglas de reescritura hasta alcanzar la forma normal e infiere el menor sort posible para el resultado, en este caso $\mathsf{NzNat}$.
+\newline
+\newline
+Para que un m\'odulo funcional tenga buenas propiedades operacionales, las ecuaciones deben ser confluentes y operacionalmente terminantes, las mismas dos nociones que estudi\'abamos en el cap\'itulo del $\lambda$-c\'alculo, ahora reformuladas en el contexto de un sistema de reescritura arbitrario. La terminaci\'on operacional garantiza que toda secuencia de reescritura concluye en un n\'umero finito de pasos, y la confluencia, que el resultado de la evaluaci\'on no depende del orden en que se contraen los redexes. Ambas propiedades, indecidibles en general, pueden chequearse autom\'aticamente con las herramientas del \textit{Maude Formal Environment} \citep{duran2019}, entre las que destacan \texttt{MTT} para terminaci\'on y \texttt{ChC} para confluencia y suficiente completitud. Bajo estas condiciones, todo t\'ermino se reduce a una forma normal \'unica, lo que dota al lenguaje de una sem\'antica determinista para sus m\'odulos funcionales.
+
+\subsection{M\'odulos de sistema y reescritura no determinista}
+Junto a los m\'odulos funcionales, Maude provee m\'odulos de sistema, declarados entre \texttt{mod} y \texttt{endm}. Un m\'odulo de sistema extiende a uno funcional con un conjunto adicional de reglas de reescritura $l \to r$ que modelan transiciones de un sistema, sem\'anticamente distintas de las ecuaciones \citep{clavel2007}. Las ecuaciones describen \textit{c\'omo se calcula el estado de un t\'ermino}, esto es, c\'omo se simplifica a su forma normal. Las reglas, en cambio, describen \textit{c\'omo evoluciona el sistema}, qu\'e transiciones puede dar de un estado a otro. La diferencia es que las reglas no se asumen confluentes ni terminantes, sino que codifican el comportamiento intr\'insecamente no determinista del sistema. Un mismo t\'ermino puede reescribirse de maneras distintas y conducir a estados muy diferentes, y eso es justamente lo que se quiere capturar al describir, por ejemplo, las transiciones de un protocolo de comunicaci\'on, las jugadas de un juego, o los pasos de una m\'aquina abstracta de evaluaci\'on para un lenguaje de programaci\'on.
+\newline
+\newline
+La sem\'antica operacional resultante combina ambos niveles. Ante un t\'ermino, Maude normaliza primero con las ecuaciones y aplica despu\'es una regla al resultado. Para explorar el espacio de estados alcanzables desde un t\'ermino inicial, Maude provee los comandos \texttt{rewrite}, que sigue una traza fair de reescrituras, y \texttt{search}, que explora todos los estados alcanzables en anchura buscando uno que satisfaga un patr\'on dado \citep{duran2019}. Este \'ultimo es de especial utilidad cuando se modela un sistema de tipos como un m\'odulo de sistema: la b\'usqueda de derivaciones de tipado se reduce a una b\'usqueda en el grafo de reescrituras, y el comando devuelve, si la hay, la derivaci\'on que justifica el juicio.
+
+\subsection{Formalizaci\'on de lenguajes y sistemas de tipos}
+La capacidad de Maude para definir sintaxis con notaci\'on definible por el usuario, junto con su soporte para reescritura y para reescritura no determinista, lo convierten en una plataforma especialmente apropiada para formalizar lenguajes de programaci\'on y sistemas de tipos. La idea general es trasladar la sintaxis abstracta del lenguaje a una signatura $\Sigma$, las reglas de tipado o de evaluaci\'on de la sem\'antica operacional a reglas de reescritura $R$, y las identidades estructurales sobre los t\'erminos, como la $\alpha$-equivalencia o la igualdad definicional, a ecuaciones $E$. Esta metodolog\'ia ha sido aplicada con \'exito a lenguajes reales, desde fragmentos de C hasta Java o JavaScript, dando lugar a prototipos no solo ejecutables, sino tambi\'en analizables con las herramientas del entorno formal de Maude \citep{duran2019}.
+\newline
+\newline
+Para hacer visible este traslado en el caso m\'as elemental, consideremos un fragmento del lambda c\'alculo sin tipos. Especificamos los t\'erminos con tres constructores que reflejan directamente la definici\'on inductiva del cap\'itulo anterior:
+
+\begin{lstlisting}
+fmod LAMBDA-SYNTAX is
+  protected STRING .
+  sort Var .
+  sort Term .
+  subsort Var < Term .
+
+  op var : String -> Var [ctor] .
+  op lam : Var Term -> Term [ctor] .
+  op app : Term Term -> Term [ctor] .
+endfm
+\end{lstlisting}
+
+Aquí $\mathsf{Var}$ es subsort de $\mathsf{Term}$, lo que captura sintácticamente el hecho de que toda variable es un término. Tanto la aplicación como la lambda abstracción, son constructres que, proporcionando los arugmentos que exige su signatura será posible producir un sort. Aún así, Maude posee capacidades de expresividad más avanzadas, pues es posible sacar provecho de los operadores infix, permitiendonos redefinir, por ejemplo, la aplicacion como sigue:
+
+\begin{lstlisting}
+  op _@_: Term Term -> Term [ctor] .
+\end{lstlisting}
+El underscore es un placeholder para los argumentos de la expresion.
+La $\beta$-reducci\'on puede expresarse despu\'es como una regla de reescritura en un m\'odulo de sistema que extienda al anterior. Para evitar la captura de variables se necesitar\'ia una operaci\'on auxiliar de sustituci\'on, definida por ecuaciones, que renombre las variables ligadas con identificadores frescos cuando sea necesario. Esta es la t\'ecnica que adoptaremos a lo largo de esta tesis para implementar el lenguaje dependientemente tipado y, posteriormente, su extensi\'on con tipos cociente.
+\newline
+\newline
+La fuerza de esta aproximación se aprecia mejor con un ejemplo menos trivial. Los términos de un sistema de tipos a la Church incluuyen, junto a las variables y aplicaciones, anotaciones de tipo en cada uno de sus binders, y las reglas de tipado se expresan en forma de juicios: $\Gamma \vdash M : A$. En Maude, basta con introducir un sort para los contextos, otro para los juicios de tipado, y reglas de reescritura que codifiquen cada regla de inferencia.
+
+Tomando como ejemplo el contexto, el mismo puede definirse como un mapeo de variables a tipos, y tipos a tipos de variable $\mathsf{x \to \tau}$, $\mathsf{Nat \to \mathcal{U}}$. El contexto por tanto, almacena información sobre los tipos bien formados en nuestro programa. De no existir un tipo o termino para un tipo en $\Gamma$, decimos que es un término o tipo malformado.
+\begin{align}
+  \Gamma := \quad \emptyset \\
+  \mid \quad & (x, \tau) :: \Gamma &
+\end{align}
+La noción de contexto puede traducirse en Maude, como hemos mencionado, creando un sort para este y las ecuaciones correspondientes. Guiandonos pues de la gramática BNF, el contexto puede estar vacío, o extendido. Estas operaciones, se muestran como sigue:
+\begin{lstlisting}
+fmod LAMBDA-SYNTAX is
+  ...
+  sort Ctx .
+  op mt : -> Ctx [ctor] .
+  op _`;_`:_ : Ctx Var Term -> Ctx [ctor] .
+  var G : Ctx .
+endfm
+\end{lstlisting}
+
+Por otro lado, tomando como ejemplo la regla de formación del tipo sigma
+\begin{gather*}
+  \infer[\text{$\Sigma$-Form}]
+  {\Gamma \vdash \Sigma\, x : A.\, B : \Type}
+  {\Gamma \vdash A : \Type
+    & \deduce{\Gamma, x : A \vdash B : \Type}{}}
+\end{gather*}
+Puede leerse como sigue: si en el contexto $\Gamma$ el t\'ermino $A$ es un tipo bien formado y, al extender dicho contexto con la hip\'otesis $x : A$, tambi\'en lo es $B$, entonces $\Sigma\, x : A.\, B$ es un tipo en $\Gamma$. El equivalente en Maude de esta regla de formación, es la siguiente:
+
+\begin{lstlisting}
+fmod LAMBDA-SYNTAX is
+  ...
+  op infer : Ctx Term -> [Term] .
+  ceq infer(G, Sigma(V, A, B)) = Type
+    if Type := norm(infer(G, A))
+    /\ Type := norm(infer(G ; V : A, B)) .
+endfm
+\end{lstlisting}
+
+Observese que su interpretacion no es muy distinta a lo que la regla formaliza: podemos inferir que $Sigma(V, A, B)$ es un tipo si $A$ es un tipo en $\Gamma$ y en el contexto extendido $V$ es de tipo $A$, y $B$ es un tipo bien formado.
+
+La ejecuci\'on del prototipo, pues, se convierte entonces en la búsqueda de derivaciones, y el comando \texttt{search} permite preguntar al sistema si existe una derivación con un consecuente dado, recuperando el término y la sustitución que la justifican \citep{duran2019, clavel2007}.
+
+\subsection{Reflexi\'on y meta-programaci\'on}
+Un \'ultimo aspecto que conviene mencionar, dada su utilidad cuando se construye un prototipo de un sistema de tipos, es que la l\'ogica de reescritura es reflexiva \citep{clavel2007}. Esto quiere decir que existe una teor\'ia universal $\mathcal{U}$, finita y axiomatizable, en la que toda teor\'ia de reescritura $\mathcal{R}$, incluida la propia $\mathcal{U}$, puede representarse como un t\'ermino $\overline{\mathcal{R}}$, y los pasos de reescritura $t \to t'$ de $\mathcal{R}$ se corresponden con pasos de reescritura $\langle \overline{\mathcal{R}}, \overline{t}\rangle \to \langle \overline{\mathcal{R}}, \overline{t'}\rangle$ en $\mathcal{U}$. Maude implementa esta reflexi\'on en el m\'odulo predefinido \texttt{META-LEVEL}, que ofrece operaciones para manipular m\'odulos, t\'erminos y reglas como datos de primera clase \citep{duran2019}. Esto resulta de gran ayuda al implementar verificadores de tipos: el verificador puede inspeccionar el m\'odulo que codifica el lenguaje, aplicar reglas de inferencia a t\'erminos meta-representados y devolver derivaciones como resultado, todo dentro de Maude y sin necesidad de salir al lenguaje anfitri\'on.
+\newline
+\newline
+En la pr\'oxima secci\'on, una vez establecidas estas herramientas, abordaremos los tipos cociente desde la perspectiva de la teor\'ia de tipos de Martin-L\"of, lo que nos permitir\'a articular en el cap\'itulo siguiente la sintaxis y la sem\'antica operacional del lenguaje dependientemente tipado que constituye el objeto principal de este trabajo, junto con su implementaci\'on en Maude apoyada en todas las nociones que hemos introducido aqu\'i.
     \section{Tipos Cociente}
 
 \chapter{Un lenguaje dependientemente tipado}
