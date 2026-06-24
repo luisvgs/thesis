@@ -446,7 +446,7 @@ Para $n >= 0$. Las reglas pueden leerse bien de arriba hacia abajo (teniendo que
 \begin{align}
 \infer{\forall x, P(x)}{}
 \end{align}
-Donde $\forall$ es implicito.
+Donde $\forall$ es implícito.
 
 \begin{align}
 \infer{\Gamma \vdash a : A}{% 
@@ -563,8 +563,9 @@ text depth=0.25ex]{
         \end{tikzpicture}
         \newline
 
-la dependencia que define cada vertice, es descrita por la siguiente tabla (Barendregt)
-
+la dependencia que define cada vertice, es descrita por la siguiente tabla:
+\newline
+\begin{center}
 \begin{tabular}{|l|llll|}
 \hline
 Sistema & \multicolumn{4}{l|}{Conjunto de reglas} \\
@@ -579,8 +580,49 @@ $\lambda\mathrm{P}\underline{\omega}$         & $(\ast,\ast)$ &                 
 $\lambda\mathrm{P}\omega = \lambda\mathrm{C}$ & $(\ast,\ast)$ & $(\square,\ast)$ & $(\ast,\square)$ & $(\square,\square)$ \\
 \hline
 \end{tabular}
+\end{center}
+\newline
+\newline
+Es necesaria una explicacion a cada conjunto de reglas y nivel de expresividad que permite cada sistema. $\lambda\to$ es posiblemente, el más común. Formalmente este sistema es conocido como el lambda cálculo simplemente tipado que se abordará con más dedicación en un capítulo aparte, donde para construir una abstracción lambda, basta con proveer otro término. Por tanto $FM$ es, por ejemplo, un término en $\Lambda$ donde $F$ depende de $M$.
+\begin{example}
+\begin{align}
+% \infer{\Gamma \vdash (\lambda x . t)\,3 : \mathbb{N}}{%
+%     \Gamma \vdash x : \mathbb{N},\; 3 : \mathbb{N}
+%     & \deduce{\Gamma \vdash t : \mathbb{N}}{}
+%   } \quad \longrightarrow_\beta \quad 3
+(\lambda x : \mathbb{N} . t) 3
+\quad \longrightarrow_\beta \quad 3
+\end{align}
+\end{example}
 
+$\lambda2$ es conocido en la literatura como \textit{System F}. Es el lambda cálculo de segundo orden o bien, polimórfico. Fue descubierto por Girard y Reynolds en 1972 en el cual se introduce el cuantificador universal en el lambda cálculo y poder cuantificar sobre tipos. A parte de ello, algunas implementaciones extienden el sistema introduciendo kinds, el tipo de todos los tipos. Un gran numero de lenguajes funcionales, como Haskell, están inspirados en este sistema. Además de esto, en $\lambda2$ se presenta la noción de variables de tipos, con las cuales es posible cuantificar sobre un rango de tipos, permitiendo así, la suficiente expresividad al calculo lambda para definir, por instancia, la función identidad polimórfica.
 
+\begin{example}
+\begin{align*}
+(\Lambda\alpha \lambda x : \alpha . x)\,3  &\longrightarrow_\beta 3 \\
+(\Lambda\alpha \lambda x : \alpha . x)\,\textit{true} &\longrightarrow_\beta \textit{true}
+\end{align*}
+\end{example}
+Donde $\Lambda$ representa el cuantificador universal sobre los tipos del lenguaje.
+\newline
+\newline
+$\lambda\underline{\omega}$ nos permite definir tipos que dependen de otros tipos. Un ejemplo concreto en un lenguaje de programación, es la definición inductiva de un tipo que depende de un otro para poder usarse a lo largo del programa. Los arboles binarios o los números de Peano son un ejemplo claro de esta extensión.
+\begin{example}
+  \begin{align*}
+    \textit{data Tree a = Empty | Node a (Tree a) (Tree a)}
+\end{align*}
+\end{example}
+\newline
+$\lambda P$ representa los tipos que dependen de términos. Los tipos dependientes, como se les referirá a lo largo de este etrabajo, extienden el sistema de tipos con familias de tipos, o tipos indexados por los elementos de otros tipos. La siguiente regla de inferencia formaliza esta idea donde $x$ puede o no, aparecer en $B$. Observese que de no aparecer $x$ en $B$, estariamos involucrandonos con el tipo de función $A \to B$.
+\begin{align}
+\infer{\Gamma \vdash \Pi x : A . B x }{%
+    \Gamma \vdash A : *,\; x : A
+    & \deduce{\Gamma \vdash B : A}{}
+  }
+\end{align}
+\newline
+\newline
+Tómese como ejemplo \textit{Vec A n} donde la longitud $n$ del vector, depende de cierto parámetro. Decimos, por tanto, que \textit{Vec A n} es un tipo dependiente o bien una familia de tipos indexado por $n$. Asimismo, la linea con la que se distinguen términos y tipos se hace más difusa y, en consecuencia, ambos comparten el mismo espacio sintactico. Por ello, encontramos la constante $*$ que representa el \textit{sort} en el que habitan todos los tipos, por tanto, la siguiente derivación es posible en $\lambda P$: $A : * \vdash (A \to A) : *$, que expresa que \textit{A es un tipo} \citep{barendregt1991}
 
 \subsection{Tipos a la Curry}
 \subsection{Tipos a la Church} 
@@ -636,7 +678,7 @@ Para que un m\'odulo funcional tenga buenas propiedades operacionales, las ecuac
 Junto a los m\'odulos funcionales, Maude provee m\'odulos de sistema, declarados entre \texttt{mod} y \texttt{endm}. Un m\'odulo de sistema extiende a uno funcional con un conjunto adicional de reglas de reescritura $l \to r$ que modelan transiciones de un sistema, sem\'anticamente distintas de las ecuaciones \citep{clavel2007}. Las ecuaciones describen \textit{c\'omo se calcula el estado de un t\'ermino}, esto es, c\'omo se simplifica a su forma normal. Las reglas, en cambio, describen \textit{c\'omo evoluciona el sistema}, qu\'e transiciones puede dar de un estado a otro. La diferencia es que las reglas no se asumen confluentes ni terminantes, sino que codifican el comportamiento intr\'insecamente no determinista del sistema. Un mismo t\'ermino puede reescribirse de maneras distintas y conducir a estados muy diferentes, y eso es justamente lo que se quiere capturar al describir, por ejemplo, las transiciones de un protocolo de comunicaci\'on, las jugadas de un juego, o los pasos de una m\'aquina abstracta de evaluaci\'on para un lenguaje de programaci\'on.
 \newline
 \newline
-La sem\'antica operacional resultante combina ambos niveles. Ante un t\'ermino, Maude normaliza primero con las ecuaciones y aplica despu\'es una regla al resultado. Para explorar el espacio de estados alcanzables desde un t\'ermino inicial, Maude provee los comandos \texttt{rewrite}, que sigue una traza fair de reescrituras, y \texttt{search}, que explora todos los estados alcanzables en anchura buscando uno que satisfaga un patr\'on dado \citep{duran2019}. Este \'ultimo es de especial utilidad cuando se modela un sistema de tipos como un m\'odulo de sistema: la b\'usqueda de derivaciones de tipado se reduce a una b\'usqueda en el grafo de reescrituras, y el comando devuelve, si la hay, la derivaci\'on que justifica el juicio.
+La sem\'antica operacional resultante combina ambos niveles. Ante un t\'ermino, Maude normaliza primero con las ecuaciones y aplica despu\'es una regla al resultado. Para explorar el espacio de estados alcanzables desde un t\'ermino inicial, Maude provee los comandos \texttt{rewrite}, que sigue una traza de reescrituras, y \texttt{search}, que explora todos los estados alcanzables en anchura buscando uno que satisfaga un patr\'on dado \citep{duran2019}. Este \'ultimo es de especial utilidad cuando se modela un sistema de tipos como un m\'odulo de sistema: la b\'usqueda de derivaciones de tipado se reduce a una b\'usqueda en el grafo de reescrituras, y el comando devuelve, si la hay, la derivaci\'on que justifica el juicio.
 
 \subsection{Formalizaci\'on de lenguajes y sistemas de tipos}
 La capacidad de Maude para definir sintaxis con notaci\'on definible por el usuario, junto con su soporte para reescritura y para reescritura no determinista, lo convierten en una plataforma especialmente apropiada para formalizar lenguajes de programaci\'on y sistemas de tipos. La idea general es trasladar la sintaxis abstracta del lenguaje a una signatura $\Sigma$, las reglas de tipado o de evaluaci\'on de la sem\'antica operacional a reglas de reescritura $R$, y las identidades estructurales sobre los t\'erminos, como la $\alpha$-equivalencia o la igualdad definicional, a ecuaciones $E$. Esta metodolog\'ia ha sido aplicada con \'exito a lenguajes reales, desde fragmentos de C hasta Java o JavaScript, dando lugar a prototipos no solo ejecutables, sino tambi\'en analizables con las herramientas del entorno formal de Maude \citep{duran2019}.
@@ -673,7 +715,7 @@ Tomando como ejemplo el contexto, el mismo puede definirse como un mapeo de vari
   \Gamma := \quad \emptyset \\
   \mid \quad & (x, \tau) :: \Gamma &
 \end{align}
-La noción de contexto puede traducirse en Maude, como hemos mencionado, creando un sort para este y las ecuaciones correspondientes. Guiandonos pues de la gramática BNF, el contexto puede estar vacío, o extendido. Estas operaciones, se muestran como sigue:
+La noción de contexto puede traducirse en Maude, como hemos mencionado, creando un sort para este y las ecuaciones que le corresponden. Guiándonos, pues, de la gramática BNF, el contexto puede bien estar vacío, o extendido. Estas operaciones, pueden ser perfectamente codificadas de la siguiente forma:
 \begin{lstlisting}
 fmod LAMBDA-SYNTAX is
   ...
@@ -684,14 +726,14 @@ fmod LAMBDA-SYNTAX is
 endfm
 \end{lstlisting}
 
-Por otro lado, tomando como ejemplo la regla de formación del tipo sigma
-\begin{gather*}
+Tomando como ejemplo la regla de formación del tipo sigma
+\begin{gather}
   \infer[\text{$\Sigma$-Form}]
   {\Gamma \vdash \Sigma\, x : A.\, B : \Type}
   {\Gamma \vdash A : \Type
     & \deduce{\Gamma, x : A \vdash B : \Type}{}}
-\end{gather*}
-Puede leerse como sigue: si en el contexto $\Gamma$ el t\'ermino $A$ es un tipo bien formado y, al extender dicho contexto con la hip\'otesis $x : A$, tambi\'en lo es $B$, entonces $\Sigma\, x : A.\, B$ es un tipo en $\Gamma$. El equivalente en Maude de esta regla de formación, es la siguiente:
+\end{gather}
+Que puede leerse como: \textit{si en el contexto $\Gamma$ el t\'ermino $A$ es un tipo bien formado y, al extender dicho contexto con la hip\'otesis de que $x : A$, es posible inferir que también lo es $B$, entonces $\Sigma\, x : A.\, B$ es un tipo en $\Gamma$}. El equivalente en Maude de esta regla de formación, es la siguiente:
 
 \begin{lstlisting}
 fmod LAMBDA-SYNTAX is
@@ -703,9 +745,9 @@ fmod LAMBDA-SYNTAX is
 endfm
 \end{lstlisting}
 
-Observese que su interpretacion no es muy distinta a lo que la regla formaliza: podemos inferir que $Sigma(V, A, B)$ es un tipo si $A$ es un tipo en $\Gamma$ y en el contexto extendido $V$ es de tipo $A$, y $B$ es un tipo bien formado.
+Observese que su interpretacion no es muy distinta a lo que la regla \textit{(2.27)} formaliza: podemos inferir que $Sigma(V, A, B)$ en la ecuación, es un tipo si se cumple que $A$ es un tipo en $\Gamma$ y, en el mismo contexto extendido, $V$ es de tipo $A$, $B$ es también un tipo bien formado.
 
-La ejecuci\'on del prototipo, pues, se convierte entonces en la búsqueda de derivaciones, y el comando \texttt{search} permite preguntar al sistema si existe una derivación con un consecuente dado, recuperando el término y la sustitución que la justifican \citep{duran2019, clavel2007}.
+La ejecución del prototipo, pues, se convierte entonces en la búsqueda de derivaciones, y el comando \texttt{search} permite preguntar al sistema si existe una derivación con un consecuente dado, recuperando el término y la sustitución que la justifican \citep{duran2019, clavel2007}.
 
 \subsection{Reflexi\'on y meta-programaci\'on}
 Un \'ultimo aspecto que conviene mencionar, dada su utilidad cuando se construye un prototipo de un sistema de tipos, es que la l\'ogica de reescritura es reflexiva \citep{clavel2007}. Esto quiere decir que existe una teor\'ia universal $\mathcal{U}$, finita y axiomatizable, en la que toda teor\'ia de reescritura $\mathcal{R}$, incluida la propia $\mathcal{U}$, puede representarse como un t\'ermino $\overline{\mathcal{R}}$, y los pasos de reescritura $t \to t'$ de $\mathcal{R}$ se corresponden con pasos de reescritura $\langle \overline{\mathcal{R}}, \overline{t}\rangle \to \langle \overline{\mathcal{R}}, \overline{t'}\rangle$ en $\mathcal{U}$. Maude implementa esta reflexi\'on en el m\'odulo predefinido \texttt{META-LEVEL}, que ofrece operaciones para manipular m\'odulos, t\'erminos y reglas como datos de primera clase \citep{duran2019}. Esto resulta de gran ayuda al implementar verificadores de tipos: el verificador puede inspeccionar el m\'odulo que codifica el lenguaje, aplicar reglas de inferencia a t\'erminos meta-representados y devolver derivaciones como resultado, todo dentro de Maude y sin necesidad de salir al lenguaje anfitri\'on.
