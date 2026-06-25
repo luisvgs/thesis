@@ -227,7 +227,7 @@ una variable ligada para obtener un t\'ermino $\alpha$-equivalente recibe el nom
 \textit{$\alpha$-conversi\'on}, y ser\'a fundamental para definir correctamente la
 sustituci\'on bajo un binder.
 \subsection{Sustitución}
-Anteriormente, definimos la sustitución en términos de $\to_\beta$ reducción, sin embargo, la sustitucion posee en sí reglas de computo que valen la pena considerar pues, dependiendo del término que se esté evaluando, la sustitución tendrá, o no, efecto del todo.
+Anteriormente, definimos la sustitución en términos de $\to_\beta$ reducción, sin embargo, la sustitucion posee en sí reglas de computo que valen la pena considerar pues, dependiendo del término que se esté evaluando, la sustitución tendrá, o no, efecto alguno.
 \newline
 \newline
 Se definen, pues, las reglas de computo de la sustitucion de acuerdo a lo discutido por \cite{pierce2002}. Más formalmente:
@@ -237,15 +237,15 @@ Se definen, pues, las reglas de computo de la sustitucion de acuerdo a lo discut
 & (2) \; y[x := N] \equiv y \text{ if } x \not\equiv y, \notag \\
 & (3) \; (PQ)[x := N] \equiv (P[x := N])(Q[x := N]), \notag \\
 & (4) \; (\lambda y.\, P)[x := N] \equiv \lambda z.\, (P^{y \to z}[x := N]),
-  \text{ if } \lambda z.\, P^{y \to z} \text{ is an } \alpha\text{-variant of } \notag \\
-& \quad \lambda y.\, P \text{ such that } z \notin FV(N). \notag
+  \text{ si } \lambda z.\, P^{y \to z} \text{ es un } \alpha\text{-variante de } \notag \\
+& \quad \lambda y.\, P \text{ tal que } z \notin FV(N). \notag
 \end{align}
 
-Para (1), sustituyendo x, por N dentro de x, siendo x el termino que buscamos sustituir, obtenemos N. De forma analoga, sustituyendo cada ocurrencia de x en el termino y, por N, si x e y no son iguales, el termino intacto, y, sera retornado. El caso de (3), tiene sentido cuando P es una abstraccion aplicada a un termino Q. Concretamente, se reduce a la sustitucion de x por N, en ambos P y Q. $(4)$ contempla la sustituci\'on bajo un binder. Lo que se busca es
-sustituir $x$ por $N$ dentro del cuerpo $P$ de la abstracci\'on $\lambda y.\, P$. Sin embargo,
-si proced\'ieramos de forma ingenua y $N$ contuviera a $y$ como variable libre, dicha $y$
-quedar\'ia inadvertidamente atrapada por el binder $\lambda y$, alterando por completo el
-significado del t\'ermino. A este fen\'omeno se le conoce como \textit{captura de variables}.
+Para (1), sustituyendo $x$, por $N$ dentro de $x$, siendo $x$ el término que buscamos sustituir, obtenemos $N$. De forma análoga, sustituyendo cada ocurrencia de $x$ en el término $y$, por $N$, si $x$ e $y$ no son iguales, el término intacto, y, será retornado. El caso de (3), tiene sentido cuando $P$ es una abstracción aplicada a un término $Q$. Concretamente, se reduce a la sustitución de $x$ por $N$, en ambos $P$ y $Q$. $(4)$ contempla la sustitución bajo un binder. Lo que se busca es
+sustituir $x$ por $N$ dentro del cuerpo $P$ de la abstracción $\lambda y.\, P$. Sin embargo,
+si procediéramos de forma ingenua y $N$ contuviera a $y$ como variable libre, dicha $y$
+quedaría equivocadamente atrapada por el binder $\lambda y$, alterando por completo el
+significado del término. A este fenómeno se le conoce como \textit{captura de variables}.
 
 Para evitarlo, antes de sustituir se renombra la variable ligada $y$ por una variable fresca
 $z$, mediante $\alpha$-conversi\'on, escogida de modo que $z \notin FV(N)$ (y, por extensi\'on,
@@ -269,10 +269,10 @@ Anteriormente señalamos cómo la $\beta$-reducción emula, en cierto sentido, e
 Ahora bien, el orden en que se contraen tales redexes no es indiferente, pues puede influir en si el cómputo termina o, mejor dicho, en si alcanza una forma normal. Surge así una pregunta: dado un término $t$ del que divergen dos reducciones, $t \to_\beta^{\ast} t_1$ y $t \to_\beta^{\ast} t_2$, en uno o varios pasos, ¿es posible reconciliar ambas ramas en un término común $u$ alcanzable tanto desde $t_1$ como desde $t_2$? Cuando tal $u$ existe para cualquier par de reducciones divergentes, decimos que la reducción es \textit{confluente} sobre $t$.
 \newline
 \newline
-En el presente apartado describimos con detenimiento la propiedad de confluencia y exponemos por qué la $\beta$-reducción la satisface.
+En el presente apartado describimos con detenimiento la propiedad de confluencia y, exponémos también, por qué la $\beta$-reducción la satisface.
 \newline
 \newline
-La confluencia, conocida también como teorema de Church-Rosser, es una propiedad de los sistemas de reescritura que caracteriza cuándo dos términos obtenidos de uno dado, por reducción en uno o más pasos, convergen a un mismo resultado. Su relevancia radica en que el resultado del cómputo queda determinado con independencia del orden en que se ejecuten los pasos de reducción \citep{barendregt1984}.
+La confluencia, conocida también como teorema de Church-Rosser, es una propiedad de los sistemas de reescritura que caracteriza cuándo dos términos, derivados de un término inicial, por reducción en uno o más pasos, convergen a un mismo resultado. Su relevancia radica en que el resultado del cómputo queda determinado con independencia del orden en que se ejecuten los pasos de reducción \citep{barendregt1984}.
 
 \begin{theorem}[Church-Rosser]
   Sea $M$ un término del $\lambda$-cálculo. Si $M\to_\beta^{\ast}N_1$ y $M\to_\beta^{\ast}N_2$, entonces existe un término $N_3$ tal que $N_1\to_\beta^{\ast}N_3$ y $N_2\to_\beta^{\ast}N_3$ \citep[p.~62]{barendregt1984}.
@@ -353,24 +353,24 @@ El ejemplo de $\Omega$ pone de manifiesto que el $\lambda$-cálculo sin tipos no
 La teoria de tipos es una rama de las matematicas y la logica que tiene como objeto formalizar no solo terminos matematicos, tales como una variable $x$ o una funcion cualquiera $f$ y las operaciones entre ambas, si no tambien, la idea de que cada termino forma parte o tiene un tipo concreto, es decir, que el tipo de una variable $x : \mathbb{N}$ en el dominio de los numeros naturales, es completamente distinguible al tipo de una funcion $f : \mathbb{N} \to \mathbb{N}$.
 \newline
 \newline
-Los tipos, pese a que son similares a los conjuntos, son ligeramente distintos. Por conjunto, entiendase ocmo una coleccion de elementos, similares, o no, que poseen una propiedad concreta:
+\indent Los tipos, pese a que son similares a los conjuntos, son ligeramente distintos. Por conjunto, entiéndase ocmo una colección de elementos, similares o no, que poseen una propiedad concreta:
 \begin{align}
   C = \{rojo, amarillo, azul\}\
 \end{align}
-de donde es posible extenderlos y razonar sobre mas relaciones de pertenencia y formar, por ejemplo, conjuntos dentro de otros conjuntos y definir que un elemento pertenece a varios conjuntos a la vez:
+de donde es posible extenderlos y razonar sobre más relaciones de pertenencia y formar, por ejemplo, conjuntos dentro de otros conjuntos y definir que un elemento pertenece a varios conjuntos a la vez:
 \begin{align}
   C' = \{\text{verde}, \text{naranja}\} \cup C
 \end{align}
-Cosa que, en los tipos, no es posible pues, un termino es de (o pertenece a) un tipo unico. Otra caracteristica que los distingue, es que los conjuntos dan informacion semantica y, los tipos por otro lado, proveen informacion sintactica de los objetos. Por ejemplo, comunmente en la teoria de conjuntos definimos que una relacion de pertenencia como sigue:
+Cosa que, en los tipos, no es posible pues, un termino es de (o pertenece a) un tipo unico. Otra caracteristica que los distingue, es que los conjuntos dan informacion semantica y, los tipos por otro lado, proveen informacion sintactica de los objetos. Por ejemplo, comunmente en la teoria de conjuntos definimos una relacion de pertenencia como sigue:
 \begin{align}
   4 \in \{\,n \in \mathbb{N} | x > 5 \,\}\
 \end{align}
 
-En la teoria de tipos, un juicio de tipado, sigue la siguiente notacion que, a lo largo de la presente tesis estaremos empleando:
+En la teoria de tipos, un juicio de tipado, sigue la siguiente notacion que, a lo largo de la presente tesis estarémos empleando:
 \begin{align}
   3 + 1 : \mathbb{N}
 \end{align}
-Esto puede interpretarse, desde el lente de teoria de tipos, como $3 + 1$ es un termino en los naturales, o bien, de tipo $\mathbb{N}$. Aun asi, las mismas operaciones aplicadas en la teoria de conjuntos son trasladables a la teoria de tipos. Tomese como ejemplo la union disjunta de conjuntos, definida formalmente como la union disjunta $A \sqcup B$ de dos conjuntos, es un conjunto $A$ indexado por $B$: 
+Esto puede interpretarse, desde el lente de teoria de tipos, como $3 + 1$ es un término en los naturales, o bien, de tipo $\mathbb{N}$. Aún así, las mismas operaciones aplicadas en la teoria de conjuntos son trasladables a la teoria de tipos. Tómese como ejemplo la unión disjunta de conjuntos, definida formalmente como la unión disjunta $A \sqcup B$ de dos conjuntos, es un conjunto $A$ indexado por $B$: 
 \begin{align}
 \bigcup_{i \in I} \{ (x, i) : x \in A_i \}
 \end{align}
@@ -378,60 +378,63 @@ Esto puede interpretarse, desde el lente de teoria de tipos, como $3 + 1$ es un 
 Esta operacion resulta en el tipo de dato algebraico $\tau_1 + \tau_2$, donde el valor concreto del tipo puede bien ser la proyeccion del lado izquiero o el derecho.
 \newline
 \newline
-La noción de tipos se atribuye a Bertrand Russell, quien desarrolló la teoría de tipos en respuesta a las contradicciones que, a comienzos del siglo XX, aquejaban a los fundamentos de la matemática. El contexto es el del programa logicista y la teoría de conjuntos naciente. Hacia finales del siglo XIX, Georg Cantor había desarrollado la teoría de conjuntos como un marco general en el que toda la matemática podía, en principio, expresarse, y Gottlob Frege perseguía un objetivo todavía más ambicioso en sus \textit{Grundgesetze der Arithmetik}: reducir la aritmética a la lógica pura. Ambos proyectos descansaban, de forma más o menos explícita, sobre el principio de comprensión irrestricta, según el cual toda propiedad bien definida determina un conjunto, el de todos los objetos que la satisfacen \citep{sep-type-theory}.
-
-Russell advirtió en 1901 que ese principio conducía a una contradicción. Si toda propiedad define un conjunto, entonces la propiedad de no pertenecer a sí mismo define el conjunto de todos los conjuntos que no son miembros de sí mismos:
+\indent La noción de tipos se atribuye a Bertrand Russell, quien desarrolló la teoría de tipos en respuesta a las contradicciones que, a comienzos del siglo XX, aquejaban a los fundamentos de la matemática. El contexto es el del programa logicista y la teoría de conjuntos naciente. Hacia finales del siglo XIX, Georg Cantor había desarrollado la teoría de conjuntos como un marco general en el que toda la matemática podía, en principio, expresarse, y Gottlob Frege perseguía un objetivo todavía más ambicioso en sus \textit{Grundgesetze der Arithmetik}: reducir la aritmética a la lógica pura. Ambos proyectos descansaban, de forma más o menos explícita, sobre el principio de comprensión irrestricta, según el cual toda propiedad bien definida determina un conjunto, el de todos los objetos que la satisfacen \citep{sep-type-theory}.
+\newline
+\newline
+\indent Russell advirtió en 1901 que ese principio conducía a una contradicción. Si toda propiedad define un conjunto, entonces la propiedad de no pertenecer a sí mismo define el conjunto de todos los conjuntos que no son miembros de sí mismos:
 \begin{align}
   R = \{\, x \mid x \notin x \,\}
 \end{align}
-Preguntarse si $R$ pertenece o no a sí mismo lleva al  o bien, a una contradiccion logica, pues por la propia definición de $R$ se tiene:
+Preguntarse si $R$ pertenece o no a sí mismo lleva, por tanto, a una contradicción lógica, pues por la propia definición de $R$ se tiene que:
 \begin{align}
   R \in R \iff R \notin R
 \end{align}
 es decir, $R$ es miembro de sí mismo exactamente cuando no lo es. La gravedad del hallazgo se aprecia mejor al recordar que Russell se lo comunicó a Frege por carta en 1902, cuando el segundo volumen de los \textit{Grundgesetze} estaba ya en imprenta; Frege reconoció, en un apéndice, que la paradoja socavaba el fundamento mismo de su sistema. 
 \newline
 \newline
-Lo que Russell sugeria pues, es que estas paradojas comparten una misma estructura, todas involucran una definición que se refiere a una totalidad de la que el objeto definido forma parte. A esto lo llamó el principio del círculo vicioso, que prohíbe que una entidad se defina en términos de una colección a la que ella misma pertenece. La expresión $x \in x$, sobre la que se construye $R$, es precisamente una de estas definiciones circulares, o autoreferencia.
+\indent Lo que Russell sugeria pues, es que estas paradojas comparten una misma estructura, todas involucran una definición que se refiere a una totalidad de la que el objeto definido forma parte. A esto lo llamó el principio del círculo vicioso, que prohíbe que una entidad se defina en términos de una colección a la que ella misma pertenece. La expresión $x \in x$, sobre la que se construye $R$, es precisamente una de estas definiciones circulares, o autoreferencia.
 \newline
 \newline
-Para evitarlas, Russell propuso organizar los objetos en una jerarquía estratificada. En el nivel más bajo están los individuos; en el siguiente, los predicados (o clases) de individuos; después los predicados de predicados, y así sucesivamente. Esta distinción es la que la teoría de tipos internaliza: a cada objeto se le asigna un tipo, y una función proposicional solo puede aplicarse a argumentos del tipo inmediatamente inferior. Bajo esta restricción, la fórmula $x \in x$ ni siquiera llega a estar bien  y es rechazada, ya que la pertenencia exige que su argumento sea de un tipo menor que el del conjunto. El conjunto $R$ no puede construirse, y la paradoja desaparece por construcción. De este modo, conjuntos grandes y pequeños residen en niveles distintos de la teoría.
+\indent Para evitarlas, Russell propuso organizar los objetos en una jerarquía estratificada. En el nivel más bajo están los individuos; en el siguiente, los predicados (o clases) de individuos; después los predicados de predicados, y así sucesivamente. Esta distinción es la que la teoría de tipos internaliza: a cada objeto se le asigna un tipo, y una función proposicional solo puede aplicarse a argumentos del tipo inmediatamente inferior. Bajo esta restricción, la fórmula $x \in x$ ni siquiera llega a estar bien  y es rechazada, ya que la pertenencia exige que su argumento sea de un tipo menor que el del conjunto. El conjunto $R$ no puede construirse, y la paradoja desaparece por construcción. De este modo, conjuntos grandes y pequeños residen en niveles distintos de la teoría.
 \newline
 \newline
-La formulación original de Russell, desarrollada junto a Whitehead en \textit{Principia Mathematica}, era la teoría ramificada de tipos, que sumaba a la estratificación por tipos una segunda por órdenes para neutralizar también las paradojas semánticas, al precio de requerir el discutido axioma de reducibilidad. Ramsey observó más tarde que las paradojas estrictamente lógicas o conjuntistas quedan resueltas ya con la jerarquía simple de tipos, sin necesidad de los órdenes ni del axioma de reducibilidad. Es esta teoría simple de tipos la que, años después, Church retomaría como base de su lambda calculo tipado, y la que enlaza directamente con el objeto de este trabajo.
+\indent La formulación original de Russell, desarrollada junto a Whitehead en \textit{Principia Mathematica}, era la teoría ramificada de tipos, que sumaba a la estratificación por tipos una segunda por órdenes para neutralizar también las paradojas semánticas, al precio de requerir el discutido axioma de reducibilidad. Ramsey observó más tarde que las paradojas estrictamente lógicas o conjuntistas quedan resueltas ya con la jerarquía simple de tipos, sin necesidad de los órdenes ni del axioma de reducibilidad. Es esta teoría simple de tipos la que, años después, Church retomaría como base de su lambda calculo tipado, y la que enlaza directamente con el objeto de este trabajo.
 \newline
 \newline
-Los tipos son ubicuos en computación, y numerosos lenguajes tienen su propio sistema de tipos, unos mas avanzados que otros y, otros mas simples. Tan simples que, la manipulacion de tipos es casi perceptible o inextistente. Lenguajes con esta capacidad de omitir tipos son conocidos como lenguajes dinamicamente tipados, donde en casos, es completamente opcional tipar expresiones y en caso contrario, el compilador infiere un tipo adecuado para una expresion. Haskell por ejemplo, es un lenguaje de alto nivel, ampliamente utilizado por grupos de investigacion y academicos, su sistema de tipos esta inicialmente basado en el lambda calculus simplemente tipado, también llamado System  que abordaremos en capitulos posteriores. Sin embargo, hoy en dia su sistema de tipos ha madurado lo suficiente para dejar de considerarle un lenguaje con un sistema de tipos simple. C++ es un claro ejemplo de un sistema de tipos, quiza, mucho mas complejo, pero sumamente rico, que facilita posteriormente, una distincion semantica y rechaza programas que son imposibles de evaluar correctamente. OCaml en principio, fue de los lenguajes que llego a explorar mas a fondo la teoria de tipos y la expresividad de los mismos como funcionalidades del lenguaje, siendo de los primeros en implementar tipos polimorficos, es decir, tipos que pueden tomar la forma de otros tipos. De forma muy general, un sistema de tipos permite al lenguaje alcanzar capacidades de expresividad bastante amplias y, a su vez, evitar que programas erronoes se ejecuten.
+\indent En términos más generales, los tipos son ubicuos en computación, y numerosos lenguajes tienen su propio sistema de tipos, unos mas avanzados que otros y, otros más simples. Tan simples que, la manipulación de tipos es casi perceptible o inexitstente. Lenguajes con esta capacidad de omitir tipos son conocidos como lenguajes dinámicamente tipados, donde en casos, es completamente opcional tipar expresiones y en caso contrario, el compilador hace lo mejor que puede para inferir un tipo adecuado para una expresión. Haskell por ejemplo, es un lenguaje de alto nivel, ampliamente utilizado por grupos de investigación y académicos, su sistema de tipos esta inicialmente basado en el lambda calculus simplemente tipado, también llamado \textit{System F}, que abordaremos en capítulos posteriores a este. Sin embargo, hoy en día su sistema de tipos ha madurado lo suficiente como para dejar de considerarle un lenguaje con un sistema de tipos simple. C++ es un claro ejemplo de un sistema de tipos, quizá, mucho más complejo, pero sumamente rico, que facilita posteriormente, una distincion semántica y rechaza programas que son imposibles de evaluar correctamente. OCaml en principio, fue de los lenguajes que llego a explorar más a fondo la teoria de tipos y la expresividad de los mismos como funcionalidades del lenguaje, siendo de los primeros en implementar tipos polimórficos, es decir, tipos que pueden tomar la forma de otros tipos. Finalmente, un sistema de tipos permite al lenguaje alcanzar capacidades de expresividad bastante amplias y, a su vez, evitar que programas erronoes se ejecuten.
 \newline
 \newline
-Dentro de los problemas que intenta resolver la teoria de tipos, no se encuentra solo encontrar un tipo para un termino concreto, sino tambien, determinar (si lo hay) un termino para un tipo y si un termino esta bien tipado (o es un tipo legal) dentro de un contexto \citep{geuvers2014} . Listamos pues, algunos de los problemas que se abordan en la teoria de tipos:
+\indent Dentro de los problemas que intenta resolver la teoria de tipos, no se encuentra solo encontrar un tipo para un término concreto, sino también, determinar (si lo hay) un término para un tipo y si un término esta bien tipado (o es un tipo legal) dentro de un contexto \citep{geuvers2014}. Listamos pues, algunos de los problemas que se abordan en la teoria de tipos:
 \newline
 \newline
-1) Tipabilidad: este problema formula la pregunta: ¿existe un tipo bien tipado para el termino en concreto en el contexto?
+1) Tipabilidad: este problema formula la pregunta: ¿existe un tipo bien tipado para el término en concreto en el contexto?
 
 \[
   \Gamma \vdash a : ?
 \]
 
-No siempre existe un tipo bien definido para un termino. Las derivaciones o juicios de tipado sirven justamente para determinar logicamente cual tipo es el adecuado o, correctamente, inferir para el termino. No encontrar dicho tipo, ocasionaria un error.
-
-2) Type-checking: determina si el tipo de un termino en un contexto dado, es correcto o bien tipado.
+No siempre existe un tipo bien definido para un término. Las derivaciones o juicios de tipado sirven justamente para determinar logicamente cual tipo es el adecuado o, correctamente, inferir el tipo del término. No encontrar dicho tipo, por supuesto, ocasionaría un error de tipado.
+\newline
+\newline
+2) Type-checking: determina si el tipo de un término en un contexto $\Gamma$ cualquiera, es correcto o bien tipado.
 
 \[
   \Gamma \overset{?}{\vdash} a : A
 \]
 
-Sea $\Gamma = \{b : B, U : *\}$, si $A$ no es un tipo bien formado en $\Gamma$, el sistema de tipos lo rechaza. Formalmente, no hay una regla que permita derivar que $a : A$ esta bien formado en el contexto.
-
-3) Habitabilidad: el problema de la habilitabilidad (tambien llamado term finding), formula la pregunta: ¿existe un termino, dado un tipo y un contexto concreto?
+Sea $\Gamma = \{b : B, U : *\}$, si $A$ no es un tipo bien formado en $\Gamma$, el sistema de tipos lo rechaza. Esto es claro, pues, no hay una regla que permita derivar que $a : A$ esta bien formado en $\Gamma$.
+\newline
+\newline
+3) Habitabilidad: el problema de la habilitabilidad (también llamado term finding), formula la pregunta: ¿existe un término, dado un tipo bien definido y un contexto concreto?
 
 \[
   \Gamma \overset{?}{\vdash} ? : A
 \]
 
-Notese que los problemas anteriormente mencionados son decibibles $\lambda \Rightarrow$, es decir, para cada una de estas cuestiones existe un algoritmo posible que produce un resultado. En sistemas de tipos mas complicados, sin embargo, la busqueda de un termino llega a ser un problema, pues tales sistemas no logran encontrar un habitante del tipo en el contexto, siendo problemas no decidibles (barendregt calculi).
+Nótese que los problemas anteriormente mencionados son decibibles en $\lambda\to$, es decir, para cada una de estas cuestiones existe un algoritmo posible que produce un resultado en el lambda calculo simplemente tipado. En sistemas de tipos más complicados, sin embargo, la búsqueda de un término llega a ser un problema, pues tales sistemas no logran encontrar un habitante del tipo en el contexto, siendo problemas no decidibles \citep{b-calculi}.
 \newline
 \newline
-Se empleara, a lo largo de la tesis, la siguiente notacion para definir las derivaciones en la teoria de tipos, donde la parte superior es una lista de premisas y la parte inferior, la conclusion o los consecuentes:
+\indent Se empleará, a lo largo de la tesis, la siguiente notación para definir las derivaciones en la teoría de tipos, donde la parte superior es una lista de premisas y la parte inferior, la conclusión o los consecuentes:
 
 \begin{align}
 \infer{consecuente_1 ... consecuente_n}{% 
@@ -441,7 +444,7 @@ Se empleara, a lo largo de la tesis, la siguiente notacion para definir las deri
   }
 \end{align}
 
-Para $n >= 0$. Las reglas pueden leerse bien de arriba hacia abajo (teniendo que, podemos concluir que) o de abajo hacia arriba (dado que se cumple el consecuente, las premisas deben cumplirse). Adicionalmente, las variables presentes en premisas y consecuentes, estan universialmente quantificadas a menos que se indique lo contrario. Por tanto,
+Para \textit{n $\geq$ 0}. Las reglas pueden leerse bien de arriba hacia abajo (como \textit{teniendo que, podemos concluir que}) o de abajo hacia arriba (como \textit{dado que se cumple el consecuente, las premisas deben cumplirse}). Adicionalmente, las variables presentes en premisas y consecuentes, estan universialmente quantificadas a menos de que se indique lo contrario. Por tanto,
 
 \begin{align}
 \infer{\forall x, P(x)}{}
@@ -455,13 +458,13 @@ Donde $\forall$ es implícito.
   }
 \end{align}
 
-Que puede leerse como: si, dado que en el contexto $\Gamma$, $A$ es un tipo bien formado y, ademas, en el mismo contexto $\Gamma$ extendido con $a : A$, entonces podemos inferir que $a$ es de tipo $A$ en $\Gamma$.
+Que puede leerse como: \textit{si, dado que en el contexto $\Gamma$, $A$ es un tipo bien formado y, ademas, en el mismo contexto $\Gamma$ extendido con $a : A$, entonces podemos inferir que $a$ es de tipo $A$ en $\Gamma$}.
 \newline
 \newline
-Dentro de la teoria de tipos existen seis tipos de juicios que seran de utilidad en la medida en que estudiemos los sistemas formales en este trabajo \citep{hoffman2009}:
+\indent Dentro de la teoría de tipos existen seis tipos de juicios que seran de utilidad en la medida en que estudiemos los sistemas formales en este trabajo:
 
 \begin{align*}
-&\vdash \Gamma \; ctx && \Gamma  \text{es un contexto valido}\\
+&\vdash \Gamma \; ctx && \Gamma\, \text{es un contexto valido}\\
 &\Gamma \vdash \sigma\; Type && \sigma\; \text{es un tipo}\\
 &\Gamma \vdash M : \sigma && \text{$M$ es un término de tipo $\sigma$ en $\Gamma$}\\
 &\vdash \Gamma \equiv \Delta && \Gamma \; y\; \Delta\; \text{son contextos definicionalmente iguales}\\
@@ -483,7 +486,7 @@ Adicionalmente, independientemente del sistema de tipos que se describa, las mis
   \\[2ex]
   \infer[\text{Var}]{\Gamma \vdash x : \sigma}{\vdash \Gamma, x : \sigma}
 \end{gather*}
-Para las reglas que expresan la igualdad definicional como una relación de equivalencia
+Asimismo, para las reglas que expresan la igualdad definicional como una relación de equivalencia, tenemos que:
 \begin{gather}
   \infer[\text{C-Eq-R}]
   {\vdash \Gamma = \Gamma\;ctxt}
@@ -530,13 +533,12 @@ Para las reglas que expresan la igualdad definicional como una relación de equi
   {\vdash \Gamma = \Delta\;ctxt & \Gamma \vdash \sigma\;\mathsf{type}}
 \end{gather*}
 \newline
-A lo largo de los años numerosos esfuerzos se han realizado para desarrollar distintos sabores (sabores es la palabra? quiza extensiones) de la teoria de tipos y poder dar suficiente poder expresivo al lambda calculo. Estos sistemas de tipos fueron explorados por H. Barendregt en el Cubo Lambda \citep{barendregt1991}, para investigar las diferentes dimensiones en las que puede extenderse el sistema formal. En su paper describe como cada dimension del cubo representa una dependencia entre terminos y tipos, y sus posibles combinaciones.
+A lo largo de los años numerosos esfuerzos se han realizado para desarrollar distintos sabores (sabores es la palabra? quiza extensiones) de la teoría de tipos y poder dar suficiente poder expresivo al lambda calculo. Estos sistemas de tipos fueron explorados por H. Barendregt en el Cubo Lambda \citep{barendregt1991}, para investigar las diferentes dimensiones en las que puede extenderse el sistema formal. En su paper describe como cada dimension del cubo representa una dependencia entre terminos y tipos, y sus posibles combinaciones.
 \newline
 \newline
-Entiendase por dependencia como la dependencia mutua, valga la reduncancia, que existe entre tipos y terminos: terminos que dependen de otros terminos, terminos dependientes de tipos, tipos dependientes de terminos, y tipos dependientes de otros tipos. Los ocho vertices del cubo, consecuencia de combinar cada posible dimension, resultan en diferentes sistemas de tipos y niveles de expresividad. Concretamente, abordaremos en el presente trabajo, la extension del vertice inferior derecho, que corresponde a la extension de tipos dependientes, concreamente, $\lambda P$ .
+Entiendase por dependencia como la dependencia mutua, valga la reduncancia, que existe entre tipos y terminos: terminos que dependen de otros terminos, terminos dependientes de tipos, tipos dependientes de terminos, y tipos dependientes de otros tipos. Los ocho vertices del cubo, consecuencia de combinar cada posible dimension, resultan en diferentes sistemas de tipos y niveles de expresividad. Concretamente, abordaremos en el presente trabajo, la extension del vertice inferior derecho, que corresponde a la extension de tipos dependientes, concreamente $\lambda\Pi$, o refiérase también en la literatura como $\lambda P$.
 \newline
 \newline
-
 \begin{tikzpicture}
 \matrix (m) [matrix of math nodes,
 row sep=3em, column sep=3em,
@@ -583,7 +585,7 @@ $\lambda\mathrm{P}\omega = \lambda\mathrm{C}$ & $(\ast,\ast)$ & $(\square,\ast)$
 \end{center}
 \newline
 \newline
-Es necesaria una explicacion a cada conjunto de reglas y nivel de expresividad que permite cada sistema. $\lambda\to$ es posiblemente, el más común. Formalmente este sistema es conocido como el lambda cálculo simplemente tipado que se abordará con más dedicación en un capítulo aparte, donde para construir una abstracción lambda, basta con proveer otro término. Por tanto $FM$ es, por ejemplo, un término en $\Lambda$ donde $F$ depende de $M$.
+\indent Es necesaria una explicacion a cada conjunto de reglas y nivel de expresividad que permite cada sistema. $\lambda\to$ es posiblemente, el más común. Formalmente este sistema es conocido como el lambda cálculo simplemente tipado que se abordará con más dedicación en un capítulo aparte, donde para construir una abstracción lambda, basta con proveer otro término. Por tanto $FM$ es, por ejemplo, un término en $\Lambda$ donde $F$ depende de $M$.
 \begin{example}
 \begin{align}
 % \infer{\Gamma \vdash (\lambda x . t)\,3 : \mathbb{N}}{%
@@ -595,7 +597,7 @@ Es necesaria una explicacion a cada conjunto de reglas y nivel de expresividad q
 \end{align}
 \end{example}
 
-$\lambda2$ es conocido en la literatura como \textit{System F}. Es el lambda cálculo de segundo orden o bien, polimórfico. Fue descubierto por Girard y Reynolds en 1972 en el cual se introduce el cuantificador universal en el lambda cálculo y poder cuantificar sobre tipos. A parte de ello, algunas implementaciones extienden el sistema introduciendo kinds, el tipo de todos los tipos. Un gran numero de lenguajes funcionales, como Haskell, están inspirados en este sistema. Además de esto, en $\lambda2$ se presenta la noción de variables de tipos, con las cuales es posible cuantificar sobre un rango de tipos, permitiendo así, la suficiente expresividad al calculo lambda para definir, por instancia, la función identidad polimórfica.
+$\lambda2$ es conocido en la literatura como \textit{System F}. Es el lambda cálculo de segundo orden, o polimórfico. Fue descubierto por Girard y Reynolds en 1972 en el cual se introduce el cuantificador universal en el cálculo y poder cuantificar sobre tipos. A parte de ello, algunas implementaciones extienden el sistema introduciendo kinds, el tipo de todos los tipos. Un gran número de lenguajes funcionales, como Haskell, están inspirados en este sistema. Además de esto, en $\lambda2$ se presenta la noción de variables de tipos, con las cuales es posible cuantificar sobre un rango de tipos, permitiendo así, la suficiente expresividad al lambda calculo para definir, por instancia, la función identidad polimórfica.
 
 \begin{example}
 \begin{align*}
@@ -622,14 +624,14 @@ $\lambda P$ representa los tipos que dependen de términos. Los tipos dependient
 \end{align}
 \newline
 \newline
-Tómese como ejemplo \textit{Vec A n} donde la longitud $n$ del vector, depende de cierto parámetro. Decimos, por tanto, que \textit{Vec A n} es un tipo dependiente o bien una familia de tipos indexado por $n$. Asimismo, la linea con la que se distinguen términos y tipos se hace más difusa y, en consecuencia, ambos comparten el mismo espacio sintactico. Por ello, encontramos la constante $*$ que representa el \textit{sort} en el que habitan todos los tipos, por tanto, la siguiente derivación es posible en $\lambda P$: $A : * \vdash (A \to A) : *$, que expresa que \textit{A es un tipo} \citep{barendregt1991}
+\indent Tómese como ejemplo \textit{Vec A n} donde la longitud $n$ del vector, depende de cierto parámetro. Decimos, por tanto, que \textit{Vec A n} es un tipo dependiente o bien una familia de tipos indexado por $n$. Asimismo, la linea con la que se distinguen términos y tipos se hace más difusa y, en consecuencia, ambos comparten el mismo espacio sintactico. Por ello, encontramos la constante $*$ que representa el \textit{sort} en el que habitan todos los tipos, por tanto, la siguiente derivación es posible en $\lambda P$: $A : * \vdash (A \to A) : *$, que expresa que \textit{dado que A es un tipo bien formado, (A $\to$ A), es entonces, un tipo} \citep{barendregt1991}.
 
 \subsection{Tipos a la Curry}
 \subsection{Tipos a la Church} 
     \section{Lambda c\'alculo simplemente tipado}
     
     \section{Tipos dependientes}
-    \section{Teoria de tipos de Martin-Löf}
+    \section{Teoría de tipos de Martin-Löf}
 \section{Reescritura de t\'erminos en Maude}
 La reescritura de t\'erminos constituye, a la luz de los cap\'itulos anteriores, una generalizaci\'on natural de la $\beta$-reducci\'on del $\lambda$-c\'alculo. Donde antes orient\'abamos un redex de la forma $(\lambda x.\, M)\, N$ hacia $M[x := N]$, ahora disponemos de un conjunto arbitrario de ecuaciones $l = r$, le\'idas como reglas $l \to r$, y las aplicamos a un t\'ermino siempre que en \'el aparezca una instancia del lado izquierdo. El proceso de c\'omputo se reduce, entonces, a buscar redexes y a contraerlos, exactamente igual que antes, pero en un marco mucho m\'as flexible que permite especificar tipos de datos, funciones y, como veremos, sistemas concurrentes enteros.
 \newline
@@ -721,12 +723,15 @@ fmod LAMBDA-SYNTAX is
   ...
   sort Ctx .
   op mt : -> Ctx [ctor] .
-  op _`;_`:_ : Ctx Var Term -> Ctx [ctor] .
+  op _;_:_ : Ctx Var Term -> Ctx [ctor] .
   var G : Ctx .
 endfm
 \end{lstlisting}
 
-Tomando como ejemplo la regla de formación del tipo sigma
+Donde la notación \textit{\_;\_:\_}, es un constructor para un sort de tipo \textit{mt; var x : $\tau$}, que representa el contexto vacío, extendido con \textit{x : $\tau$}.
+\newline
+\newline
+\indent Tomando como ejemplo la regla de formación del tipo sigma
 \begin{gather}
   \infer[\text{$\Sigma$-Form}]
   {\Gamma \vdash \Sigma\, x : A.\, B : \Type}
@@ -745,7 +750,7 @@ fmod LAMBDA-SYNTAX is
 endfm
 \end{lstlisting}
 
-Observese que su interpretacion no es muy distinta a lo que la regla \textit{(2.27)} formaliza: podemos inferir que $Sigma(V, A, B)$ en la ecuación, es un tipo si se cumple que $A$ es un tipo en $\Gamma$ y, en el mismo contexto extendido, $V$ es de tipo $A$, $B$ es también un tipo bien formado.
+Obsérvese que su interpretación no es muy distinta a lo que la regla \textit{(2.27)} formaliza: podemos inferir que $Sigma(V, A, B)$ en la ecuación, es un tipo si se cumple que $A$ es un tipo en $\Gamma$ y, en el mismo contexto extendido, $V$ es de tipo $A$, $B$ es también un tipo bien formado.
 
 La ejecución del prototipo, pues, se convierte entonces en la búsqueda de derivaciones, y el comando \texttt{search} permite preguntar al sistema si existe una derivación con un consecuente dado, recuperando el término y la sustitución que la justifican \citep{duran2019, clavel2007}.
 
@@ -753,7 +758,11 @@ La ejecución del prototipo, pues, se convierte entonces en la búsqueda de deri
 Un \'ultimo aspecto que conviene mencionar, dada su utilidad cuando se construye un prototipo de un sistema de tipos, es que la l\'ogica de reescritura es reflexiva \citep{clavel2007}. Esto quiere decir que existe una teor\'ia universal $\mathcal{U}$, finita y axiomatizable, en la que toda teor\'ia de reescritura $\mathcal{R}$, incluida la propia $\mathcal{U}$, puede representarse como un t\'ermino $\overline{\mathcal{R}}$, y los pasos de reescritura $t \to t'$ de $\mathcal{R}$ se corresponden con pasos de reescritura $\langle \overline{\mathcal{R}}, \overline{t}\rangle \to \langle \overline{\mathcal{R}}, \overline{t'}\rangle$ en $\mathcal{U}$. Maude implementa esta reflexi\'on en el m\'odulo predefinido \texttt{META-LEVEL}, que ofrece operaciones para manipular m\'odulos, t\'erminos y reglas como datos de primera clase \citep{duran2019}. Esto resulta de gran ayuda al implementar verificadores de tipos: el verificador puede inspeccionar el m\'odulo que codifica el lenguaje, aplicar reglas de inferencia a t\'erminos meta-representados y devolver derivaciones como resultado, todo dentro de Maude y sin necesidad de salir al lenguaje anfitri\'on.
 \newline
 \newline
-En la pr\'oxima secci\'on, una vez establecidas estas herramientas, abordaremos los tipos cociente desde la perspectiva de la teor\'ia de tipos de Martin-L\"of, lo que nos permitir\'a articular en el cap\'itulo siguiente la sintaxis y la sem\'antica operacional del lenguaje dependientemente tipado que constituye el objeto principal de este trabajo, junto con su implementaci\'on en Maude apoyada en todas las nociones que hemos introducido aqu\'i.
+
+\indent En definitiva, Maude provee una forma sumamente natural de implementar reglas de inferencia y la semantica de un lenguaje de manera ecuacional y visual los pasos en los que se computa cada expresión que se suministre en pasos de reducción.
+\newline
+\newline
+En la próxima sección, una vez establecidas estas herramientas, abordaremos los tipos cociente desde la perspectiva de la teoría de tipos de Martin-L\"of, lo que nos permitir\'a articular en el capítulo siguiente la sintaxis y la semántica operacional del lenguaje dependientemente tipado que constituye el objeto principal de este trabajo, junto con su implementaci\'on en Maude apoyada en todas las nociones que hemos introducido aquí.
     \section{Tipos Cociente}
 
 \chapter{Un lenguaje dependientemente tipado}
