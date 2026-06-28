@@ -538,7 +538,7 @@ A lo largo de los años numerosos esfuerzos se han realizado para desarrollar di
 \newline
 Entiendase por dependencia como la dependencia mutua, valga la reduncancia, que existe entre tipos y terminos: terminos que dependen de otros terminos, terminos dependientes de tipos, tipos dependientes de terminos, y tipos dependientes de otros tipos. Los ocho vertices del cubo, consecuencia de combinar cada posible dimension, resultan en diferentes sistemas de tipos y niveles de expresividad. Concretamente, abordaremos en el presente trabajo, la extension del vertice inferior derecho, que corresponde a la extension de tipos dependientes, concreamente $\lambda\Pi$, o refiérase también en la literatura como $\lambda P$.
 \newline
-\newline
+\begin{center}
 \begin{tikzpicture}
 \matrix (m) [matrix of math nodes,
 row sep=3em, column sep=3em,
@@ -563,7 +563,7 @@ text depth=0.25ex]{
 (m-4-3) edge (m-3-4)
         edge (m-2-3);
         \end{tikzpicture}
-        \newline
+\end{center}
 
 la dependencia que define cada vertice, es descrita por la siguiente tabla:
 \newline
@@ -765,9 +765,73 @@ Un \'ultimo aspecto que conviene mencionar, dada su utilidad cuando se construye
 En la próxima sección, una vez establecidas estas herramientas, abordaremos los tipos cociente desde la perspectiva de la teoría de tipos de Martin-L\"of, lo que nos permitir\'a articular en el capítulo siguiente la sintaxis y la semántica operacional del lenguaje dependientemente tipado que constituye el objeto principal de este trabajo, junto con su implementaci\'on en Maude apoyada en todas las nociones que hemos introducido aquí.
     \section{Tipos Cociente}
 
-\chapter{Un lenguaje dependientemente tipado}
+    \chapter{Un Lenguaje Dependientemente Tipado}
+    El lenguaje que se propone en el presente trabajo, parte de un subconjunto del lambda cálculo simplemente tipado, según lo descrito por \citet{loh2010} en su publicación sobre un lambda cálculo dependientemente tipado, donde nuestra implementación, pese a que difiere ligeramente de la suya, definirá las bases para el prototipo de lenguaje que en las próximas páginas estaremos formalizando. Asimismo, se ha elegido Maude como lenguaje base, por su simpleza para formalizar reglas de inferencia, como se ha podido demostrar. La sintáxis abstracta para términos y tipos, se define como sigue.
     \section{Sintaxis}
-    \section{Sustitucion}
+\begin{align}
+e, \rho, k := \quad & \alpha & \tag{1}\\
+  \mid \quad & e :: \rho & \tag{2}\\
+  \mid \quad & * \tag{3}\\
+  \mid \quad & \forall x::\rho.\rho' \tag{4}\\
+  \mid \quad & \lambda x.\, e & \tag{5}\\
+  \mid \quad & e \; e' \tag{6}&
+\end{align}
+
+Nótese, como anteriormente se ha cubierto, los términos y los tipos comparten el mismo nivel sintáctico y no existe distinción entre embos, por tanto, pudiese un término ocurrir en un tipo. Con respecto a $(2)$, por motivos prácticos, nuestra implementación no manejará un nodo de anotación explícita, por lo que, en Maude, será totalmente seguro omitirlo. 
+\newpage
+\begin{lstlisting}
+fmod LAMBDA-QTT is
+  ...
+  sort Var .
+  sort Term .
+  subsort Var < Term .
+  vars N N' : String .
+  vars T T1 T1' T2 S A B : Term .
+  var V : Var .
+  op var : String -> Var [ctor] .
+  op Type : -> Term [ctor] .
+  op Pi : Var Term Term -> Term [ctor] .
+  op lam : Var Term Term -> Term [ctor] .
+  op app : Term Term -> Term [ctor] .
+  ...
+endfm
+\end{lstlisting}
+El segmento de constructor de tipos es de mayor interés. Es tentador definir un subsort de Term, tal que, dado un \textit{Type} también podamos obtener un \textit{Term} de forma intercambiable
+\begin{lstlisting}
+  subsort Type < Term .
+\end{lstlisting}
+Pero esto es incorrecto pues, no tiene \textit{Type} un orden estructuralmente menor que \textit{Term} por el contrario, dado que defininimos un cálculo dependiente, términos y tipos vienen siendo lo mismo semánticamente.
+
+\section{Sustitucion}
+Las reglas de sustitución no vienen dadas por la publicación anteriormente nombrada, sin embargo, con suerte serán triviales para el lector según lo discutido por \cite{pierce2002}. Nótese que, adicionalmente a las reglas mencionadas en $2.1.4$, ahora es necesario sustituir dentro de los tipos cualquier ocurrencia de la variable correspondiente (??? REVISAR), por tanto, una quinta regla de sustitución se define, como sigue:
+
+\begin{align}
+& \quad \Pi x : A[x := x].\, B[x := x] . \notag
+\end{align}
+
+Luego, las reglas de cómputo para la sustitución en el cálculo dependientemente tipado, son las siguientes:
+\begin{lstlisting}
+fmod LAMBDA-QTT is
+  ...
+  op subst : Term Var Term -> Term .
+
+  eq subst(var(N), var(N), S) = S .
+  ceq subst(var(N), var(N'), S) = var(N) if N =/= N' .
+  eq subst(app(T1, T2), V, S) = app(subst(T1, V, S), subst(T2, V, S)) .
+  eq subst(Type, V, S) = Type .
+  ceq subst(lam(var(N), A, T), var(N), S) = lam(var(N), subst(A, var(N), S), T)
+    if true = true .
+  ceq subst(lam(var(N), A, T), var(N'), S) =
+    lam(var(N), subst(A, var(N'), S), subst(T, var(N'), S))
+    if N =/= N' .
+  ceq subst(Pi(var(N), A, B), var(N), S) = Pi(var(N), subst(A, var(N), S), B)
+    if true = true .
+  ceq subst(Pi(var(N), A, B), var(N'), S) =
+    Pi(var(N), subst(A, var(N'), S), subst(B, var(N'), S))
+    if N =/= N' .
+  ...
+endfm
+\end{lstlisting}
     \section{Normalizacion}
     \section{Verificacion de tipos}
 
