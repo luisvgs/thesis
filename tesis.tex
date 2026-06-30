@@ -803,13 +803,22 @@ El segmento de constructor de tipos es de mayor interés. Es tentador definir un
 Pero esto es incorrecto pues, no tiene \textit{Type} un orden estructuralmente menor que \textit{Term} por el contrario, dado que defininimos un cálculo dependiente, términos y tipos vienen siendo lo mismo semánticamente.
 
 \section{Sustitucion}
-Las reglas de sustitución no vienen dadas por la publicación anteriormente nombrada, sin embargo, con suerte serán triviales para el lector según lo discutido por \cite{pierce2002}. Nótese que, adicionalmente a las reglas mencionadas en $2.1.4$, ahora es necesario sustituir dentro de los tipos cualquier ocurrencia de la variable correspondiente (??? REVISAR), por tanto, una quinta regla de sustitución se define, como sigue:
+Las reglas de sustitucion para nuestro lenguaje no son necesariamente distintas de las del lambda cálculo sin tipos discutidas en en un capitulo previo a este, aun asi, existen diferencias que son notables en la sustitucion del calculo dependiente. El resto desutilezas propias del calculo dependiente. Se pretende, por tanto, que las mismas sean triviales para el lector:
 
+\begin{enumerate}
+    \item Las anotaciones de tipo de los binders para el tipo Pi, es decir, $A$ en $\lambda x : A.\, t$ y en $\Pi x : A.\, B$, son ahora t\'erminos y por tanto pueden contener ocurrencias libres de variables. La sustituci\'on debe aplicarse de forma recursiva sobre el tipo.
+    \item Cuando se sustituye bajo un binder de variable $y$ distinta de $x$, el cuerpo del binder se sustituye normalmente; cuando $y = x$, la sustituci\'on se detiene en la anotaci\'on de tipo pero no avanza al cuerpo, pues $x$ queda capturada por el binder.
+\end{enumerate}
+
+La regla correspondiente a la sustitucion en el tipo de funcion dependiente es omitida por \cite{loh2010} sin embargo, es prudente mencionarla en nuestra implementacion.
 \begin{align}
-& \quad \Pi x : A[x := x].\, B[x := x] . \notag
+& \quad \Pi y : A . B[x := s] = \Pi y : A[x := s] . B[x := s] \notag
 \end{align}
 
-Luego, las reglas de cómputo para la sustitución en el cálculo dependientemente tipado, son las siguientes:
+La regla es analoga trivialmente para $\lambda$ y $\Sigma$ que describiremos posteriormente. Para el resto de casos, la sustitucion se propaga estrucuturalmente.
+\newline
+\newline
+\indent Luego, la implementacion en Maude define las reglas de cómputo para la sustitución en el cálculo dependientemente tipado, se define una regla por cada constructor del cálculo, definiendo la condicion de igualdad o desigualdad sobre los nombres de las variables, expresada de manera ecuacional:
 \begin{lstlisting}
 fmod LAMBDA-QTT is
   ...
@@ -832,7 +841,8 @@ fmod LAMBDA-QTT is
   ...
 endfm
 \end{lstlisting}
-    \section{Normalizacion}
+\section{Normalizacion}
+Se define, a continuacion, la semantica operacional $big-step$ del proceso de normalizacion para cada termino en el lenguaje.
     \section{Verificacion de tipos}
 
 \chapter{Extension con tipos cociente}
