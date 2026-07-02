@@ -624,13 +624,86 @@ $\lambda P$ representa los tipos que dependen de términos. Los tipos dependient
 \end{align}
 \newline
 \newline
-\indent Tómese como ejemplo \textit{Vec A n} donde la longitud $n$ del vector, depende de cierto parámetro. Decimos, por tanto, que \textit{Vec A n} es un tipo dependiente o bien una familia de tipos indexado por $n$. Asimismo, la linea con la que se distinguen términos y tipos se hace más difusa y, en consecuencia, ambos comparten el mismo espacio sintactico. Por ello, encontramos la constante $*$ que representa el \textit{sort} en el que habitan todos los tipos, por tanto, la siguiente derivación es posible en $\lambda P$: $A : * \vdash (A \to A) : *$, que expresa que \textit{dado que A es un tipo bien formado, (A $\to$ A), es entonces, un tipo} \citep{barendregt1991}.
+\indent Tómese como ejemplo \textit{Vec A n} donde la longitud $n$ del vector, depende de cierto parámetro. Decimos, por tanto, que \textit{Vec A n} es un tipo dependiente o bien una familia de tipos indexado por $n$. Asimismo, la linea con la que se distinguen términos y tipos se hace más difusa y, en consecuencia, ambos comparten el mismo espacio sintactico. Por ello, encontramos la constante $*$ que representa el \textit{sort} en el que habitan todos los tipos, por tanto, la siguiente derivación es posible en $\lambda P$: $A : * \vdash (A \to A) : *$, que expresa que \textit{dado que A es un tipo bien formado, (A $\to$ A), es entonces, un tipo} \citep{barendregt1991}. El símbolo $\Box$ no es propiamente un término en la sintaxis, en cambio, es un símbolo en la meta-teoría para afirmar que se tiene una derivación de kinds válida, por tanto, se puede entender $\Gamma \vdash (κ : \Box)$ mediante la siguiente lectura: \textit{k es un kind bien formado dado el contexto $\Gamma$}.
 
 \subsection{Tipos a la Curry}
 \subsection{Tipos a la Church} 
     \section{Lambda c\'alculo simplemente tipado}
     
-    \section{Tipos dependientes}
+    \section{Tipos Dependientes}
+    Los tipos dependientes son, en principio, tipos que dependen de términos. Antes de adentrarnos en la teoría de tipos dependientes, es necesario mencionar de forma breve los sistemas de tipos puros, framework de donde parte esta formalización lógica. Un PTS es un framework para especificar y formalizar el lambda cálculo y extender su teoría. Fue propuesto inicialmente por Berardi y Terlow como una generalizacion del cubo lambda de \cite{cube1991}. A diferencia del lambda calculo tradicional, un PTS dispone de pseudo-términos que heredan, en gran parte, sintáxis del $\lambda$ calculo simplemente tipado que hasta ahora conocemos.
+
+    El conjunto de pseudo-términos, se define como sigue:
+    \begin{definition} Pseudo-términos de un PTS
+    \begin{align*}
+      T = T \mid T\, T \mid S \mid \lambda V: T.\, T \mid \Pi V: T.\, T
+    \end{align*}
+    \end{definition}
+
+    Asimismo, resalta \cite{barthe-coquand} algunas caracteristicas a tomar en cuenta, que ofrecen una imagen mas amplia de la definición de un sistema de tipos puro.
+
+    \begin{enumerate}
+            \item Se utiliza la misma convencion para extraer el conjunto de variables libres en un pseudo-termino $FV(M)$. Adicional a ello, se escribirá $A \to B$ para todo tipo de función en el que $x$ no aparezca libre en $B$. $\Pi x: A . B(x)$, en caso contrario.
+            \item Los sistemas de tipos puros, describen un $\lambda$ calculo a la Church, es decir, las abstracciones lambda llevan consigo el dominio  de las variables ligadas y, como consecuencia de ello, la computabilidad en un sistema de tipos puro es decidible.
+            \item Los sistemas de tipos puros proveen los cimientos de los tipos dependientes, de hecho, es en el constructor del tipo $\Pi$ donde se evidencia, por primera vez, la dependiencia en esta teoría capturando la noción del producto cartesiano generalizado.
+    \end{enumerate}
+
+    La noción de tipo dependiente es analoga al producto cartesiano dependiente, o generalizado de la teoría de conjuntos. En los conjuntos es posible, para cada conjunto $A$, y una familia de conjuntos $B(x)_{x\in A}$ indexados por $A$, un nuevo conjunto $\Pi _{x\in A} B_x$, donde sus elementos son funciones con dominion en $A$, tal que $f(a) \in B_a$ para todo $a \in A$. Consideramos, entonces, $\Pi _{x\inA} B_x$ un producto cartesiano dependiente, pues $B_a$ en el cual $f(a)$ vive, depende de $a$. De igual forma opera el tipo $\Pi$ que hemos mencionado en el conjunto de pseudo-términos que conforman un $PTS$: sea $A$ un tipo definido en $\Gamma$ y $B(x)$ un tipo, donde $x$ es una variale de tipo $A$, decimos pues, que $\Pi x : A . B(x)$ es un tipo dependiente, donde para todo $x$ en $A$, existe una familia de tipos $B(x)$.
+
+    \begin{definition} Especificacion. La especificacion de un PTS es una tripleta $S = (S, A , R)$, done:
+      \begin{enumerate}
+        \item $\mathcal{S}$ es un conjunto de sorts.
+        \item $\mathcal{A} \subseteq \mathcal{S} \times \mathcal{S}$ es un conjunto de axiomas.
+        \item $\mathcal{R} \subseteq \mathcal{S} \times \mathcal{S}\times \mathcal{S}$ es un conjunto de reglas.
+      \end{enumerate}
+    \end{definition}
+
+    Además, se presentan las reglas de formación de un $PTS$, según lo sugiere \cite{barthe-coquand}:
+    \newline
+    \newline
+    Nótese que, a diferencia de los sistemas de tipos estudiados hasta ahora, existe una ligera disparidad en el contexto presente en el lambda calculo simplemente tipado y uno dependientemente tipado, y es que, primero, los contextos ahora pueden tener presencia de variables de tipos, de la forma $A : s$ con $s : \mathcal{S}$. Segundo, el orden en el que se insertan juicios $A : s$ en $\Gamma$ importa para poder manejar de manera correcta y consistente las dependencias, por ejemplo, un juicio de la forma $A : s, \sigma : A$ es totalmente valido, pero $\sigma : A, A : s$ carece de sentido, pues no existe un juicio previo a $\sigma : A$ del que sea posible derivar que $A$ es un tipo bien formado.
+    \newline
+    \newline
+    \indent Como se ha mencionado ya con anterioridad, la extensión a la que se dedicara el estudio del presente trabajo sera $\lambda P$, sin embargo, se invita al lector a revisar con más detalles el resto de teorías que, con bastante presicion \cite{barthe-coquand} abordan sobre el Cubo Lambda de Barendregt.
+\newline
+\newline
+    \indent $\lambda P$ permite introducir los axiomas $\{*, \Box\}$ que posibilitan los tipos dependientes, de forma que $B : *$ que podria contener una subexpresion $M : A : *$.
+
+    \begin{definition}\label{def:lambdaP}
+      Sea $S =\{*, \Box\}$ de sorts y el conjunto $\mathcal{A} =\{(* : \Box)\}$. Es posible obtener $\lambda P$ extendiendo el conjunto de reglas, de forma que $\mathcal{R} = \{(*, *), (*, \Box)\}$
+    \end{definition}
+
+    La importancia o interes de estudio de los tipos dependientes, radica en como estos habilitan al entendimiento de la correspondencia entre las proposiciones como tipos y los programas como pruebas, a la luz de la logica de predicados. El conjunto de reglas definidas en ~\ref{def:lambdaP} nos muestra que es posible formar expresiones que habitan en $*$ y obtenemos como resultado una expresion que, tambien, habita en $*$. De forma intuitiva, esto corresponde a una funcion ordinaria del tipo $\mathbb{N}\to\mathbb{N} : *$, donde el dominion es de sort *, y el codominio de sortt *. Adicional a ello, el segundo miembro de la tupla, nos indica que podemos formar una expresion que habita en $*$ y como resultado, obtenemos una que habita en $\Box$. Esto ultimo corresponde a la posibilidad de derivaciones como $\Pi x : A . B(x)$ cuando $A : *$ y $B : \Box$, siendo $B$ un tipo indexado por $A$. Por tanto, la siguiente derivacion es posible:
+    
+\begin{gather}
+  \infer[\text{Vec-Form}]
+  {\Gamma \vdash \mathrm{Vec}\ A\ n : *}
+  {\Gamma \vdash A : * & \Gamma \vdash n : \mathbb{N}}
+\end{gather}
+
+Donde $\textit{Vec}\,A\, n : *$ habita en $\Box$.
+\newpage
+\indent Dado que a los tipos pudiesen contener terminos, una nocion de igualdad definicional es necesaria en la teoria, por ejemplo, conviene considerar los terminos $0 : \mathbb{N}$ y $0 + 0 : \mathbb{N}$ como definicionalmente iguales y, por tanto, no habria distincion entre los terminos \textit{Vec(0)} y \textit{Vec 0 + 0}. Si \textit{M : Vec(0)} y \textit{N: Vec 0 + 0}, nos lleva a un juicio de la forma $M = N : \sigma$ que se lee \textit{M y N son terminos definicionalmente iguales en el tipo sigma}, y, ademas, que $\sigma = \tau : A$, que se lee \textit{sigma y tau son tipos definicionalmente iguales en A}. Creo que esto no va o puede mejorarse con nociones de igualdad
+
+\subsection{Tipos Sigma}
+Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el proximo tipo que estudiaremos que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma. Representado en el lambda calculo simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, mas bien, asegurar la decibiliad del prototipo, este tipo estará acompanado de su ascripcion.
+
+El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembro representando los tipos sigma:
+
+    \begin{align*}
+      T = ... \mid \Pi V: T.\, T \,|\, \langle T, T \rangle\, | \textit{fst}\,T\,|\, \textit{snd}\, T
+    \end{align*}
+
+    Donde \textit{fst} y \textit{snd} son \textit{proyecciones} que extraen el primer y segundo componente de la tupa $\langle T, T \rangle$. Sus reglas de formacion y eliminacion, se definen como sigue:
+
+\begin{gather}
+  \infer[\text{\Sigma-Form}]
+  {\Gamma \vdash \mathrm{Vec}\ A\ n : *}
+  {\Gamma \vdash A : * & \Gamma \vdash n : \mathbb{N}}
+\end{gather}
+
+    
+    \section{Tipos Cociente}
     \section{Teoría de tipos de Martin-Löf}
 \section{Reescritura de t\'erminos en Maude}
 La reescritura de t\'erminos constituye, a la luz de los cap\'itulos anteriores, una generalizaci\'on natural de la $\beta$-reducci\'on del $\lambda$-c\'alculo. Donde antes orient\'abamos un redex de la forma $(\lambda x.\, M)\, N$ hacia $M[x := N]$, ahora disponemos de un conjunto arbitrario de ecuaciones $l = r$, le\'idas como reglas $l \to r$, y las aplicamos a un t\'ermino siempre que en \'el aparezca una instancia del lado izquierdo. El proceso de c\'omputo se reduce, entonces, a buscar redexes y a contraerlos, exactamente igual que antes, pero en un marco mucho m\'as flexible que permite especificar tipos de datos, funciones y, como veremos, sistemas concurrentes enteros.
@@ -763,8 +836,6 @@ Un \'ultimo aspecto que conviene mencionar, dada su utilidad cuando se construye
 \newline
 \newline
 En la próxima sección, una vez establecidas estas herramientas, abordaremos los tipos cociente desde la perspectiva de la teoría de tipos de Martin-L\"of, lo que nos permitir\'a articular en el capítulo siguiente la sintaxis y la semántica operacional del lenguaje dependientemente tipado que constituye el objeto principal de este trabajo, junto con su implementaci\'on en Maude apoyada en todas las nociones que hemos introducido aquí.
-    \section{Tipos Cociente}
-
     \chapter{Un Lenguaje Dependientemente Tipado}
     El lenguaje que se propone en el presente trabajo, parte de un subconjunto del lambda cálculo simplemente tipado, según lo descrito por \citet{loh2010} en su publicación sobre un lambda cálculo dependientemente tipado, donde nuestra implementación, pese a que difiere ligeramente de la suya, definirá las bases para el prototipo de lenguaje que en las próximas páginas estaremos formalizando. Asimismo, se ha elegido Maude como lenguaje base, por su simpleza para formalizar reglas de inferencia, como se ha podido demostrar. La sintáxis abstracta para términos y tipos, se define como sigue.
     \section{Sintaxis}
