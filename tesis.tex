@@ -162,8 +162,6 @@ El tipo booleano es un tipo habitado por solo dos posibles terminos: $True$ o $F
   $\mathrm{True} \equiv \lambda xy.\, x$, \quad $\mathrm{False} \equiv \lambda xy.\, y$
 \end{example}
 
-\newline
-\newline
 A continuación se detallan propiedades de sumo interés que articulan, posteriormente, los fundamentos del lenguaje que describe esta tésis: la distinción entre variables libres y ligadas, junto con la $\alpha$-equivalencia que de ella se deriva; la operación de sustitución que evita la captura de variables; y la $\beta$-reducción como noción primaria de cómputo. Se mencionará igualmente la $\eta$-conversión, que captura la extensionalidad de las funciones.
 
 \subsection{$\beta$-reducción}
@@ -694,7 +692,7 @@ El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembr
       T = ... \mid \Pi V: T.\, T \,|\, \langle T, T \rangle\, | \textit{fst}\,T\,|\, \textit{snd}\, T
     \end{align*}
 
-    Donde \textit{fst} y \textit{snd} son \textit{proyecciones} que extraen el primer y segundo componente de la tupa $\langle T, T \rangle$. Sus reglas de formacion y eliminacion, se definen como sigue:
+    Donde \textit{fst} y \textit{snd} son \textit{proyecciones} que extraen el primer y segundo componente de la tupa $\langle T, T \rangle$. Sus reglas de formacion y eliminacion, se definen como sigue, como sugiere \citep{hoffman2009}:
 
 \begin{gather}
   \infer[\text{\Sigma-Form}]
@@ -702,6 +700,13 @@ El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembr
   {\Gamma \vdash A : * & \Gamma \vdash n : \mathbb{N}}
 \end{gather}
 
+\begin{gather}
+  \infer[\text{\Sigma-Form}]
+  {\Gamma \vdash \mathrm{Vec}\ A\ n : *}
+  {\Gamma \vdash A : * & \Gamma \vdash n : \mathbb{N}}
+\end{gather}
+
+Los tipos sigma serán utiles para probar propiedades teoricas de la teoría y, con suerte, comprobar que la formalizacion de la teoria de tipos estudiada en este trabajo cumple su funcion.
     
     \section{Tipos Cociente}
     \section{Teoría de tipos de Martin-Löf}
