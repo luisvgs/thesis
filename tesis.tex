@@ -3,12 +3,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{proof}
-\usepackage[spanish]{babel}
+\usepackage[spanish,es-noshorthands]{babel}
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
 \usepackage{stmaryrd}
-\usepackage{proof}
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{tikz}
@@ -165,7 +164,7 @@ El tipo booleano es un tipo habitado por solo dos posibles terminos: $True$ o $F
 A continuación se detallan propiedades de sumo interés que articulan, posteriormente, los fundamentos del lenguaje que describe esta tésis: la distinción entre variables libres y ligadas, junto con la $\alpha$-equivalencia que de ella se deriva; la operación de sustitución que evita la captura de variables; y la $\beta$-reducción como noción primaria de cómputo. Se mencionará igualmente la $\eta$-conversión, que captura la extensionalidad de las funciones.
 
 \subsection{$\beta$-reducción}
-La noción de evaluacion de un término viene dada por beta-reducción, donde la notación $\to_\beta$ es empleada. La $\to_\beta$ está basada en la \textit{sustitución}, formalmente expresada como \textit{M[x := N]}, significando que \textit{M} es un término donde \textit{x} ha sido reemplazado por \textit{N}.
+La noción de evaluacion de un término viene dada por beta-reducción, donde la notación $\to_\beta$ es empleada. La $\to_\beta$ está basada en la \textit{sustitución}, formalmente expresada como \textit{M[x := N]}, significando que \textit{M} es un término donde en su cuerpo, \textit{x}, ha sido reemplazado por \textit{N}.
 
 Por tanto, una expresión de la forma $(\lambda x.\, M)\, N$ puede ser reescrita como \textit{M[ x := N]}, donde toda ocurrencia de \textit{x} en \textit{M} (estando \textit{x} libre en \textit{M}), debe ser reemplazada por \textit{N} \citep{geuvers2014}.
 
@@ -275,8 +274,8 @@ La confluencia, conocida también como teorema de Church-Rosser, es una propieda
 \begin{theorem}[Church-Rosser]
   Sea $M$ un término del $\lambda$-cálculo. Si $M\to_\beta^{\ast}N_1$ y $M\to_\beta^{\ast}N_2$, entonces existe un término $N_3$ tal que $N_1\to_\beta^{\ast}N_3$ y $N_2\to_\beta^{\ast}N_3$ \citep[p.~62]{barendregt1984}.
 \end{theorem}
-\newline
-\newline
+\medskip
+
 Conviene precisar que el teorema habla de la \textit{clausura reflexivo-transitiva} de la reducción, $\to_\beta^{\ast}$, es decir, de cero o más pasos de $\beta$-reducción. Es importante resaltar que la $\beta$-reducción no cumple la versión más fuerte de la propiedad, conocida como \textit{propiedad del diamante} en un solo paso: si de $M$ contraemos dos redexes distintos en un único paso para obtener $N_1$ y $N_2$, no siempre existe un $N_3$ alcanzable desde ambos en un solo paso. La razón es la duplicación, pues un redex puede copiar a otro cuando el argumento contiene, a su vez, redexes, de modo que un lado de la bifurcación necesita varios pasos para reabsorber las copias que el otro lado ya había contraído. Lo que el teorema de Church-Rosser garantiza es la versión global, sobre $\to_\beta^{\ast}$, que sí se sostiene.
 \newline
 \newline
@@ -353,7 +352,7 @@ La teoria de tipos es una rama de las matematicas y la logica que tiene como obj
 \newline
 \indent Los tipos, pese a que son similares a los conjuntos, son ligeramente distintos. Por conjunto, entiéndase ocmo una colección de elementos, similares o no, que poseen una propiedad concreta:
 \begin{align}
-  C = \{rojo, amarillo, azul\}\
+  C = \{rojo, amarillo, azul\}
 \end{align}
 de donde es posible extenderlos y razonar sobre más relaciones de pertenencia y formar, por ejemplo, conjuntos dentro de otros conjuntos y definir que un elemento pertenece a varios conjuntos a la vez:
 \begin{align}
@@ -361,7 +360,7 @@ de donde es posible extenderlos y razonar sobre más relaciones de pertenencia y
 \end{align}
 Cosa que, en los tipos, no es posible pues, un termino es de (o pertenece a) un tipo unico. Otra caracteristica que los distingue, es que los conjuntos dan informacion semantica y, los tipos por otro lado, proveen informacion sintactica de los objetos. Por ejemplo, comunmente en la teoria de conjuntos definimos una relacion de pertenencia como sigue:
 \begin{align}
-  4 \in \{\,n \in \mathbb{N} | x > 5 \,\}\
+  4 \in \{\,n \in \mathbb{N} | x > 5 \,\}
 \end{align}
 
 En la teoria de tipos, un juicio de tipado, sigue la siguiente notacion que, a lo largo de la presente tesis estarémos empleando:
@@ -438,7 +437,7 @@ Nótese que los problemas anteriormente mencionados son decibibles en $\lambda\t
 \infer{consecuente_1 ... consecuente_n}{% 
     premisa_1
     ...
-    & \deduce{premisa_n}
+    & \deduce{premisa_n}{}
   }
 \end{align}
 
@@ -452,7 +451,7 @@ Donde $\forall$ es implícito.
 \begin{align}
 \infer{\Gamma \vdash a : A}{% 
     \Gamma \vdash A
-    & \deduce{\Gamma, a : A}
+    & \deduce{\Gamma, a : A}{}
   }
 \end{align}
 
@@ -467,8 +466,8 @@ Que puede leerse como: \textit{si, dado que en el contexto $\Gamma$, $A$ es un t
 &\Gamma \vdash M : \sigma && \text{$M$ es un término de tipo $\sigma$ en $\Gamma$}\\
 &\vdash \Gamma \equiv \Delta && \Gamma \; y\; \Delta\; \text{son contextos definicionalmente iguales}\\
 &\Gamma \vdash \sigma \equiv \tau\; Type && \sigma\; y\; \tau\; \text{son tipos definicionalmente iguales en}\; \Gamma\\
-&\Gamma \vdash M \equiv N : \sigma && M\; y\; N\; \text{son terminos definicionalmente iguales, de tipo}\; \sigma,\;\text{en}\; \Gamma\\
-\end{align}
+&\Gamma \vdash M \equiv N : \sigma && M\; y\; N\; \text{son terminos definicionalmente iguales, de tipo}\; \sigma,\;\text{en}\; \Gamma
+\end{align*}
 
 Adicionalmente, independientemente del sistema de tipos que se describa, las mismas reglas estructurales se adoptan, como describe \citealp{hoffman2009}.
 
@@ -483,7 +482,7 @@ Adicionalmente, independientemente del sistema de tipos que se describa, las mis
     & \deduce[]{\Gamma \vdash \sigma = \tau \;\mathsf{Type}}{}}
   \\[2ex]
   \infer[\text{Var}]{\Gamma \vdash x : \sigma}{\vdash \Gamma, x : \sigma}
-\end{gather*}
+\end{gather}
 Asimismo, para las reglas que expresan la igualdad definicional como una relación de equivalencia, tenemos que:
 \begin{gather}
   \infer[\text{C-Eq-R}]
@@ -529,7 +528,7 @@ Asimismo, para las reglas que expresan la igualdad definicional como una relaci�
   \infer[\text{Ty-Conv}]
   {\Delta \vdash \sigma\;\mathsf{type}}
   {\vdash \Gamma = \Delta\;ctxt & \Gamma \vdash \sigma\;\mathsf{type}}
-\end{gather*}
+\end{gather}
 \newline
 A lo largo de los años numerosos esfuerzos se han realizado para desarrollar distintos sabores (sabores es la palabra? quiza extensiones) de la teoría de tipos y poder dar suficiente poder expresivo al lambda calculo. Estos sistemas de tipos fueron explorados por H. Barendregt en el Cubo Lambda \citep{barendregt1991}, para investigar las diferentes dimensiones en las que puede extenderse el sistema formal. En su paper describe como cada dimension del cubo representa una dependencia entre terminos y tipos, y sus posibles combinaciones.
 \newline
@@ -581,8 +580,8 @@ $\lambda\mathrm{P}\omega = \lambda\mathrm{C}$ & $(\ast,\ast)$ & $(\square,\ast)$
 \hline
 \end{tabular}
 \end{center}
-\newline
-\newline
+\medskip
+
 \indent Es necesaria una explicacion a cada conjunto de reglas y nivel de expresividad que permite cada sistema. $\lambda\to$ es posiblemente, el más común. Formalmente este sistema es conocido como el lambda cálculo simplemente tipado que se abordará con más dedicación en un capítulo aparte, donde para construir una abstracción lambda, basta con proveer otro término. Por tanto $FM$ es, por ejemplo, un término en $\Lambda$ donde $F$ depende de $M$.
 \begin{example}
 \begin{align}
@@ -612,7 +611,8 @@ $\lambda\underline{\omega}$ nos permite definir tipos que dependen de otros tipo
     \textit{data Tree a = Empty | Node a (Tree a) (Tree a)}
 \end{align*}
 \end{example}
-\newline
+\medskip
+
 $\lambda P$ representa los tipos que dependen de términos. Los tipos dependientes, como se les referirá a lo largo de este etrabajo, extienden el sistema de tipos con familias de tipos, o tipos indexados por los elementos de otros tipos. La siguiente regla de inferencia formaliza esta idea donde $x$ puede o no, aparecer en $B$. Observese que de no aparecer $x$ en $B$, estariamos involucrandonos con el tipo de función $A \to B$.
 \begin{align}
 \infer{\Gamma \vdash \Pi x : A . B x }{%
@@ -622,14 +622,14 @@ $\lambda P$ representa los tipos que dependen de términos. Los tipos dependient
 \end{align}
 \newline
 \newline
-\indent Tómese como ejemplo \textit{Vec A n} donde la longitud $n$ del vector, depende de cierto parámetro. Decimos, por tanto, que \textit{Vec A n} es un tipo dependiente o bien una familia de tipos indexado por $n$. Asimismo, la linea con la que se distinguen términos y tipos se hace más difusa y, en consecuencia, ambos comparten el mismo espacio sintactico. Por ello, encontramos la constante $*$ que representa el \textit{sort} en el que habitan todos los tipos, por tanto, la siguiente derivación es posible en $\lambda P$: $A : * \vdash (A \to A) : *$, que expresa que \textit{dado que A es un tipo bien formado, (A $\to$ A), es entonces, un tipo} \citep{barendregt1991}. El símbolo $\Box$ no es propiamente un término en la sintaxis, en cambio, es un símbolo en la meta-teoría para afirmar que se tiene una derivación de kinds válida, por tanto, se puede entender $\Gamma \vdash (κ : \Box)$ mediante la siguiente lectura: \textit{k es un kind bien formado dado el contexto $\Gamma$}.
+\indent Tómese como ejemplo \textit{Vec A n} donde la longitud $n$ del vector, depende de cierto parámetro. Decimos, por tanto, que \textit{Vec A n} es un tipo dependiente o bien una familia de tipos indexado por $n$. Asimismo, la linea con la que se distinguen términos y tipos se hace más difusa y, en consecuencia, ambos comparten el mismo espacio sintactico. Por ello, encontramos la constante $*$ que representa el \textit{sort} en el que habitan todos los tipos, por tanto, la siguiente derivación es posible en $\lambda P$: $A : * \vdash (A \to A) : *$, que expresa que \textit{dado que A es un tipo bien formado, (A $\to$ A), es entonces, un tipo} \citep{barendregt1991}. El símbolo $\Box$ no es propiamente un término en la sintaxis, en cambio, es un símbolo en la meta-teoría para afirmar que se tiene una derivación de kinds válida, por tanto, se puede entender $\Gamma \vdash (\kappa : \Box)$ mediante la siguiente lectura: \textit{k es un kind bien formado dado el contexto $\Gamma$}.
 
 \subsection{Tipos a la Curry}
 \subsection{Tipos a la Church} 
     \section{Lambda c\'alculo simplemente tipado}
     
     \section{Tipos Dependientes}
-    Los tipos dependientes son, en principio, tipos que dependen de términos. Antes de adentrarnos en la teoría de tipos dependientes, es necesario mencionar de forma breve los sistemas de tipos puros, framework de donde parte esta formalización lógica. Un PTS es un framework para especificar y formalizar el lambda cálculo y extender su teoría. Fue propuesto inicialmente por Berardi y Terlow como una generalizacion del cubo lambda de \cite{cube1991}. A diferencia del lambda calculo tradicional, un PTS dispone de pseudo-términos que heredan, en gran parte, sintáxis del $\lambda$ calculo simplemente tipado que hasta ahora conocemos.
+    Los tipos dependientes son, en principio, tipos que dependen de términos. Antes de adentrarnos en la teoría de tipos dependientes, es necesario dedicar de forma breve una introduccion a los sistemas de tipos puros, framework de donde parte esta formalización lógica. Un PTS es un framework para especificar y formalizar el lambda cálculo y extender su teoría. Fue propuesto inicialmente por Berardi y Terlow como una generalizacion del cubo lambda de \cite{cube1991}. A diferencia del lambda calculo tradicional, un PTS dispone de pseudo-términos que heredan, en gran parte, sintáxis del $\lambda$ calculo simplemente tipado que hasta ahora conocemos.
 
     El conjunto de pseudo-términos, se define como sigue:
     \begin{definition} Pseudo-términos de un PTS
@@ -646,7 +646,7 @@ $\lambda P$ representa los tipos que dependen de términos. Los tipos dependient
             \item Los sistemas de tipos puros proveen los cimientos de los tipos dependientes, de hecho, es en el constructor del tipo $\Pi$ donde se evidencia, por primera vez, la dependiencia en esta teoría capturando la noción del producto cartesiano generalizado.
     \end{enumerate}
 
-    La noción de tipo dependiente es analoga al producto cartesiano dependiente, o generalizado de la teoría de conjuntos. En los conjuntos es posible, para cada conjunto $A$, y una familia de conjuntos $B(x)_{x\in A}$ indexados por $A$, un nuevo conjunto $\Pi _{x\in A} B_x$, donde sus elementos son funciones con dominion en $A$, tal que $f(a) \in B_a$ para todo $a \in A$. Consideramos, entonces, $\Pi _{x\inA} B_x$ un producto cartesiano dependiente, pues $B_a$ en el cual $f(a)$ vive, depende de $a$. De igual forma opera el tipo $\Pi$ que hemos mencionado en el conjunto de pseudo-términos que conforman un $PTS$: sea $A$ un tipo definido en $\Gamma$ y $B(x)$ un tipo, donde $x$ es una variale de tipo $A$, decimos pues, que $\Pi x : A . B(x)$ es un tipo dependiente, donde para todo $x$ en $A$, existe una familia de tipos $B(x)$.
+    La noción de tipo dependiente es analoga al producto cartesiano dependiente, o generalizado de la teoría de conjuntos. En los conjuntos es posible, para cada conjunto $A$, y una familia de conjuntos $B(x)_{x\in A}$ indexados por $A$, un nuevo conjunto $\Pi _{x\in A} B_x$, donde sus elementos son funciones con dominion en $A$, tal que $f(a) \in B_a$ para todo $a \in A$. Consideramos, entonces, $\Pi _{x\in A} B_x$ un producto cartesiano dependiente, pues $B_a$ en el cual $f(a)$ vive, depende de $a$. De igual forma opera el tipo $\Pi$ que hemos mencionado en el conjunto de pseudo-términos que conforman un $PTS$: sea $A$ un tipo definido en $\Gamma$ y $B(x)$ un tipo, donde $x$ es una variale de tipo $A$, decimos pues, que $\Pi x : A . B(x)$ es un tipo dependiente, donde para todo $x$ en $A$, existe una familia de tipos $B(x)$.
 
     \begin{definition} Especificacion. La especificacion de un PTS es una tripleta $S = (S, A , R)$, done:
       \begin{enumerate}
@@ -683,6 +683,58 @@ Donde $\textit{Vec}\,A\, n : *$ habita en $\Box$.
 \newpage
 \indent Dado que a los tipos pudiesen contener terminos, una nocion de igualdad definicional es necesaria en la teoria, por ejemplo, conviene considerar los terminos $0 : \mathbb{N}$ y $0 + 0 : \mathbb{N}$ como definicionalmente iguales y, por tanto, no habria distincion entre los terminos \textit{Vec(0)} y \textit{Vec 0 + 0}. Si \textit{M : Vec(0)} y \textit{N: Vec 0 + 0}, nos lleva a un juicio de la forma $M = N : \sigma$ que se lee \textit{M y N son terminos definicionalmente iguales en el tipo sigma}, y, ademas, que $\sigma = \tau : A$, que se lee \textit{sigma y tau son tipos definicionalmente iguales en A}. Creo que esto no va o puede mejorarse con nociones de igualdad
 
+\begin{definition}[Igualdad definicional] Decimos que dos terminos son definicionalmente iguales cuando reducen, luego de cero o mas pasos de reduccion, a un termino en comun \cite{Minrat}. La igualdad a la que hacemos referencia en este caso, no es igualdad propocional, denotada con $\equiv$, si no, a la igualdad que es inherente del lenguaje base $=$ que corresponde a la equivalencia de terminos bajo $\beta$ reduccion. 
+\begin{lstlisting}
+  op _+_ : Nat Nat -> Nat .
+  eq 0 + N = N .
+  eq s(N) + M = s(N + M) .
+\end{lstlisting}
+En este tipo de igualdad, el lenguaje no puede descirnir de dos terminos, pues son exactamente o bien, iguales por definicion. Por ejemplo, es posible asertar que \textit{0 + n} y \textit{n} son definicionalmente iguales dada la definicion inductiva de la suma que en Maude proponemos pues  \textit{0 + N} reduce a \textit{N} en un  solo paso, por tanto, es posible usar \textit{0 + N} y \textit{N}  de forma intercambiable.
+\newline
+
+
+Sin embargo, esto no siempre es el caso: en contraste \textit{n + 0}, que no es definicionalmente igual a \textit{n} porque \textit{no existe} una ecuacion en nuestra definicion de la suma que inmediatamente pueda asertar que, en este caso, \textbf{0 + n} sí reduce a \textit{n}. Pero sí podemos demostrar proposicionalmente, mediante una prueba mas elaborada por induccion en $n$, de que esta igualdad sí se cumple y, finalmente, concluir que \textit{n + 0} $\equiv$ \textit{n}.
+\end{definition}
+
+\begin{definition}[Igualdad proposicional] Decimos que dos terminos son proposicionalmente iguales cuando existe un termino $p$ que habita $\text{Id}_{A}(a, b)$, por tanto, existe una prueba tal que $p : Id(a, b)$ es un testigo de esta igualdad en $A$. A diferencia de la igualdad definicional, que se obtiene en terminos de $\beta$ reduccion y es una igualdad inherente del lenguaje, la igualdad proposional debe ser demostrada explicitamente mediante la construccion de un testigo. El constructor canonico del tipo identidad es $\text{refl}_a : \text{Id}_A(a, a)$, que atestigua que todo termino es igual a si mismo. Para demostrar igualdades no triviales, se requiere construir un termino del tipo correspondiente, tipicamente, por induccion.
+\newline
+\begin{example}
+Considerando el mismo ejemplo de la suma sobre naturales, definida por recursion sobre el primer argumento, la proposicion $0 + n \equiv n$ es una igualdad definicional, pues el termino $0 + n$
+reduce directamente a $n$ por la primera clausula, de modo que $\text{refl}_n$
+basta como testigo. En cambio, la proposicion $n + 0 \equiv n$ no es una igualdad
+definicional, ya que cuando $n$ es una variable, la expresion $n + 0$ no puede
+reducirse porque Maude no encuentra una ecuacion que inmediatamente pueda cubrir este caso. Es necesario construir el
+testigo por induccion sobre $n$:
+\begin{itemize}
+  \item El caso base, donde si $n \coloneqq 0$, entonces $0 + 0$ reduce a $0$, y $\text{refl}_0$
+        es el testigo.
+  \item El caso inductivo, donde si $n \coloneqq \text{suc}(k)$, entonces $\text{suc}(k) + 0$ reduce a
+        $\text{suc}(k + 0)$ por la segunda clausula. Aplicando
+        $\text{cong}_{\text{suc}}$ a la hipotesis inductiva $p_k : k + 0 \equiv k$,
+        obtenemos el testigo $\text{cong}_{\text{suc}}(p_k) : \text{suc}(k + 0) \equiv \text{suc}(k)$.
+\end{itemize}
+
+En Maude, podemos simular este comportameinto de la siguiente manera, asumiendo que el el tipo de proposicion es un sort cualquiera.
+\begin{lstlisting}
+  sort A B .
+  subsort A B < Nat .
+  sort Proof .
+  op cong : (A -> B) Proof -> Proof .
+  op refl : -> Proof.
+
+  op zero' : Nat -> Proof .
+  eq zero'(0) = refl .
+  eq zero'(s(N)) = cong(zero'(N))
+\end{lstlisting}
+\end{example}
+
+La existencia de esta prueba es lo que nos permite concluir que $n + 0 \equiv n$ proposicionalmente.
+\end{definition}
+
+\begin{corollary}
+    Dos terminos que son definicionalmente iguales, tambien lo son propocionalmente. Lo contrario no tiene por qué cumplirse.
+\end{corollary}
+
 \subsection{Tipos Sigma}
 Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el proximo tipo que estudiaremos que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma. Representado en el lambda calculo simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, mas bien, asegurar la decibiliad del prototipo, este tipo estará acompanado de su ascripcion.
 
@@ -695,13 +747,13 @@ El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembr
     Donde \textit{fst} y \textit{snd} son \textit{proyecciones} que extraen el primer y segundo componente de la tupa $\langle T, T \rangle$. Sus reglas de formacion y eliminacion, se definen como sigue, como sugiere \citep{hoffman2009}:
 
 \begin{gather}
-  \infer[\text{\Sigma-Form}]
+  \infer[\text{$\Sigma$-Form}]
   {\Gamma \vdash \mathrm{Vec}\ A\ n : *}
   {\Gamma \vdash A : * & \Gamma \vdash n : \mathbb{N}}
 \end{gather}
 
 \begin{gather}
-  \infer[\text{\Sigma-Form}]
+  \infer[\text{$\Sigma$-Form}]
   {\Gamma \vdash \mathrm{Vec}\ A\ n : *}
   {\Gamma \vdash A : * & \Gamma \vdash n : \mathbb{N}}
 \end{gather}
@@ -709,6 +761,79 @@ El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembr
 Los tipos sigma serán utiles para probar propiedades teoricas de la teoría y, con suerte, comprobar que la formalizacion de la teoria de tipos estudiada en este trabajo cumple su funcion.
     
     \section{Tipos Cociente}
+    Los cociente son un termino obicuo en matematicas, sin embargo, desde la teoria de conjuntos estan presentes y se extiende el concepto con naturalidad en la teoria de tipos. En los conjuntos, es posible definir el cociente de un conjunto $S$ en clases de equivalencia, obteniendo el cociente del conjunto, donde cada elemento que lo conforma es considerado igual, o equivalente, dada una relacion de equivalencia $\sim$. Asi mismo, es posible definir el cociente de un tipo, donde dada una relacion de equivalencia, los elementos son iguales dentro del cociente. Los cocientes nos permiten redefinir, por tanto, la igualdad proposicional de un tipo.
+    \newline
+    \newline
+    \indent Los tipos cociente son el concepto clave del presente trabajo, y son sumamente importantes en la formalizacion de conceptos matematicos y el razonamiento de programas. Martin Löf propuso dos variantes de la teoría de tipos que se diferencian por el tratamiento que dan a la igualdad: la teoria de tipos intencional, y la teoria de tipos extensional. La mayoria de lenguajes de programacion de hoy en dia, parten de una teoria de tipos intencional porque sus propiedades son decidibles, donde en la teoria de tipos extensional no se garantiza del todo. La razon de esto, es que en la teoría de tipos intensional, la igualdad proposicional definida por tipos de identidad no implica igualdad definicional, y la verificación de tipos es decidible. En la teoría de tipos extensional, por otro lado, la igualdad proposicional se identifica con la igualdad definicional, lo que hace que la verificación de tipos sea indecidible \citep{nuoli}.
+    \newline
+    \newline
+    \indent Debido a sus buenas propiedades computacionales, la teoría de tipos intensional es más popular, sin embargo, carece de algunos conceptos extensionales importantes, como la extensionalidad funcional y los tipos cociente, que estaremos abordando.
+
+Muchos asistentes de pruebas y lenguajes con tipos dependientes como Coq, Agda o Epigram se apoyan en la teoría intensional. Al ser decidible su igualdad definicional, la verificación de tipos se puede automatizar y todo programa bien tipado es terminantej, que son justo las garantías que uno espera de una herramienta con la que se pretende razonar de forma fiable. Lo que se paga a cambio es la ausencia de los conceptos extensionales que venimos comentando: la extensionalidad funcional, la identificación de pruebas distintas de una misma proposición y los tipos cociente \citep{nuoli}.
+\newline
+\newline
+\indent Podría pensarse que basta con postular estos conceptos como axiomas, pero esa vía tiene un coste, y es que un axioma se limita a afirmar que cierto término existe, sin decir cómo se calcula, y esa falta de reglas de cómputo es lo que imposibilita al sistema de tipos determinar si una determinada prueba de igualdad existe o no. Como consecuencia de esto, pues, obtenemos términos cerrados de tipo $\mathbb{N}$ que ya no reducen a ningún valor concreto, con lo que perdemos la canonicidad y, con ella, la razón de haber elegido la teoría intensional desde el principio.
+\newline
+\newline
+\indent La alternativa que ha resultado viable, consiste en dejar intacta la sintaxis y buscar interpretaciones donde los tipos sean algo más que conjuntos. En esa línea aparecieron durante los años noventa varios modelos, entre ellos los modelos de setoides de Hofmann y de Altenkirch, y el modelo de grupoides de Hofmann y Streicher \citep{hoffman}. Leer los tipos como grupoides abrió una puerta que otros siguieron hacia estructuras de dimensión cada vez mayor, y en esa misma dirección se sitúa la teoría homotópica de tipos propuesta por Voevodsky, donde los tipos se piensan como espacios, los términos como puntos en dichos espacios y los tipos de identidad como caminos entre ellos. Bajo esa lectura la igualdad deja de ser un predicado auxiliar y pasa a ser un tipo con estructura propia en cada nivel. Estos ultimos detalles, los abordaremos de forma superficial en la teoria de tipos de Martin Lof para complementar la teoria de tipos extensional y dar una breve introduccion a la teoria homotopica de tipos.
+
+\begin{definition} Una relaci\'on de equivalencia $\sim$ en un conjunto $A$ es una relaci\'on binaria que cumple las siguientes propiedades:
+  \begin{enumerate}
+    \item Reflexividad: $\forall a \in A, \; a \sim a$.
+    \item Simetría: $\forall a, b \in A, \; a \sim b \to b \sim a$.
+    \item Transitividad: $\forall a, b, c \in A, \; a \sim b \to b \sim c \to a \sim c$.
+  \end{enumerate}
+  Por tanto, la clase de equivalencia de un elemento $a \in A$ se denota $[a]$, donde $[a] = \{ x \in A \mid a \sim x \}$. El conjunto de clases de equivalencia de $A$ viene denotada como $A/R$, que se lee \textit{el cociente de A por R}. De forma intuitiva, un tipo cociente $A/R$ es un tipo donde su igualdad ha sido redefinida por una relación de equivalencia $\sim$.
+\end{definition}
+
+En la teoria de tipos intensional, como se menciono, no existe la nocion de tipos cociente dada su naturaleza de redefinir la igualdad definicional, sin embargo, los setoides se han implementado para capturar el mismo comportamiento.
+\newline
+\newline
+\indent Los setoides, sugieren \cite{nuoli} y \cite{hoffman} definidos como $(A, \sim)$, estan compuestos por:
+  \begin{enumerate}
+    \item Un tipo $A : Type$.
+    \item Una relacion binaria $\sim : A \to A \to Prop$.
+    \item Una prueba $p$ de que una funcion $f$ respeta la equivalencia (es decir, que es reflexiva, transitiva y simetrica).
+  \end{enumerate}
+
+  Una funcion $f : A \to B$ respeta la equivalencia $\sim$ si $\forall(x, y: A) \to x \sim y \to f(x)  =_B f(y)$.
+\newline
+\newline
+\indent Sin embargo, en la practica el modelo de los setoides no es para nada practico pues, las pruebas de que una funcion $f$ respeta una equivalencia $\sim$ debe pasarse a toda funcion repetidas veces.
+\newline
+\newline
+\indent Es necesario mencionar la utilidad practica de los cocientes y, dejar claro que no son un concepto puramente matemtico. Tomese como ejemplo el caso de los naturales representados como un par $(a, b)$, donde con su diferencia $a - b$ permite identificar que muchos de ellos pueden representarse comeo un mismo entero, donde, $(3, 1), (4, 2) y (5, 3)$ representaria el numero $2$ y ser, de alguna forma, indistiguibles para el programa. La condicion que los agrupa, $a + b = b + c$ es en este caso, la relacion de equivalencia, formar el cociente dada esta relacion es lo que nos permite que colapsen estos elementos en un solo valor indiscernible por el sistema de tipos.
+ \newline 
+ \newline 
+\indent Los multiconjuntos siguen el mismo patrón. Podemos verlos como listas a las que les hemos quitado la información del orden: partimos del tipo de las listas y cocientamos por la relación que identifica dos de ellas cuando una es permutación de la otra. Así $[1, 2, 2]$ y $[2, 1, 2]$ se vuelven el mismo objeto, pero sin llegar al extremo de un conjunto, porque seguimos recordando cuántas veces aparece cada elemento. Si además olvidamos las repeticiones, cocientando un paso más, recuperamos la noción habitual de conjunto finito.
+\newline 
+\newline 
+\indent En definitiva, desde el lado de la programación, disponer de cocientes amplía el repertorio de tipos de datos algebraicos y facilita razonar sobre tipos infinitos y sobre la semántica de programas concurrentes, como sugieren \cite{nuoli} y \cite{hoffman}.
+\newline
+\newline
+Segun lo estudiado por \cite{nuoli}, las reglas de formacion de los tipos cociente se definen como sigue:
+\begin{gather}
+  \infer[\text{Q-Form}]
+  {\Gamma \vdash A/\sim}
+  {\Gamma \vdash A : *, & \Gamma x, y : A \vdash x \sim y : Prop}
+\end{gather}
+
+Donde $A/\sim$ es el tipo cociente, dado que $A$ es un tipo bien formado en $\Gamma$, $x$ y $y$ habitan en $A$, y existe una prueba, de tipo $Prop$ que atestigua que $x \sim y$.
+
+Adicionalmente, la regla $Q-intro$ permite inferir que $[a]$ es una clase de equivalencia de tipo $A/\sim$, dado que $a : A$ en $\Gamma$
+\begin{gather}
+  \infer[\text{Q-Intro}]
+  {\Gamma \vdash [a] : A/\sim}
+  {\Gamma \vdash a : A}
+\end{gather}
+
+La regla $Q-Ax$, indica que dada una prueba $p$ de equivalencia que $a \sim b$, y dos elementos $a$ y $b$ de tipo $A$, nos es posible definir que $[a]$ y $[b]$ son iguales definicionalmente dentro del cociente $A/\sim$, pero, fuera de el, son elementos totalmente distinguibles por el sistema de tipos.
+\begin{gather}
+  \infer[\text{Q-Ax}]
+  {\Gamma \vdash Qax(p) : [a] =_{A/\sim} [b]}
+  {\Gamma \vdash a, b: A \, \, \Gamma \vdash p : a \sim b}
+\end{gather}
+
     \section{Teoría de tipos de Martin-Löf}
 \section{Reescritura de t\'erminos en Maude}
 La reescritura de t\'erminos constituye, a la luz de los cap\'itulos anteriores, una generalizaci\'on natural de la $\beta$-reducci\'on del $\lambda$-c\'alculo. Donde antes orient\'abamos un redex de la forma $(\lambda x.\, M)\, N$ hacia $M[x := N]$, ahora disponemos de un conjunto arbitrario de ecuaciones $l = r$, le\'idas como reglas $l \to r$, y las aplicamos a un t\'ermino siempre que en \'el aparezca una instancia del lado izquierdo. El proceso de c\'omputo se reduce, entonces, a buscar redexes y a contraerlos, exactamente igual que antes, pero en un marco mucho m\'as flexible que permite especificar tipos de datos, funciones y, como veremos, sistemas concurrentes enteros.
