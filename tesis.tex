@@ -144,7 +144,7 @@ El lambda cálculo fue inventado por Alonzo Church en la decada de los 80 con el
 Este sistema ocupa, además, un lugar cenral el diseño de lenguajes de programación. De forma análoga, la manera en la que se programa en el mismo es muy similar a cómo se programa en un lenguaje funcional hoy en dia. De hecho, lenguajes como Haskell, Agda, la familia de lenguajes basados en ML, y LISP, estan ampliamente inspirados en un conjunto del lambda calculus y, pueden entenderse, en buena medida, como extensiones  dotadas de azucar sintactico, sistemas de tipos y otras primitivas \citep{pierce2002}.
 \newline
 \newline
-El lambda calculo es un lenguaje muy potente y, a su vez, sumamente simple. Un término puede estar compuesto, o bien, formarse, de tres elementos: variables, aplicacion y abstracción lambda. De forma inductiva, fijado un conjunto infinito numerable de variables V, el conjunto $\Lambda$ de los términos lambda se define como el menor conjunto cerrado bajo las siguientes reglas \citep{barendregt1984, pierce2002}:
+El lambda cálculo es un lenguaje muy potente y, a su vez, sumamente simple. Un término puede estar compuesto, o bien, formarse, de tres elementos: variables, aplicacion y abstracción lambda. De forma inductiva, fijado un conjunto infinito numerable de variables V, el conjunto $\Lambda$ de los términos lambda se define como el menor conjunto cerrado bajo las siguientes reglas \citep{barendregt1984, pierce2002}:
 \begin{align}
   M := \quad & x & \tag{1}\\
   \mid \quad & \lambda x.\, M & \tag{2}\\
@@ -153,10 +153,10 @@ El lambda calculo es un lenguaje muy potente y, a su vez, sumamente simple. Un t
 
 Donde, $(1)$ es un conjunto infinito de variables, tal que si $x, y, z \in \textit{V}$ y $V \in \Lambda$, entonces $V \in \Lambda$. $(2)$ es una abstracción lambda, si $x \in V$ y además $M \in \Lambda$, entonces $\lambda x.\, M \in \Lambda $. $(3)$ Es una aplicación de dos términos, si $M, N \in \Lambda$ entonces $M N \in \Lambda$.
 
-El lambda calculo es lo suficientemente potente para permitirnos codificar simples tipos de datos o, al menos, emular el comportamiento que obtendriamos de los mismos en un sistema de tipos mas avanzado.
+El lambda cálculo es lo suficientemente potente para permitirnos codificar simples tipos de datos o, al menos, emular el comportamiento que obtendriamos de los mismos en un sistema de tipos mas avanzado.
 
 \subsection{Booleanos}
-El tipo booleano es un tipo habitado por solo dos posibles terminos: $True$ o $False$. Pese a que el lambda calculo sin tipos no posee una nocion de verdad o falsedad, es posible, aun asi, codificar los booleanos, como se muestra (citar bargendregt):
+El tipo booleano es un tipo habitado por solo dos posibles terminos: $True$ o $False$. Pese a que el lambda cálculo sin tipos no posee una nocion de verdad o falsedad, es posible, aun asi, codificar los booleanos, como se muestra (citar bargendregt):
 
 \begin{example}
   $\mathrm{True} \equiv \lambda xy.\, x$, \quad $\mathrm{False} \equiv \lambda xy.\, y$
@@ -225,10 +225,10 @@ una variable ligada para obtener un t\'ermino $\alpha$-equivalente recibe el nom
 \textit{$\alpha$-conversi\'on}, y ser\'a fundamental para definir correctamente la
 sustituci\'on bajo un binder.
 \subsection{Sustitución}
-Anteriormente, definimos la sustitución en términos de $\to_\beta$ reducción, sin embargo, la sustitucion posee en sí reglas de computo que valen la pena considerar pues, dependiendo del término que se esté evaluando, la sustitución tendrá, o no, efecto alguno.
+Anteriormente, definimos la sustitución en términos de $\to_\beta$ reducción, sin embargo, la sustitución posee en sí reglas de computo que valen la pena considerar pues, dependiendo del término que se esté evaluando, la sustitución tendrá, o no, efecto alguno.
 \newline
 \newline
-Se definen, pues, las reglas de computo de la sustitucion de acuerdo a lo discutido por \cite{pierce2002}. Más formalmente:
+Se definen, pues, las reglas de computo de la sustitución de acuerdo a lo discutido por \cite{pierce2002}. Más formalmente:
 
 \begin{align}
 & (1) \; x[x := N] \equiv N, \notag \\
@@ -396,7 +396,7 @@ es decir, $R$ es miembro de sí mismo exactamente cuando no lo es. La gravedad d
 \indent Para evitarlas, Russell propuso organizar los objetos en una jerarquía estratificada. En el nivel más bajo están los individuos; en el siguiente, los predicados (o clases) de individuos; después los predicados de predicados, y así sucesivamente. Esta distinción es la que la teoría de tipos internaliza: a cada objeto se le asigna un tipo, y una función proposicional solo puede aplicarse a argumentos del tipo inmediatamente inferior. Bajo esta restricción, la fórmula $x \in x$ ni siquiera llega a estar bien  y es rechazada, ya que la pertenencia exige que su argumento sea de un tipo menor que el del conjunto. El conjunto $R$ no puede construirse, y la paradoja desaparece por construcción. De este modo, conjuntos grandes y pequeños residen en niveles distintos de la teoría.
 \newline
 \newline
-\indent La formulación original de Russell, desarrollada junto a Whitehead en \textit{Principia Mathematica}, era la teoría ramificada de tipos, que sumaba a la estratificación por tipos una segunda por órdenes para neutralizar también las paradojas semánticas, al precio de requerir el discutido axioma de reducibilidad. Ramsey observó más tarde que las paradojas estrictamente lógicas o conjuntistas quedan resueltas ya con la jerarquía simple de tipos, sin necesidad de los órdenes ni del axioma de reducibilidad. Es esta teoría simple de tipos la que, años después, Church retomaría como base de su lambda calculo tipado, y la que enlaza directamente con el objeto de este trabajo.
+\indent La formulación original de Russell, desarrollada junto a Whitehead en \textit{Principia Mathematica}, era la teoría ramificada de tipos, que sumaba a la estratificación por tipos una segunda por órdenes para neutralizar también las paradojas semánticas, al precio de requerir el discutido axioma de reducibilidad. Ramsey observó más tarde que las paradojas estrictamente lógicas o conjuntistas quedan resueltas ya con la jerarquía simple de tipos, sin necesidad de los órdenes ni del axioma de reducibilidad. Es esta teoría simple de tipos la que, años después, Church retomaría como base de su lambda cálculo tipado, y la que enlaza directamente con el objeto de este trabajo.
 \newline
 \newline
 \indent En términos más generales, los tipos son ubicuos en computación, y numerosos lenguajes tienen su propio sistema de tipos, unos mas avanzados que otros y, otros más simples. Tan simples que, la manipulación de tipos es casi perceptible o inexitstente. Lenguajes con esta capacidad de omitir tipos son conocidos como lenguajes dinámicamente tipados, donde en casos, es completamente opcional tipar expresiones y en caso contrario, el compilador hace lo mejor que puede para inferir un tipo adecuado para una expresión. Haskell por ejemplo, es un lenguaje de alto nivel, ampliamente utilizado por grupos de investigación y académicos, su sistema de tipos esta inicialmente basado en el lambda calculus simplemente tipado, también llamado \textit{System F}, que abordaremos en capítulos posteriores a este. Sin embargo, hoy en día su sistema de tipos ha madurado lo suficiente como para dejar de considerarle un lenguaje con un sistema de tipos simple. C++ es un claro ejemplo de un sistema de tipos, quizá, mucho más complejo, pero sumamente rico, que facilita posteriormente, una distincion semántica y rechaza programas que son imposibles de evaluar correctamente. OCaml en principio, fue de los lenguajes que llego a explorar más a fondo la teoria de tipos y la expresividad de los mismos como funcionalidades del lenguaje, siendo de los primeros en implementar tipos polimórficos, es decir, tipos que pueden tomar la forma de otros tipos. Finalmente, un sistema de tipos permite al lenguaje alcanzar capacidades de expresividad bastante amplias y, a su vez, evitar que programas erronoes se ejecuten.
@@ -429,7 +429,7 @@ Sea $\Gamma = \{b : B, U : *\}$, si $A$ no es un tipo bien formado en $\Gamma$, 
   \Gamma \overset{?}{\vdash} ? : A
 \]
 
-Nótese que los problemas anteriormente mencionados son decibibles en $\lambda\to$, es decir, para cada una de estas cuestiones existe un algoritmo posible que produce un resultado en el lambda calculo simplemente tipado. En sistemas de tipos más complicados, sin embargo, la búsqueda de un término llega a ser un problema, pues tales sistemas no logran encontrar un habitante del tipo en el contexto, siendo problemas no decidibles \citep{b-calculi}.
+Nótese que los problemas anteriormente mencionados son decibibles en $\lambda\to$, es decir, para cada una de estas cuestiones existe un algoritmo posible que produce un resultado en el lambda cálculo simplemente tipado. En sistemas de tipos más complicados, sin embargo, la búsqueda de un término llega a ser un problema, pues tales sistemas no logran encontrar un habitante del tipo en el contexto, siendo problemas no decidibles \citep{b-calculi}.
 \newline
 \newline
 \indent Se empleará, a lo largo de la tesis, la siguiente notación para definir las derivaciones en la teoría de tipos, donde la parte superior es una lista de premisas y la parte inferior, la conclusión o los consecuentes:
@@ -531,7 +531,7 @@ Asimismo, para las reglas que expresan la igualdad definicional como una relaci�
   {\vdash \Gamma = \Delta\;ctxt & \Gamma \vdash \sigma\;\mathsf{type}}
 \end{gather}
 \newline
-A lo largo de los años numerosos esfuerzos se han realizado para desarrollar distintos sabores (sabores es la palabra? quiza extensiones) de la teoría de tipos y poder dar suficiente poder expresivo al lambda calculo. Estos sistemas de tipos fueron explorados por H. Barendregt en el Cubo Lambda \citep{barendregt1991}, para investigar las diferentes dimensiones en las que puede extenderse el sistema formal. En su paper describe como cada dimension del cubo representa una dependencia entre terminos y tipos, y sus posibles combinaciones.
+A lo largo de los años numerosos esfuerzos se han realizado para desarrollar distintos sabores (sabores es la palabra? quiza extensiones) de la teoría de tipos y poder dar suficiente poder expresivo al lambda cálculo. Estos sistemas de tipos fueron explorados por H. Barendregt en el Cubo Lambda \citep{barendregt1991}, para investigar las diferentes dimensiones en las que puede extenderse el sistema formal. En su paper describe como cada dimension del cubo representa una dependencia entre terminos y tipos, y sus posibles combinaciones.
 \newline
 \newline
 Entiendase por dependencia como la dependencia mutua, valga la reduncancia, que existe entre tipos y terminos: terminos que dependen de otros terminos, terminos dependientes de tipos, tipos dependientes de terminos, y tipos dependientes de otros tipos. Los ocho vertices del cubo, consecuencia de combinar cada posible dimension, resultan en diferentes sistemas de tipos y niveles de expresividad. Concretamente, abordaremos en el presente trabajo, la extension del vertice inferior derecho, que corresponde a la extension de tipos dependientes, concreamente $\lambda\Pi$, o refiérase también en la literatura como $\lambda P$.
@@ -595,7 +595,7 @@ $\lambda\mathrm{P}\omega = \lambda\mathrm{C}$ & $(\ast,\ast)$ & $(\square,\ast)$
 \end{align}
 \end{example}
 
-$\lambda2$ es conocido en la literatura como \textit{System F}. Es el lambda cálculo de segundo orden, o polimórfico. Fue descubierto por Girard y Reynolds en 1972 en el cual se introduce el cuantificador universal en el cálculo y poder cuantificar sobre tipos. A parte de ello, algunas implementaciones extienden el sistema introduciendo kinds, el tipo de todos los tipos. Un gran número de lenguajes funcionales, como Haskell, están inspirados en este sistema. Además de esto, en $\lambda2$ se presenta la noción de variables de tipos, con las cuales es posible cuantificar sobre un rango de tipos, permitiendo así, la suficiente expresividad al lambda calculo para definir, por instancia, la función identidad polimórfica.
+$\lambda2$ es conocido en la literatura como \textit{System F}. Es el lambda cálculo de segundo orden, o polimórfico. Fue descubierto por Girard y Reynolds en 1972 en el cual se introduce el cuantificador universal en el cálculo y poder cuantificar sobre tipos. A parte de ello, algunas implementaciones extienden el sistema introduciendo kinds, el tipo de todos los tipos. Un gran número de lenguajes funcionales, como Haskell, están inspirados en este sistema. Además de esto, en $\lambda2$ se presenta la noción de variables de tipos, con las cuales es posible cuantificar sobre un rango de tipos, permitiendo así, la suficiente expresividad al lambda cálculo para definir, por instancia, la función identidad polimórfica.
 
 \begin{example}
 \begin{align*}
@@ -630,7 +630,7 @@ $\lambda P$ representa los tipos que dependen de términos. Los tipos dependient
     \section{Lambda c\'alculo simplemente tipado}
     
     \section{Tipos Dependientes}
-    Los tipos dependientes son, en principio, tipos que dependen de términos. Antes de adentrarnos en la teoría de tipos dependientes, es necesario dedicar de forma breve una introduccion a los sistemas de tipos puros, framework de donde parte esta formalización lógica. Un PTS es un framework para especificar y formalizar el lambda cálculo y extender su teoría. Fue propuesto inicialmente por Berardi y Terlow como una generalizacion del cubo lambda de \cite{cube1991}. A diferencia del lambda calculo tradicional, un PTS dispone de pseudo-términos que heredan, en gran parte, sintáxis del $\lambda$ calculo simplemente tipado que hasta ahora conocemos.
+    Los tipos dependientes son, en principio, tipos que dependen de términos. Antes de adentrarnos en la teoría de tipos dependientes, es necesario dedicar de forma breve una introduccion a los sistemas de tipos puros, framework de donde parte esta formalización lógica. Un PTS es un framework para especificar y formalizar el lambda cálculo y extender su teoría. Fue propuesto inicialmente por Berardi y Terlow como una generalizacion del cubo lambda de \cite{cube1991}. A diferencia del lambda cálculo tradicional, un PTS dispone de pseudo-términos que heredan, en gran parte, sintáxis del $\lambda$ cálculo simplemente tipado que hasta ahora conocemos.
 
     El conjunto de pseudo-términos, se define como sigue:
     \begin{definition} Pseudo-términos de un PTS
@@ -643,7 +643,7 @@ $\lambda P$ representa los tipos que dependen de términos. Los tipos dependient
 
     \begin{enumerate}
             \item Se utiliza la misma convencion para extraer el conjunto de variables libres en un pseudo-termino $FV(M)$. Adicional a ello, se escribirá $A \to B$ para todo tipo de función en el que $x$ no aparezca libre en $B$. Y se usará $\Pi x: A . B(x)$, en caso contrario.
-            \item Los sistemas de tipos puros, describen un $\lambda$ calculo a la Church, es decir, las abstracciones lambda llevan consigo el dominio  de las variables ligadas y, como consecuencia de ello, la computabilidad en un sistema de tipos puro es decidible.
+            \item Los sistemas de tipos puros, describen un $\lambda$ cálculo a la Church, es decir, las abstracciones lambda llevan consigo el dominio  de las variables ligadas y, como consecuencia de ello, la computabilidad en un sistema de tipos puro es decidible.
             \item Los sistemas de tipos puros proveen los cimientos de los tipos dependientes, de hecho, es en el constructor del tipo $\Pi$ donde se evidencia, por primera vez, la dependiencia en esta teoría, capturando la noción del producto cartesiano generalizado.
     \end{enumerate}
 
@@ -660,7 +660,7 @@ $\lambda P$ representa los tipos que dependen de términos. Los tipos dependient
     Además, se presentan las reglas de formación de un $PTS$, según lo sugiere \cite{barthe-coquand}:
     \newline
     \newline
-    Nótese que, a diferencia de los sistemas de tipos estudiados hasta ahora, existe una ligera disparidad en el contexto presente en el lambda calculo simplemente tipado y uno dependientemente tipado, y es que, primero, los contextos ahora pueden tener presencia de variables de tipos, de la forma $A : s$ con $s : \mathcal{S}$. Segundo, el orden en el que se insertan juicios $A : s$ en $\Gamma$ importa para poder manejar de manera correcta y consistente las dependencias, por ejemplo, un juicio de la forma $A : s, \sigma : A$ es totalmente valido, pero $\sigma : A, A : s$ carece de sentido, pues no existe un juicio previo a $\sigma : A$ del que sea posible derivar que $A$ es un tipo bien formado.
+    Nótese que, a diferencia de los sistemas de tipos estudiados hasta ahora, existe una ligera disparidad en el contexto presente en el lambda cálculo simplemente tipado y uno dependientemente tipado, y es que, primero, los contextos ahora pueden tener presencia de variables de tipos, de la forma $A : s$ con $s : \mathcal{S}$. Segundo, el orden en el que se insertan juicios $A : s$ en $\Gamma$ importa para poder manejar de manera correcta y consistente las dependencias, por ejemplo, un juicio de la forma $A : s, \sigma : A$ es totalmente valido, pero $\sigma : A, A : s$ carece de sentido, pues no existe un juicio previo a $\sigma : A$ del que sea posible derivar que $A$ es un tipo bien formado.
     \newline
     \newline
     \indent Como se ha mencionado ya con anterioridad, la extensión a la que se dedicara el estudio del presente trabajo sera $\lambda P$, sin embargo, se invita al lector a revisar con más detalles el resto de teorías que, con bastante precisión \cite{barthe-coquand} abordan sobre el Cubo Lambda de Barendregt.
@@ -732,7 +732,7 @@ La existencia de esta prueba es lo que nos permite concluir que $n + 0 \equiv n$
 \end{corollary}
 
 \subsection{Tipos Sigma}
-Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el proximo tipo que estudiaremos que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma. Representado en el lambda calculo simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, mas bien, asegurar la decibiliad del prototipo, este tipo estará acompanado de su ascripcion.
+Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el proximo tipo que estudiaremos que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma. Representado en el lambda cálculo simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, mas bien, asegurar la decibiliad del prototipo, este tipo estará acompanado de su ascripcion.
 
 El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembro representando los tipos sigma:
 
@@ -1017,20 +1017,20 @@ El segmento de constructor de tipos es de mayor interés. Es tentador definir un
 \end{lstlisting}
 Pero esto es incorrecto pues, no tiene \textit{Type} un orden estructuralmente menor que \textit{Term} por el contrario, dado que defininimos un cálculo dependiente, términos y tipos vienen siendo lo mismo semánticamente.
 
-\section{Sustitucion}
-Las reglas de sustitucion para nuestro lenguaje no son necesariamente distintas de las del lambda cálculo sin tipos discutidas en en un capitulo previo a este, aún así, existen diferencias que son notables en la sustitución del calculo dependiente. Se pretende, por tanto, que las mismas sean triviales para el lector:
+\section{Sustitución}
+Las reglas de sustitución para nuestro lenguaje no son necesariamente distintas de las del lambda cálculo sin tipos discutidas en en un capitulo previo a este, aún así, existen diferencias que son notables en la sustitución del cálculo dependiente. Se pretende, por tanto, que las mismas sean triviales para el lector:
 
 \begin{enumerate}
     \item Las anotaciones de tipo de los binders para el tipo $\Pi$, es decir, $A$ en $\lambda x : A.\, t$ y en $\Pi x : A.\, B$, son ahora t\'erminos y por tanto pueden contener ocurrencias libres de variables. La sustituci\'on debe aplicarse de forma recursiva sobre el término.
     \item Cuando se sustituye bajo un binder de variable $y$ distinta de $x$, el cuerpo del binder se sustituye normalmente; cuando $y = x$, la sustituci\'on se detiene en la anotaci\'on de tipo pero no avanza al cuerpo, pues $x$ queda capturada por el binder.
 \end{enumerate}
 
-La regla correspondiente a la sustitucion en el tipo de funcion dependiente es omitida por \cite{loh2010} sin embargo, es prudente mencionarla en nuestra implementacion.
+La regla correspondiente a la sustitución en el tipo de funcion dependiente es omitida por \cite{loh2010} sin embargo, es prudente mencionarla en nuestra implementacion.
 \begin{align}
 & \quad \Pi y : A . B[x := s] = \Pi y : A[x := s] . B[x := s] \notag
 \end{align}
 
-La regla es trivial para $\lambda$ y $\Sigma$ que describiremos posteriormente. Para el resto de casos, la sustitución se propaga estrucuturalmente.
+La regla es trivial para $\lambda$ y $\Sigma$ que describirémos posteriormente. Para el resto de casos, la sustitución se propaga estrucuturalmente.
 \newline
 \newline
 \indent Luego, la implementación en Maude define las reglas de cómputo para la sustitución en el cálculo dependientemente tipado, se define una regla por cada constructor del cálculo, definiendo la condición de igualdad o desigualdad sobre los nombres de las variables, expresada de manera ecuacional:
@@ -1056,7 +1056,7 @@ fmod LAMBDA-QTT is
   ...
 endfm
 \end{lstlisting}
-\section{Normalizacion}
+\section{Normalización}
 Se define, a continuación, la semántica operacional \textit{big step} del proceso de normalización para cada término en el lenguaje, y con a ella, la ecuación que corresponde a cada regla de evaluación.
 
 \begin{center}
@@ -1093,12 +1093,12 @@ Se define, a continuación, la semántica operacional \textit{big step} del proc
 
 
 \begin{center}
-\begin{tabular}{@{}c@{\qquad}m{0.8\textwidth}@{}}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
   $\infer[\lambda]
   {\text{lam(V, A, T) $\Downarrow$ lam(V, A', T')}}
   {A \Downarrow A' \quad T \Downarrow T'}$
   &
-    \verb|eq norm(lam(V, A, T)) = lam(V, norm(A), norm(T)). |
+    \texttt{eq norm(lam(V, A, T)) = lam(V, norm(A), norm(T)).}
 \end{tabular}
 \end{center}
 
@@ -1114,25 +1114,44 @@ Se define, a continuación, la semántica operacional \textit{big step} del proc
   {\mathrm{subst}(T, V, S) \Downarrow T'}
 \end{gather*}
 
-\begin{gather*}
-  \infer[App-otherwise]
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[App-otherwise]
   {\text{normApp($T_1$, $T_2$) \Downarrow app($T_1$, $T_2$)}}
-  {}
-  \quad
-  \infer[Nat]
-  {\text{Nat} \Downarrow \text{Nat}}
-  {}
-\end{gather*}
+  {}$
+  &
+    \texttt{eq norm(app(T1, T2)) = normApp(norm(T1), norm(T2)).}
+\end{tabular}
+\end{center}
 
-\begin{gather*}
-  \infer[zero]
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}l@{}}
+  $\infer[Nat]
+  {\text{Nat} \Downarrow \text{Nat}}
+  {}$
+  &
+    \verb|eq norm(Nat) = Nat.|
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}l@{}}
+  $\infer[zero]
   {\text{zero} \Downarrow \text{zero}}
-  {}
-  \quad
-  \infer[suc]
+  {}$
+  &
+    \verb|eq norm(zero) = zero.|
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}l@{}}
+  $\infer[suc]
   {\text{suc(T) $\Downarrow$ suc(T')}}
-  {T \Downarrow T'}
-\end{gather*}
+  {T \Downarrow T'}$
+  &
+    \verb|eq norm(suc(T)) = suc(norm(T)).|
+\end{tabular}
+\end{center}
 
 \begin{gather*}
   \infer[\text{natrec-zero}]
@@ -1149,10 +1168,178 @@ Se define, a continuación, la semántica operacional \textit{big step} del proc
 \end{gather*}
 
 
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[\Sigma]
+  {\text{Sigma(V, A, B) $\Downarrow$ Sigma(V, A', B')}}
+  {A$\Downarrow$A' $\quad$ B $\Downarrow$ B'}$
+  &
+    \texttt{eq norm(Sigma(V, A, B)) = Sigma(V, norm(A), norm(B)).}
+\end{tabular}
+\end{center}
 
 
-\section{Verificacion de tipos}
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[Pair]
+  {\mathm{pair}(T_1, T_2, A) \Downarrow \mathrm{pair}(T_1', T_2', A')}
+  {$T_1$ $\Downarrow$ $T_1'$ $\quad$ $T_2$ $\Downarrow$ $T_2'$ $\quad$ $A$ $\Downarrow$ A'}$
+  &
+    \texttt{eq norm(pair(T1, T2, A)) = pair(norm(T1), norm(T2), norm(A)).}
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[fst]
+  {\text{fst(pair($T_1$, $T_2$, A)) $\Downarrow$ $T_1'$}}
+  {$T_1$ $\Downarrow$ $T_1'$}$
+  &
+    \texttt{eq norm(fst(pair(T1, T2, A))) = norm(T1).}
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[fst-otherwise]
+  {\text{fst($T_1$) $\Downarrow$ fst($T_1'$)}}
+  {$T_1$ $\Downarrow$ $T_1'$}$
+  &
+    \texttt{eq norm(fst(T)) = fst(norm(T)) [owise].}
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[snd]
+  {\text{snd(pair($T_1$, $T_2$, A)) $\Downarrow$ $T_2'$}}
+  {$T_2$ $\Downarrow$ $T_2'$}$
+  &
+    \texttt{eq norm(fst(pair(T1, T2, A))) = norm(T2).}
+\end{tabular}
+\end{center}
+
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[snd-otherwise]
+  {\text{snd($T$) $\Downarrow$ snd($T'$)}}
+  {$T$ $\Downarrow$ $T'$}$
+  &
+    \texttt{eq norm(snd(T)) = snd(norm(T)) [owise].}
+\end{tabular}
+\end{center}
+
+\section{Verificación de Tipos}
+La verficación de tipos que se implementa es bidireccional. Se proponen las siguientes ecuaciones $check$ ($\downarrow$) e $infer$ ($\uparrow$) para asertar que un término es de un tipo o respectivamente, sintetizar su tipo dado un contexto $\Gamma$ cuando no hay suficiente informacion para asertar su estructura ne un principio. Para propósitos prácticos, cada término en el lenguaje que se formaliza tiene una ascripción (es decir, anotado con su signatura o el tipo que habita) y cualquier término no tipado será rechazado por el typechecker.
+\begin{align}
+  & \quad \texttt{op check : Ctx Term Term -> [Bool] .} \\
+  & \quad \texttt{op infer : Ctx Term -> [Term] .} \\
+  & \quad \texttt{op tyEq : Term Term -> Bool .}
+\end{align}
+$TyEq$ determina posteriormente si $T_1$ $=_\beta$ $T_2$ luego de normalizar exhaustivamente, como consecuencia de la ocurrencia de términos en los tipos. La correspondencia entre las reglas de tipado y el código Maude está basada directamente en las del lambda cálculo dependientemente tipado sugeridas por \cite{loh2010}.
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{7cm}@{}}
+$\infer[Type]
+  {\Gamma \vdash * \uparrow * }
+  {}$
+  &
+  \texttt{eq infer(G, Type) = Type.}
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+$\infer[Pi]
+  {\Gamma \vdash Pi(x, A, B) \uparrow *}
+  {\Gamma \vdash A \downarrow * \quad \Gamma, x : A \vdash B \uparrow *}$
+  &
+    \texttt{ceq infer(G, Pi(V, A, B)) = Type
+    if Type := norm(infer(G, A)) 
+    /\textbackslash{} Type := norm(infer(G ; V : A, B)) .}
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{7cm}@{}}
+$\infer[Var]
+  {\Gamma \vdash x \uparrow \tau }
+  {\Gamma \quad lookup(x) = \tau}$
+  &
+  \texttt{eq infer(G, var(N)) = lookup(var(N), G).}
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[App]
+  {\Gamma \vdash app(T_1, T_2) \uparrow B[x := T_2]}
+  {\Gamma \vdash T_1 \uparrow Pi(x, A, B) \quad \Gamma \vdash T_2 \downarrow A}$
+  &
+    \texttt{ceq infer(G, app(T1, T2)) = norm(subst(B, V, T2))
+    if Pi(V, A, B) := norm(infer(G, T1))
+    /\textbackslash{} true := check(G, T2, A) .}
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[Lam]
+  {\Gamma \vdash \lambda x : A . T \downarrow Pi(x, A, B)}
+  {\Gamma \vdash A \uparrow * \quad \Gamma, x : A \vdash B \uparrow *}$
+  &
+    \texttt{ceq infer(G, lam(V, A, T)) = Pi(V, A, B)
+    if Type := norm(infer(G, A))
+    /\textbackslash{} B := infer(G ; V : A, T) .}
+\end{tabular}
+\end{center}
+
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[Nat]
+  {\Gamma \vdash Nat \downarrow * }
+  &
+  \texttt{eq infer(G, Nat) = Type.}
+\end{tabular}
+\end{center}
+
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[zero]
+  {\Gamma \vdash zero \downarrow Nat }
+  &
+  \texttt{eq infer(G, zero) = Nat .} 
+\end{tabular}
+\end{center}
+
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[suc]
+  {\Gamma \vdash suc(T) \uparrow Nat }
+  {\Gamma \vdash T \downarrow Nat }
+  &
+  \texttt{ceq infer(G, suc(T)) = Nat if true := check(G, T, Nat).} 
+\end{tabular}
+\end{center}
+
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[\Sigma]
+  {\Gamma \vdash Sigma(V, A, B) \uparrow * }
+  {\Gamma \vdash A \downarrow * \quad \Gamma, x : A \vdash B \uparrow * \ }
+  &
+  \texttt{ceq infer(G, Sigma(V, A, B)) = Type
+    if Type := norm(infer(G, A)) /\ Type := norm(infer(G ; V : A, B)) .} 
+\end{tabular}
+\end{center}
+  
 \chapter{Extension con tipos cociente}
+El lambda cálculo dependientemente tipado anteriormente implementado, sera la base para extender el sistema de tipos con tipos cociente, guiandonos de lo sugerido por \cite{nuoli}. Como en el capitulo anterior, se listan las reglas de formacion, introduccion, eliminacion y computacion junto con el codigo Maude que corresponde a cada una de ellas.
     \section{Formacion}
     \section{Introduccion}
     \section{Eliminacion}
@@ -1166,8 +1353,182 @@ Se define, a continuación, la semántica operacional \textit{big step} del proc
 \appendix
 
 \chapter{C\'odigo Maude}
+\begin{lstlisting}
+fmod LAMBDA-QT is
+  pr STRING .
+  sort Var .
+  sort Term .
+  subsort Var < Term .
 
-TODO
+  vars N N' : String .
+  vars T T1 T1' T2 S A F B R QT Resp Q : Term .
+  var V : Var .
+
+  op Nat : -> Term [ctor] .
+  op zero : -> Term [ctor] .
+  op suc : Term -> Term [ctor] .
+  op natrec : Term Term Term Term -> Term [ctor] .
+  op Sigma : Term Term Term -> Term [ctor] .
+  op pair : Term Term Term -> Term [ctor] .
+  op fst : Term -> Term [ctor] .
+  op snd : Term -> Term [ctor] .
+
+  op var : String -> Var [ctor] .
+  op Type : -> Term [ctor] .
+  op Pi : Var Term Term -> Term [ctor] .
+  op lam : Var Term Term -> Term [ctor] .
+  op app : Term Term -> Term [ctor] .
+
+  op qtype : Term Term -> Term [ctor] .
+  op qclass : Term Term -> Term [ctor] .
+  op qelim : Term Term Term -> Term [ctor] .
+
+  op subst : Term Var Term -> Term .
+
+  eq subst(var(N), var(N), S) = S .
+  ceq subst(var(N), var(N'), S) = var(N) if N =/= N' .
+  eq subst(app(T1, T2), V, S) = app(subst(T1, V, S), subst(T2, V, S)) .
+  eq subst(Type, V, S) = Type .
+  ceq subst(lam(var(N), A, T), var(N), S) = lam(var(N), subst(A, var(N), S), T)
+    if true = true .
+  ceq subst(lam(var(N), A, T), var(N'), S) =
+    lam(var(N), subst(A, var(N'), S), subst(T, var(N'), S))
+    if N =/= N' .
+  ceq subst(Pi(var(N), A, B), var(N), S) = Pi(var(N), subst(A, var(N), S), B)
+    if true = true .
+  ceq subst(Pi(var(N), A, B), var(N'), S) =
+    Pi(var(N), subst(A, var(N'), S), subst(B, var(N'), S))
+    if N =/= N' .
+  eq subst(Nat, V, S) = Nat .
+  eq subst(zero, V, S) = zero .
+  eq subst(suc(T), V, S) = suc(subst(T, V, S)) .
+  eq subst(natrec(T1, T2, A, B), V, S) =
+      natrec(subst(T1, V, S), subst(T2, V, S), subst(A, V, S), subst(B, V, S)) .
+  ceq subst(Sigma(var(N), A, B), var(N), S) = Sigma(var(N), subst(A, var(N), S), B)
+    if true = true .
+  ceq subst(Sigma(var(N), A, B), var(N'), S) =
+    Sigma(var(N), subst(A, var(N'), S), subst(B, var(N'), S))
+    if N =/= N' .
+  eq subst(pair(T1, T2, A), V, S) = pair(subst(T1, V, S), subst(T2, V, S), subst(A, V, S)) .
+  eq subst(fst(T), V, S) = fst(subst(T, V, S)) .
+  eq subst(snd(T), V, S) = snd(subst(T, V, S)) .
+  eq subst(qtype(A, R), V, S) = qtype(subst(A, V, S), subst(R, V, S)) .
+  eq subst(qclass(A, R), V, S) = qclass(subst(A, V, S), subst(R, V, S)) .
+  eq subst(qelim(F, A, R), V, S) = qelim(subst(F, V, S), subst(A, V, S), subst(R, V, S)) .
+
+  op norm : Term -> Term .
+  op normApp : Term Term -> Term .
+
+  eq norm(var(N)) = var(N) .
+  eq norm(Type) = Type .
+
+  eq norm(Pi(V, A, B)) = Pi(V, norm(A), norm(B)) .
+  eq norm(lam(V, A, T)) = lam(V, norm(A), norm(T)) .
+
+  eq norm(app(T1, T2)) = normApp(norm(T1), norm(T2)) .
+
+  eq normApp(lam(V, A, T), S) = norm(subst(T, V, S)) .
+
+  eq normApp(T1, T2) = app(T1, T2) [owise] .
+
+  eq norm(Nat) = Nat .
+  eq norm(zero) = zero .
+
+  eq norm(suc(T)) = suc(norm(T)) .
+
+  eq norm(natrec(A, T1, T2, zero)) = norm(T1) .
+
+  eq norm(natrec(A, T1, T2, suc(T))) =
+    norm(app(app(T2, T), natrec(A, T1, T2, T))) .
+
+  eq norm(natrec(A, T1, T2, T)) =
+    natrec(norm(A), norm(T1), norm(T2), norm(T)) [owise] .
+
+  eq norm(Sigma(V, A, B)) = Sigma(V, norm(A), norm(B)) .
+
+  eq norm(pair(T1, T2, A)) = pair(norm(T1), norm(T2), norm(A)) .
+
+  eq norm(fst(pair(T1, T2, A))) = norm(T1) .
+
+  eq norm(fst(T)) = fst(norm(T)) [owise] .
+
+  eq norm(snd(pair(T1, T2, A))) = norm(T2) .
+
+  eq norm(snd(T)) = snd(norm(T)) [owise] .
+
+  eq norm(qtype(A, R)) = qtype(norm(A), norm(R)) .
+  eq norm(qclass(A, R)) = qclass(norm(A), norm(R)) .
+  eq norm(qelim(F, A, qclass(T, QT))) = norm(app(F, T)) .
+  eq norm(qelim(F, A, R)) = qelim(norm(F), norm(A), norm(R)) [owise] .
+
+  op tyEq : Term Term -> Bool .
+  eq tyEq(A, B) = norm(A) == norm(B) .
+
+  sort Ctx .
+  op mt : -> Ctx [ctor] .
+  op _`;_`:_ : Ctx Var Term -> Ctx [ctor] .
+  var G : Ctx .
+
+  op lookup : Var Ctx -> [Term] .
+  eq lookup(var(N), G ; var(N) : A) = A .
+  ceq lookup(var(N), G ; var(N') : A) = lookup(var(N), G) if N =/= N' .
+
+  op infer : Ctx Term -> [Term] .
+  op check : Ctx Term Term -> [Bool] .
+
+  eq infer(G, Type) = Type .
+
+  eq infer(G, var(N)) = lookup(var(N), G) .
+
+  ceq infer(G, Pi(V, A, B)) = Type
+    if Type := norm(infer(G, A))
+    /\ Type := norm(infer(G ; V : A, B)) .
+
+  ceq infer(G, lam(V, A, T)) = Pi(V, A, B)
+    if Type := norm(infer(G, A))
+    /\ B := infer(G ; V : A, T) .
+
+  ceq infer(G, app(T1, T2)) = norm(subst(B, V, T2))
+    if Pi(V, A, B) := norm(infer(G, T1))
+    /\ true := check(G, T2, A) .
+
+  eq infer(G, Nat) = Type .
+
+  eq infer(G, zero) = Nat .
+
+  ceq infer(G, qtype(A, R)) = Type
+  if Type := norm(infer(G, A))
+  /\ true := check(G, R, Pi(var("a"), A, Pi(var("b"), A, Type))).
+
+  ceq infer(G, qclass(T, qtype(A, R))) = qtype(A, R)
+    if true := check(G, T, A) .
+
+  ceq infer(G, qelim(F, Resp, Q)) = B
+  if qtype(A,R) := norm(infer(G, Q)) 
+  /\ Pi(V, A, B) := norm(infer(G, F)) .
+
+  ceq infer(G, suc(T)) = Nat if true := check(G, T, Nat) .
+
+  ceq infer(G, natrec(A, T1, T2, T)) = norm(app(A, T))
+    if true := check(G, T, Nat) .
+
+  ceq infer(G, Sigma(V, A, B)) = Type
+    if Type := norm(infer(G, A))
+    /\ Type := norm(infer(G ; V : A, B)) .
+
+  ceq infer(G, pair(T1, T2, Sigma(V, A, B))) = Sigma(V, A, B)
+    if true := check(G, T1, A)
+    /\ true := check(G, T2, norm(subst(B, V, T1))) .
+
+  ceq infer(G, fst(T)) = A
+    if Sigma(V, A, B) := norm(infer(G, T)) .
+
+  ceq infer(G, snd(T)) = norm(subst(B, V, fst(T)))
+   if Sigma(V, A, B) := norm(infer(G, T)) .
+
+  eq check(G, T, A) = tyEq(infer(G, T), A) .
+endfm
+\end{lstlisting}
 \nocite{*}
 \bibliography{references}
 \end{document}
