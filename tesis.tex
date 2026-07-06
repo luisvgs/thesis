@@ -1237,7 +1237,7 @@ La verficación de tipos que se implementa es bidireccional. Se proponen las sig
   & \quad \texttt{op infer : Ctx Term -> [Term] .} \\
   & \quad \texttt{op tyEq : Term Term -> Bool .}
 \end{align}
-$TyEq$ determina posteriormente si $T_1$ $=_\beta$ $T_2$ luego de normalizar exhaustivamente, como consecuencia de la ocurrencia de términos en los tipos. La correspondencia entre las reglas de tipado y el código Maude está basada directamente en las del lambda cálculo dependientemente tipado sugeridas por \cite{loh2010}.
+$TyEq$ determina posteriormente si $T_1$ $=_\beta$ $T_2$ luego de normalizar exhaustivamente, como consecuencia de la ocurrencia de términos en los tipos. La correspondencia entre las reglas de tipado y el código Maude está basada directamente en las del lambda cálculo dependientemente tipado sugeridas por \cite{loh2010}. Como observación, la implementación que se detalla diverge ligeramente en los constructores $Sigma$, $fst$ y $snd$, pues no son propias del lambda dependientemente tipado que inicialmente Löh propone, pero jugarán un papel fundamental en los casos de uso que al momento de presentar los tipos cociente en nuestro sistema, se mostrarán.
 
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}p{7cm}@{}}
@@ -1299,7 +1299,7 @@ $\infer[Var]
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
   $\infer[Nat]
-  {\Gamma \vdash Nat \downarrow * }
+  {\Gamma \vdash Nat \downarrow * }$
   &
   \texttt{eq infer(G, Nat) = Type.}
 \end{tabular}
@@ -1309,7 +1309,7 @@ $\infer[Var]
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
   $\infer[zero]
-  {\Gamma \vdash zero \downarrow Nat }
+  {\Gamma \vdash zero \downarrow Nat }$
   &
   \texttt{eq infer(G, zero) = Nat .} 
 \end{tabular}
@@ -1320,7 +1320,7 @@ $\infer[Var]
 \begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
   $\infer[suc]
   {\Gamma \vdash suc(T) \uparrow Nat }
-  {\Gamma \vdash T \downarrow Nat }
+  {\Gamma \vdash T \downarrow Nat }$
   &
   \texttt{ceq infer(G, suc(T)) = Nat if true := check(G, T, Nat).} 
 \end{tabular}
@@ -1331,19 +1331,196 @@ $\infer[Var]
 \begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
   $\infer[\Sigma]
   {\Gamma \vdash Sigma(V, A, B) \uparrow * }
-  {\Gamma \vdash A \downarrow * \quad \Gamma, x : A \vdash B \uparrow * \ }
+  {\Gamma \vdash A \downarrow * \quad \Gamma, x : A \vdash B \uparrow * \ }$
   &
   \texttt{ceq infer(G, Sigma(V, A, B)) = Type
     if Type := norm(infer(G, A)) /\ Type := norm(infer(G ; V : A, B)) .} 
 \end{tabular}
 \end{center}
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[Pair]
+  {\Gamma \vdash pair(T_1, T_2, Sigma(V, A, B)) \uparrow Sigma(V, A, B) }
+  {\Gamma \vdash T_1 : A \quad \Gamma \vdash T_2 : B[ x := T_1]}$
+  &
+    \texttt{ceq infer(G, pair(T1, T2, Sigma(V, A, B))) = Sigma(V, A, B)
+    if true := check(G, T1, A)
+    /\ true := check(G, T2, norm(subst(B, V, T1))) .}
+\end{tabular}
+\end{center}
+
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[fst]
+  {\Gamma \vdash fst(T) \uparrow A }
+  {\Gamma \vdash T \uparrow Sigma(V, A, B)}$
+  &
+    \texttt{ceq infer(G, fst(T)) = A if Sigma(V, A, B) := norm(infer(G, T)) .}
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
+  $\infer[snd]
+  {\Gamma \vdash snd(T) \uparrow B[ x := fst(T)] }
+  {\Gamma \vdash T \uparrow Sigma(V, A, B)}$
+  &
+    \texttt{ceq infer(G, fst(T)) = A if Sigma(V, A, B) := norm(infer(G, T)) .}
+\end{tabular}
+\end{center}
+
   
-\chapter{Extension con tipos cociente}
-El lambda cálculo dependientemente tipado anteriormente implementado, sera la base para extender el sistema de tipos con tipos cociente, guiandonos de lo sugerido por \cite{nuoli}. Como en el capitulo anterior, se listan las reglas de formacion, introduccion, eliminacion y computacion junto con el codigo Maude que corresponde a cada una de ellas.
-    \section{Formacion}
-    \section{Introduccion}
-    \section{Eliminacion}
-    \section{Computacion}
+\chapter{Extensión con Tipos Cociente}
+El lambda cálculo dependientemente tipado implementado en el capítulo anterior
+será la base sobre la que extenderémos el sistema con tipos cociente,
+guiándonos de lo sugerido por \cite{nuoli}. Como en el capítulo precedente, se
+listan las reglas de formación, introducción, eliminación y computación, y a
+cada una de ellas se le hace corresponder la ecuación Maude que la realiza en el prototipo.
+\newline
+\newline
+\indent Antes de detallar las reglas, conviene precisar de qué forma se amplia la sintaxis del lenguaje. La gram\'atica presentada en el capitulo anterior se extiende con tres nuevos constructores, que se corresponden con la formacion del cociente, la formacion de una clase de equivalencia y la eliminacion por \textit{lifting}, respectivamente:
+
+\begin{align}
+e, \rho, k := \quad & \dots & \tag{$\ast$}\\
+  \mid \quad & \mathrm{qtype}(A, R) & \tag{7}\\
+  \mid \quad & \mathrm{qclass}(t, \mathrm{qtype}(A, R)) & \tag{8}\\
+  \mid \quad & \mathrm{qelim}(f, \mathit{resp}, q) & \tag{9}
+\end{align}
+
+Donde $(7)$ construye el tipo cociente $A/{\sim}$ a partir de un tipo $A$ y de una
+relaci\'on $R$; $(8)$ construye la clase de equivalencia $[t]$ de
+un representante $t : A$, anotada con el tipo cociente al que pertenece; y $(9)$ eleva una función $f$ definida sobre representantes a una función definida sobre el cociente, exigiendo un testigo $\mathit{resp}$ de que $f$ respeta la relaci\'on. Su correspondencia en Maude, se indica como ssigue:
+
+\begin{lstlisting}
+  op qtype : Term Term -> Term [ctor] .
+  op qclass : Term Term -> Term [ctor] .
+  op qelim : Term Term Term -> Term [ctor] .
+\end{lstlisting}
+
+\indent La sustitucion se propaga sobre cada constructor y recursivamente sobre los tipos presentes en cada uno de ellos. Una vez mas, cualquier caso de captura de variables es evitable, pues ningun constructor introduce un binder propio sobre la variable que se sustituye:
+\begin{lstlisting}
+  eq subst(qtype(A, R), V, S) = qtype(subst(A, V, S), subst(R, V, S)) .
+  eq subst(qclass(A, R), V, S) = qclass(subst(A, V, S), subst(R, V, S)) .
+  eq subst(qelim(F, A, R), V, S) =
+    qelim(subst(F, V, S), subst(A, V, S), subst(R, V, S)) .
+\end{lstlisting}
+
+Es importante mencionar otra distinción con respecto a lo propuesto por \cite{nuoli} y nuestra teoría, y es que en su trabajo propone que toda relación $\sim$ habite en $Prop$, esto es por la teoría de tipos de Martin Lof, en donde los cocientes se encuentran como extensión de la metateoría, existe una distinción entre $Type$ y $Prop$, nuestro sistema de tipos se limita a habitar en un solo universo $\ast$. Esta decisión no compromete en su totalidad los resultados obtenidos.
+\section{Introducción}
+
+\begin{gather}
+  \infer[\text{Q-Intro}]
+  {\Gamma \vdash \mathrm{qclass}(t, \mathrm{qtype}(A, R)) : \mathrm{qtype}(A, R)}
+  {\Gamma \vdash t : A}
+\end{gather}
+
+Según lo fijado por la regla, la ecuación en Maude aserta que el tipo de un representante $[t]$ en el cociente es de tipo $A/\sim$, si es posible confirmar que en el mismo contexto $\Gamma$, $t$ habita en $A$.
+\newline
+\begin{lstlisting}
+  ceq infer(G, qclass(T, qtype(A, R))) = qtype(A, R)
+    if true := check(G, T, A) .
+\end{lstlisting}
+
+\indent La decisión de anotar el tipo cociente sobre la clase responde al mismo principio que en el capítulo anterior abordamos en las tuplas del tipo $\Sigma$, donde $\mathrm{pair}$ transporta su anotación. Sin dicha anotación, la síntesis del tipo de una clase sería ambigua, pues un mismo representante $t : A$ pertenece a tantos cocientes como relaciones puedan definirse sobre $A$. Portando la clase su tipo cociente, la inferencia permanece dirigida por la sintaxis y, por tanto, decidible.
+\newline
+\newline
+\indent Puesto a que $A$ y $R$ son dentro de nuestro universo $*$ términos, es sensato normalizar ambos. De manera que, la ecuación Maude es congruente:
+
+\begin{lstlisting}
+  eq norm(qtype(A, R)) = qtype(norm(A), norm(R)) .
+\end{lstlisting}
+
+\section{Formación}
+\begin{gather}
+  \infer[\text{Q-Form}]
+  {\Gamma \vdash A/\sim}
+  {\Gamma \vdash A : *, & \Gamma x, y : A \vdash x \sim y : Prop}
+\end{gather}
+
+\newline
+\begin{lstlisting}
+  ceq infer(G, qtype(A, R)) = Type
+  if Type := norm(infer(G, A))
+  /\ true := check(G, R, Pi(var("a"), A, Pi(var("b"), A, Type))).
+\end{lstlisting}
+\section{Computacion}
+La regla de computaci\'on describe c\'omo se comporta la funci\'on elevada al aplicarse a
+una clase can\'onica. Siguiendo a \cite{nuoli}, al aplicar $\hat{f}$ a la clase $[a]$ de
+un representante $a$, se obtiene $f(a)$:
+
+\begin{gather}
+  \infer[\text{Q-comp}]
+  {\Gamma \vdash \mathrm{Qcomp}(a) : \hat{f}([a]) = f(a)}
+  {\Gamma \vdash a : A}
+\end{gather}
+
+En el prototipo, esta igualdad se realiza directamente como una regla de reescritura
+orientada de izquierda a derecha. Cuando el tercer argumento del eliminador es una clase
+can\'onica $\mathrm{qclass}(T, QT)$, el \textit{lifting} se contrae aplicando $F$ al
+representante $T$:
+
+\begin{lstlisting}
+  eq norm(qelim(F, A, qclass(T, QT))) = norm(app(F, T)) .
+  eq norm(qelim(F, A, R)) = qelim(norm(F), norm(A), norm(R)) [owise] .
+\end{lstlisting}
+
+La primera ecuaci\'on es la contraparte operacional de \textit{Q-comp}: reduce
+$\hat{f}([t])$ a $f(t)$, donde la aplicaci\'on $\mathrm{app}(F, T)$ se normaliza a su vez
+mediante la $\beta$-reducci\'on ya definida para el lenguaje base. La segunda ecuaci\'on,
+marcada con el atributo \texttt{owise}, constituye la clausura congruente del eliminador:
+cuando su tercer argumento no es una clase can\'onica, por ejemplo una variable o un
+\textit{lifting} bloqueado, se normalizan los tres componentes y el eliminador permanece
+como forma neutral.
+\newline
+\newline
+\indent Se aprecia aqu\'i la consecuencia de que las clases no se colapsen
+definicionalmente. Dadas dos clases $[a]$ y $[b]$ con $a \sim b$, la funci\'on elevada
+reduce $\hat{f}([a])$ a $f(a)$ y $\hat{f}([b])$ a $f(b)$, y la igualdad entre ambos
+resultados no se obtiene por reducci\'on, sino que se sostiene \'unicamente a nivel
+proposicional, mediada por el testigo de respeto. Este comportamiento es exactamente el que
+cabe esperar en la lectura intensional, y es lo que permite al prototipo simular los tipos
+cociente sin sacrificar la canonicidad del lenguaje base.
+\newline
+\newline
+\indent A modo de ilustraci\'on, consid\'erese el cociente de $\Nat$ por una relaci\'on
+$R$ cualquiera y la elevaci\'on de la funci\'on sucesor. Tomando como funci\'on
+$\lambda x : \Nat.\, \mathrm{suc}(x)$ y como elemento la clase del representante
+$\mathrm{suc}(\zero)$, la s\'intesis del tipo y la computaci\'on proceden como sigue:
+
+\begin{lstlisting}
+Maude> reduce infer(mt,
+  qelim(lam("x", Nat, suc(var("x"))), resp,
+        qclass(suc(zero),
+               qtype(Nat, lam("a", Nat, lam("b", Nat, Nat)))))) .
+result Term: Nat
+
+Maude> reduce norm(
+  qelim(lam("x", Nat, suc(var("x"))), resp,
+        qclass(suc(zero),
+               qtype(Nat, lam("a", Nat, lam("b", Nat, Nat)))))) .
+result Term: suc(suc(zero))
+\end{lstlisting}
+
+En la primera invocaci\'on, el \textit{typechecker} sintetiza que el cociente subyacente es
+$\mathrm{qtype}(\Nat, R)$ y que la funci\'on tiene tipo $\Pi\,x : \Nat.\, \Nat$, de donde
+concluye que el \textit{lifting} habita en $\Nat$. En la segunda, la regla de computaci\'on
+contrae el eliminador aplicado a la clase $[\mathrm{suc}(\zero)]$, produciendo la
+aplicaci\'on de la funci\'on sucesor al representante y, tras la $\beta$-reducci\'on,
+$\mathrm{suc}(\mathrm{suc}(\zero))$. La relaci\'on $R$ que aqu\'i figura se ha tomado con la
+signatura m\'inima exigida por la formaci\'on, sin que su contenido intervenga en la
+computaci\'on, pues el \textit{lifting} act\'ua sobre el representante y no sobre la
+relaci\'on.
+\newline
+\newline
+\indent Con las reglas de formaci\'on, introducci\'on, eliminaci\'on y computaci\'on ya
+implementadas, el lenguaje dispone de tipos cociente en el sentido intensional de
+\cite{nuoli}. Los constructores $\mathrm{fst}$, $\mathrm{snd}$ y el tipo $\Sigma$ que se
+incorporaron en el cap\'itulo anterior cobran ahora utilidad, pues permiten expresar los
+casos de uso caracter\'isticos del cociente, como los enteros representados por pares de
+naturales o los multiconjuntos representados por listas m\'odulo permutaci\'on, ejemplos
+que se retoman en el cap\'itulo de conclusiones al valorar el alcance del prototipo.
     
 \chapter{Conclusiones}
 
