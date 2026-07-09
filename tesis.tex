@@ -144,7 +144,7 @@ El lambda cálculo fue inventado por Alonzo Church en la decada de los 80 con el
 Este sistema ocupa, además, un lugar cenral el diseño de lenguajes de programación. De forma análoga, la manera en la que se programa en el mismo es muy similar a cómo se programa en un lenguaje funcional hoy en dia. De hecho, lenguajes como Haskell, Agda, la familia de lenguajes basados en ML, y LISP, estan ampliamente inspirados en un conjunto del lambda calculus y, pueden entenderse, en buena medida, como extensiones  dotadas de azucar sintactico, sistemas de tipos y otras primitivas \citep{pierce2002}.
 \newline
 \newline
-El lambda cálculo es un lenguaje muy potente y, a su vez, sumamente simple. Un término puede estar compuesto, o bien, formarse, de tres elementos: variables, aplicacion y abstracción lambda. De forma inductiva, fijado un conjunto infinito numerable de variables V, el conjunto $\Lambda$ de los términos lambda se define como el menor conjunto cerrado bajo las siguientes reglas \citep{barendregt1984, pierce2002}:
+El lambda cálculo es un lenguaje muy potente y, a su vez, sumamente simple. Un término puede estar compuesto, o bien, formarse, de tres elementos: variables, aplicacion y abstracción lambda. De forma inductiva, fijado un conjunto infinito numerable de variables $V$, el conjunto $\Lambda$ de los términos lambda se define como el menor conjunto cerrado bajo las siguientes reglas \citep{barendregt1984, pierce2002}:
 \begin{align}
   M := \quad & x & \tag{1}\\
   \mid \quad & \lambda x.\, M & \tag{2}\\
@@ -153,7 +153,7 @@ El lambda cálculo es un lenguaje muy potente y, a su vez, sumamente simple. Un 
 
 Donde, $(1)$ es un conjunto infinito de variables, tal que si $x, y, z \in \textit{V}$ y $V \in \Lambda$, entonces $V \in \Lambda$. $(2)$ es una abstracción lambda, si $x \in V$ y además $M \in \Lambda$, entonces $\lambda x.\, M \in \Lambda $. $(3)$ Es una aplicación de dos términos, si $M, N \in \Lambda$ entonces $M N \in \Lambda$.
 
-El lambda cálculo es lo suficientemente potente para permitirnos codificar simples tipos de datos o, al menos, emular el comportamiento que obtendriamos de los mismos en un sistema de tipos mas avanzado.
+El lambda cálculo es lo suficientemente potente para permitirnos codificar simples tipos de datos o, al menos, emular el comportamiento que obtendríamos de los mismos en un sistema de tipos más avanzado.
 
 \subsection{Booleanos}
 El tipo booleano es un tipo habitado por solo dos posibles terminos: $True$ o $False$. Pese a que el lambda cálculo sin tipos no posee una nocion de verdad o falsedad, es posible, aun asi, codificar los booleanos, como se muestra (citar bargendregt):
