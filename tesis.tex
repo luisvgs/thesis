@@ -141,7 +141,7 @@
 El lambda cálculo fue inventado por Alonzo Church en la decada de los 80 con el proposito de capturar la nocion abstracta de la aplicabilidad de una funcion, sin embargo, conviene precisar en qué sentido. Una función puede entenderse de dos maneras: de forma extensional, como el conjunto de pares entrada–salida que la determina, o de forma intensional, como la regla o el proceso de cómputo que, dado un argumento, prescribe cómo obtener el resultado \citep{geuvers2014}. Es esta segunda lectura, la de la función como algoritmo, la que el lambda cálculo formaliza \citep{barendregt1984, geuvers2014}. En su origen, Church concibió el sistema como parte de una fundamentación de la lógica y las matemáticas; dicha formulación resultó ser inconsistente, tal y como evidenciaron Kleene y Rosser, por lo que Church aisló su núcleo puramente computacional, libre de constantes lógicas, dando lugar al lambda cálculo tal y como se conoce hoy (Barendregt, 1984), siendo ampliamente adoptado como un sistema formal de lógica matemática.
 \newline
 \newline
-Este sistema ocupa, además, un lugar cenral el diseño de lenguajes de programación. De forma análoga, la manera en la que se programa en el mismo es muy similar a cómo se programa en un lenguaje funcional hoy en dia. De hecho, lenguajes como Haskell, Agda, la familia de lenguajes basados en ML, y LISP, estan ampliamente inspirados en un conjunto del lambda calculus y, pueden entenderse, en buena medida, como extensiones  dotadas de azucar sintactico, sistemas de tipos y otras primitivas \citep{pierce2002}.
+Este sistema ocupa, además, un lugar cenral el diseño de lenguajes de programación. De forma análoga, la manera en la que se programa en el mismo es muy similar a cómo se programa en un lenguaje funcional hoy en dia. De hecho, lenguajes como Haskell, Agda, la familia de lenguajes basados en ML, y LISP, estan ampliamente inspirados en un conjunto del lambda calculus y, pueden entenderse, en buena medida, como extensiones  dotadas de azucar sintáctico, sistemas de tipos y otras primitivas \citep{pierce2002}.
 \newline
 \newline
 El lambda cálculo es un lenguaje muy potente y, a su vez, sumamente simple. Un término puede estar compuesto, o bien, formarse, de tres elementos: variables, aplicacion y abstracción lambda. De forma inductiva, fijado un conjunto infinito numerable de variables $V$, el conjunto $\Lambda$ de los términos lambda se define como el menor conjunto cerrado bajo las siguientes reglas \citep{barendregt1984, pierce2002}:
@@ -156,7 +156,7 @@ Donde, $(1)$ es un conjunto infinito de variables, tal que si $x, y, z \in \text
 El lambda cálculo es lo suficientemente potente para permitirnos codificar simples tipos de datos o, al menos, emular el comportamiento que obtendríamos de los mismos en un sistema de tipos más avanzado.
 
 \subsection{Booleanos}
-El tipo booleano es un tipo habitado por solo dos posibles terminos: $True$ o $False$. Pese a que el lambda cálculo sin tipos no posee una nocion de verdad o falsedad, es posible, aun asi, codificar los booleanos, como se muestra (citar bargendregt):
+El tipo booleano es un tipo habitado por solo dos posibles términos: $True$ o $False$. Pese a que el lambda cálculo sin tipos no posee una nocion de verdad o falsedad, es posible, aun asi, codificar los booleanos, como se muestra (citar bargendregt):
 
 \begin{example}
   $\mathrm{True} \equiv \lambda xy.\, x$, \quad $\mathrm{False} \equiv \lambda xy.\, y$
@@ -216,7 +216,7 @@ una aplicaci\'on son, simplemente, la uni\'on de las libres de cada subt\'ermino
 $M$ tal que $FV(M) = \emptyset$ se denomina \textit{cerrado}.
 \newline
 \newline
-Por \'ultimo, el nombre concreto de una variable ligada carece de relevancia: lo \'unico que
+Por último, el nombre concreto de una variable ligada carece de relevancia: lo \'unico que
 importa es la estructura de ligaduras que establece. As\'i, $\lambda x.\, x$ y
 $\lambda y.\, y$ denotan exactamente la misma funci\'on identidad. A esta noci\'on, que
 identifica t\'erminos que difieren \'unicamente en el nombre de sus variables ligadas, se le
@@ -298,7 +298,7 @@ Una consecuencia inmediata, y quizá la más útil en la práctica, es la unicid
 Este corolario, por un lado, justifica que hablemos de \textit{la} forma normal de un término, en singular, cuando esta existe. Por otro, garantiza que el valor de un cómputo, entendido como su forma normal, queda determinado por el término de partida y no por la estrategia de evaluación escogida, de modo que el orden en que decidamos contraer los redexes solo puede afectar a si terminamos, mas no al resultado al que llegamos.
 \newline
 \newline
-La confluencia se representa mediante el siguiente diagrama, cuya forma de rombo explica que la propiedad reciba también el nombre de \textit{propiedad del diamante}. El vértice superior es el término de partida $M$, las dos diagonales descendentes son las reducciones divergentes hacia los terminos $N_1$ y $N_2$, y las diagonales punteadas representan los pasos que aún restan, garantizados por el teorema, para reconciliar ambas ramas en un término común $N_3$.
+La confluencia se representa mediante el siguiente diagrama, cuya forma de rombo explica que la propiedad reciba también el nombre de \textit{propiedad del diamante}. El vértice superior es el término de partida $M$, las dos diagonales descendentes son las reducciones divergentes hacia los términos $N_1$ y $N_2$, y las diagonales punteadas representan los pasos que aún restan, garantizados por el teorema, para reconciliar ambas ramas en un término común $N_3$.
 
 \[
 \begin{tikzcd}[row sep=2.4em, column sep=2.4em]
@@ -345,13 +345,13 @@ De aquí emerge un problema de naturaleza distinta: la terminación. La terminac
   terminante.
 \end{example}
 
-El ejemplo de $\Omega$ pone de manifiesto que el $\lambda$-cálculo sin tipos no es terminante, pues existen términos que carecen de forma normal y cuya reducción no se detiene jamás. La terminación, entendida como normalización fuerte, se recupera al imponer una disciplina de tipos sobre los términos. En particular, el $\lambda$-cálculo simplemente tipado sí es fuertemente normalizante, propiedad que abordaremos en un capitulo posterior, al tratar dicho sistema.\citep{geuvers2014, pierce2002}.
+El ejemplo de $\Omega$ pone de manifiesto que el $\lambda$-cálculo sin tipos no es terminante, pues existen términos que carecen de una forma normal y cuya reducción no se detiene en ningún momento. La terminación, entendida como normalización fuerte, se recupera al imponer una disciplina de tipos sobre los términos. En particular, el $\lambda$-cálculo simplemente tipado sí es fuertemente normalizante, propiedad que abordarémos en un capítulo posterior, al tratar dicho sistema.\citep{geuvers2014, pierce2002}.
 
 \section{Teoría de Tipos}
-La teoria de tipos es una rama de las matemáticas y la logica que tiene como objeto formalizar no solo términos matemáticos, tales como una variable $x$ o una función cualquiera $f$ y las operaciones entre ambas, si no tambien, la idea de que cada término forma parte o tiene un tipo concreto, es decir, que el tipo de una variable $x : \mathbb{N}$ en el dominio de los numeros naturales, es completamente distinguible al tipo de una función $f : \mathbb{N} \to \mathbb{N}$.
+La teoria de tipos es una rama de las matemáticas y la lógica que tiene como objeto formalizar no solo términos matemáticos, tales como una variable $x$ o una función cualquiera $f$ y las operaciones entre ambas, si no también, la idea de que cada término forma parte o tiene un tipo concreto, es decir, que el tipo de una variable $x : \mathbb{N}$ en el dominio de los numeros naturales, es completamente distinguible al tipo de una función $f : \mathbb{N} \to \mathbb{N}$.
 \newline
 \newline
-\indent Los tipos, pese a que son similares a los conjuntos, son ligeramente distintos. Por conjunto, entiéndase ocmo una colección de elementos, similares o no, que poseen una propiedad concreta:
+\indent Los tipos, pese a que son similares a los conjuntos, son ligeramente distintos. Por conjunto, entiéndase como una colección de elementos, similares o no, que poseen una propiedad concreta:
 \begin{align}
   C = \{rojo, amarillo, azul\}
 \end{align}
@@ -359,16 +359,16 @@ de donde es posible extenderlos y razonar sobre más relaciones de pertenencia y
 \begin{align}
   C' = \{\text{verde}, \text{naranja}\} \cup C
 \end{align}
-Cosa que, en los tipos, no es posible pues, un termino es de (o pertenece a) un tipo unico. Otra caracteristica que los distingue, es que los conjuntos dan informacion semantica y, los tipos por otro lado, proveen informacion sintactica de los objetos. Por ejemplo, comunmente en la teoria de conjuntos definimos una relacion de pertenencia como sigue:
+Cosa que, en los tipos, no es posible, y es que un término es de (o pertenece a) un tipo único. Otra característica que los distingue, es que los conjuntos dan información semántica y, los tipos por otro lado, proveen información sintáctica de los objetos. Por ejemplo, comunmente en la teoría de conjuntos definimos una relación de pertenencia como sigue:
 \begin{align}
   4 \in \{\,n \in \mathbb{N} | x > 5 \,\}
 \end{align}
 
-En la teoria de tipos, un juicio de tipado, sigue la siguiente notacion que, a lo largo de la presente tesis estarémos empleando:
+En la teoría de tipos, un juicio de tipado, sigue la siguiente notación que, a lo largo de la presente tesis estarémos empleando:
 \begin{align}
   3 + 1 : \mathbb{N}
 \end{align}
-Esto puede interpretarse, desde el lente de teoria de tipos, como $3 + 1$ es un término en los naturales, o bien, de tipo $\mathbb{N}$. Aún así, las mismas operaciones aplicadas en la teoria de conjuntos son trasladables a la teoria de tipos. Tómese como ejemplo la unión disjunta de conjuntos, definida formalmente como la unión disjunta $A \sqcup B$ de dos conjuntos, es un conjunto $A$ indexado por $B$: 
+Esto puede interpretarse, desde el lente de teoría de tipos, como $3 + 1$ es un término en los naturales, o bien, de tipo $\mathbb{N}$. Aún así, las mismas operaciones aplicadas en la teoría de conjuntos son trasladables a la teoría de tipos. Tómese como ejemplo la unión disjunta de conjuntos, definida formalmente como la unión disjunta $A \sqcup B$ de dos conjuntos, es un conjunto $A$ indexado por $B$: 
 \begin{align}
 \bigcup_{i \in I} \{ (x, i) : x \in A_i \}
 \end{align}
@@ -456,10 +456,10 @@ Donde $\forall$ es implícito.
   }
 \end{align}
 
-Que puede leerse como: \textit{si, dado que en el contexto $\Gamma$, $A$ es un tipo bien formado y, ademas, en el mismo contexto $\Gamma$ extendido con $a : A$, entonces podemos inferir que $a$ es de tipo $A$ en $\Gamma$}.
+Que puede leerse como: \textit{si, dado que en el contexto $\Gamma$, $A$ es un tipo bien formado y, además, en el mismo contexto $\Gamma$ extendido con $a : A$, entonces podemos inferir que $a$ es de tipo $A$ en $\Gamma$}.
 \newline
 \newline
-\indent Dentro de la teoría de tipos existen seis tipos de juicios que seran de utilidad en la medida en que estudiemos los sistemas formales en este trabajo:
+\indent Dentro de la teoría de tipos existen seis tipos de juicios que serán de utilidad en la medida en que se estudiarán los sistemas formales en este trabajo:
 
 \begin{align*}
 &\vdash \Gamma \; ctx && \Gamma\, \text{es un contexto valido}\\
@@ -467,10 +467,10 @@ Que puede leerse como: \textit{si, dado que en el contexto $\Gamma$, $A$ es un t
 &\Gamma \vdash M : \sigma && \text{$M$ es un término de tipo $\sigma$ en $\Gamma$}\\
 &\vdash \Gamma \equiv \Delta && \Gamma \; y\; \Delta\; \text{son contextos definicionalmente iguales}\\
 &\Gamma \vdash \sigma \equiv \tau\; Type && \sigma\; y\; \tau\; \text{son tipos definicionalmente iguales en}\; \Gamma\\
-&\Gamma \vdash M \equiv N : \sigma && M\; y\; N\; \text{son terminos definicionalmente iguales, de tipo}\; \sigma,\;\text{en}\; \Gamma
+&\Gamma \vdash M \equiv N : \sigma && M\; y\; N\; \text{son términos definicionalmente iguales, de tipo}\; \sigma,\;\text{en}\; \Gamma
 \end{align*}
 
-Adicionalmente, independientemente del sistema de tipos que se describa, las mismas reglas estructurales se adoptan, como describe \citealp{hoffman2009}.
+Adicionalmente, independientemente del sistema de tipos que se describa, las mismas reglas estructurales se adoptan, como bien describe \citealp{hoffman2009}.
 
 \begin{gather}
   \infer[\text{C-Emp}]{\vdash \emptyset}{}
@@ -531,10 +531,10 @@ Asimismo, para las reglas que expresan la igualdad definicional como una relaci�
   {\vdash \Gamma = \Delta\;ctxt & \Gamma \vdash \sigma\;\mathsf{type}}
 \end{gather}
 \newline
-A lo largo de los años numerosos esfuerzos se han realizado para desarrollar distintas extensiones de la teoría de tipos y poder dar suficiente poder expresivo al lambda cálculo. Estos sistemas de tipos fueron explorados por H. Barendregt en el Cubo Lambda \citep{cube1991}, para investigar las diferentes dimensiones en las que puede extenderse el sistema formal. En su paper describe como cada dimension del cubo representa una dependencia entre terminos y tipos, y sus posibles combinaciones.
+A lo largo de los años numerosos esfuerzos se han realizado para desarrollar distintas extensiones de la teoría de tipos y poder dar suficiente poder expresivo al lambda cálculo. Estos sistemas de tipos fueron explorados por H. Barendregt en el Cubo Lambda \citep{cube1991}, para investigar las diferentes dimensiones en las que puede extenderse el sistema formal. En su paper describe como cada dimension del cubo representa una dependencia entre términos y tipos, y sus posibles combinaciones.
 \newline
 \newline
-Entiendase por dependencia como la dependencia mutua, valga la reduncancia, que existe entre tipos y terminos: terminos que dependen de otros terminos, terminos dependientes de tipos, tipos dependientes de terminos, y tipos dependientes de otros tipos. Los ocho vertices del cubo, consecuencia de combinar cada posible dimensión, resultan en diferentes sistemas de tipos y niveles de expresividad. Concretamente, abordaremos en el presente trabajo, la extension del vertice inferior derecho, que corresponde a la extension de tipos dependientes, concreamente $\lambda\Pi$, o refiérase también en la literatura como $\lambda P$.
+Entiéndase por dependencia como la dependencia mutua, valga la redundancia, que existe entre tipos y términos: términos que dependen de otros términos, términos dependientes de tipos, tipos dependientes de términos, y tipos dependientes de otros tipos. Los ocho vertices del cubo, consecuencia de combinar cada posible dimensión, resultan en diferentes sistemas de tipos y niveles de expresividad. Concretamente, abordaremos en el presente trabajo, la extension del vertice inferior derecho, que corresponde a la extension de tipos dependientes, concreamente $\lambda\Pi$, o refiérase también en la literatura como $\lambda P$.
 \newline
 \begin{center}
 \begin{tikzpicture}
@@ -583,7 +583,7 @@ $\lambda\mathrm{P}\omega = \lambda\mathrm{C}$ & $(\ast,\ast)$ & $(\square,\ast)$
 \end{center}
 \medskip
 
-\indent Es necesaria una explicacion a cada conjunto de reglas y nivel de expresividad que permite cada sistema. $\lambda\to$ es posiblemente, el más común. Formalmente este sistema es conocido como el lambda cálculo simplemente tipado que se abordará con más dedicación en un capítulo aparte, donde para construir una abstracción lambda, basta con proveer otro término. Por tanto $FM$ es, por ejemplo, un término en $\Lambda$ donde $F$ depende de $M$.
+\indent Es necesaria una explicación a los conjuntos de reglas más relevantes y nivel de expresividad que permite cada sistema. $\lambda\to$ es posiblemente el más común. Formalmente este sistema es conocido como el lambda cálculo simplemente tipado que se abordará con más dedicación en un capítulo aparte, donde para construir una abstracción lambda, basta con proveer otro término. Por tanto $FM$ es, por ejemplo, un término en $\Lambda$ donde $F$ depende de $M$. La notación $(*, *)$ indica precisamente en qué nivel del sistema de tipos viven los términos para poder formarse.
 \begin{example}
 \begin{align}
 % \infer{\Gamma \vdash (\lambda x . t)\,3 : \mathbb{N}}{%
@@ -595,7 +595,7 @@ $\lambda\mathrm{P}\omega = \lambda\mathrm{C}$ & $(\ast,\ast)$ & $(\square,\ast)$
 \end{align}
 \end{example}
 
-$\lambda2$ es conocido en la literatura como \textit{System F}. Es el lambda cálculo de segundo orden, o polimórfico. Fue descubierto por Girard y Reynolds en 1972 en el cual se introduce el cuantificador universal en el cálculo y poder cuantificar sobre tipos. A parte de ello, algunas implementaciones extienden el sistema introduciendo kinds, el tipo de todos los tipos. Un gran número de lenguajes funcionales, como Haskell, están inspirados en este sistema. Además de esto, en $\lambda2$ se presenta la noción de variables de tipos, con las cuales es posible cuantificar sobre un rango de tipos, permitiendo así, la suficiente expresividad al lambda cálculo para definir, por instancia, la función identidad polimórfica.
+$\lambda2$ es conocido en la literatura como \textit{System F}. Es el lambda cálculo de segundo orden, o polimórfico. Fue descubierto por Girard y Reynolds en 1972 en el cual se introduce el cuantificador universal en el cálculo y poder cuantificar sobre tipos. A parte de ello, a partir de aquí algunas implementaciones extienden el sistema introduciendo kinds en la teoría predicativa del lenguaje. Un gran número de lenguajes de programación funcional, como Haskell, están inspirados en este sistema. Además, en $\lambda2$ se presenta la noción de variables de tipos, con las cuales es posible cuantificar sobre un rango de tipos, permitiendo así, la suficiente expresividad al lambda cálculo para definir, por instancia, la función identidad polimórfica.
 
 \begin{example}
 \begin{align*}
@@ -606,15 +606,31 @@ $\lambda2$ es conocido en la literatura como \textit{System F}. Es el lambda cá
 Donde $\Lambda$ representa el cuantificador universal sobre los tipos del lenguaje.
 \newline
 \newline
-$\lambda\underline{\omega}$ nos permite definir tipos que dependen de otros tipos. Un ejemplo concreto en un lenguaje de programación, es la definición inductiva de un tipo que depende de un otro para poder usarse a lo largo del programa. Los arboles binarios o los números de Peano son un ejemplo claro de esta extensión.
-\begin{example}
-  \begin{align*}
-    \textit{data Tree a = Empty | Node a (Tree a) (Tree a)}
-\end{align*}
-\end{example}
-\medskip
+$\lambda\underline{\omega}$ añade operadores a nivel de tipos, o bien, funciones que toman uno o varios tipos y devuelven otro. Para ello se introduce un sistema de \textit{kinds} que distingue los tipos propios, de kind $\star$, de los constructores de tipos, de kind $\star \Rightarrow \star$. Un tipo puede entonces
+\textit{depender} de otros mediante abstracción y aplicación a nivel de
+tipos, del mismo modo que un término depende de otros a nivel de valores.
 
-$\lambda P$ representa los tipos que dependen de términos. Los tipos dependientes, como se les referirá a lo largo de este etrabajo, extienden el sistema de tipos con familias de tipos, o tipos indexados por los elementos de otros tipos. La siguiente regla de inferencia formaliza esta idea donde $x$ puede o no, aparecer en $B$. Observese que de no aparecer $x$ en $B$, estariamos involucrandonos con el tipo de función $A \to B$.
+\begin{example}
+  El constructor de pares toma dos tipos y devuelve el tipo de sus parejas.
+  \begin{align*}
+    \mathit{Pair} &\;\equiv\; \lambda \alpha : \star.\ \lambda \beta : \star.\
+    \alpha \times \beta
+  \end{align*}
+  Así, $\mathit{Pair}\ \mathsf{Nat}\ \mathsf{Bool}$ reduce a $\mathsf{Nat}
+  \times \mathsf{Bool}$.
+\end{example}
+
+$\lambda\omega$ combina los operadores de tipos anteriormente presentados y el polimorfismo de $\lambda2$, así, ahora es posible cuantificar universalmente sobre tipos y constructores de tipos.
+
+\begin{example}
+  Como ejemplo tómese la función $swap$ que intercambia la posición de los elementos en una tupla. Cuantificando ambos argumentos $\alpha$ y $\beta$, podemos aplicar $swap$ sobre cualquier tipo que habite $\star$.
+  \begin{align*}
+    \mathit{swap} &\;:\; \forall \alpha : \star.\ \forall \beta : \star.\
+    \mathit{Pair}\ \alpha\ \beta \to \mathit{Pair}\ \beta\ \alpha
+  \end{align*}
+\end{example}
+
+$\lambda P$ representa los tipos que dependen de términos. Los tipos dependientes, como se les referirá a lo largo de este etrabajo, extienden el sistema de tipos con familias de tipos, o tipos indexados por los elementos de otros tipos. La siguiente regla de inferencia formaliza esta idea donde $x$ puede o no, aparecer en $B$. Observese que de no aparecer $x$ en $B$, estariamos involucrándonos con el tipo de función $A \to B$.
 \begin{align}
 \infer{\Gamma \vdash \Pi x : A . B x }{%
     \Gamma \vdash A : *,\; x : A
@@ -623,23 +639,48 @@ $\lambda P$ representa los tipos que dependen de términos. Los tipos dependient
 \end{align}
 \newline
 \newline
-\indent Tómese como ejemplo \textit{Vec A n} donde la longitud $n$ del vector, depende de cierto parámetro. Decimos, por tanto, que \textit{Vec A n} es un tipo dependiente o bien una familia de tipos indexado por $n$. Asimismo, la linea con la que se distinguen términos y tipos se hace más difusa y, en consecuencia, ambos comparten el mismo espacio sintactico. Por ello, encontramos la constante $*$ que representa el \textit{sort} en el que habitan todos los tipos, por tanto, la siguiente derivación es posible en $\lambda P$: $A : * \vdash (A \to A) : *$, que expresa que \textit{dado que A es un tipo bien formado, (A $\to$ A), es entonces, un tipo} \citep{cube1991}. El símbolo $\Box$ no es propiamente un término en la sintaxis, en cambio, es un símbolo en la meta-teoría para afirmar que se tiene una derivación de kinds válida, por tanto, se puede entender $\Gamma \vdash (\kappa : \Box)$ mediante la siguiente lectura: \textit{k es un kind bien formado dado el contexto $\Gamma$}.
+\indent Tómese como ejemplo \textit{Vec A n} donde la longitud $n$ del vector, depende de cierto parámetro. Decimos, por tanto, que \textit{Vec A n} es un tipo dependiente o bien una familia de tipos indexado por $n$. Asimismo, la linea con la que se distinguen términos y tipos se hace más difusa y, en consecuencia, ambos comparten el mismo espacio semántico. Por ello, encontramos la constante $\star$ que representa el \textit{sort} en el que habitan todos los tipos, por tanto, la siguiente derivación es posible en $\lambda P$: $A : \star \vdash (A \to A) : \star$, que expresa que \textit{dado que A es un tipo bien formado, (A $\to$ A), es entonces, un tipo} \citep{cube1991}. El símbolo $\Box$ no es propiamente un término en la sintaxis, en cambio, es un símbolo en la meta-teoría para afirmar que se tiene una derivación de kinds válida y predicativa, por tanto, se puede entender $\Gamma \vdash (\kappa : \Box)$ mediante la siguiente lectura: \textit{k es un kind bien formado dado el contexto $\Gamma$}.
+
+Combinando todos los vértices obtenémos $\lambda C$ o \textit{Calculus of Constructions} donde el lambda cálculo alcanza un nivel expresivo bastante avanzado y los sistemas del cubo cohabitan en uno solo. Lenguajes como Coq y Agda, están basados en $\lambda C$. Este es un sistema de tipos puro bajo el paradigma de proposiciones como tipos, con tipos dependientes, jerarquias de universisos de tipos y un tipo Prop que distingue de $\star$.
 
 \subsection{Tipos a la Curry}
 \subsection{Tipos a la Church} 
-    \section{Lambda c\'alculo simplemente tipado}
+\section{Lambda Cálculo Simplemente Tipado}
+Añadir tipos al lambda cálculo resuelve el problema de la terminación que en un capitulo previo estudiamos, permitiendo la creación y evaluación de términos en el cálculo mucho más restrictivo, esto es, anotando cada término con un tipo previamente definido que nos brindará un poco más de información sobre el dominio o tipo de valor que esperamos retornar. Este sistema es también denotado como $\lambda\to$ y en definitiva, tiene como objeto evitar anomalías que permitan la construcción de programas no terminantes o no lógicamente plausibles \cite{geuvers2014}.
+
+La forma canónica de implementar tipos en $\lambda$ es, en principio, definir un conjunto infinito de variables $\mathbb{V} = \{\alpha, \beta, \gamma\}$ y un conjunto $\mathbb{T}$ de tipos: $\tau, \tau \to \tau$. Los miembros de este conjunto estan definidos como:
+\begin{enumerate}
+        \item Variable de tipo: donde si $\alpha \in \mathbb{V}$ entonces $\alpha \in \mathbb{T}$
+        \item Tipo función: donde si $\alpha, \tau \in \mathbb{T}$ entonces $(\alpha \to \tau) \in \mathbb{T}$
+\end{enumerate}
+ 
+La gramática para el lambda calculo simplemente tipado, se extiende, como sigue:
+    \begin{definition} Extensión a $\lambda\to$
+    \begin{align*}
+      M = \ldots |\, x : \tau \, \mid \lambda x : \tau . e \\
+      \mathbb{T} = \{\tau \mid \tau \to \tau\}\
+    \end{align*}
+  \end{definition}
+
+  Los tipos en $\lambda\to$ nos permiten enunciar juicios de la forma $M : \tau$, que se entiende como \textit{el término $M$ es de tipo $\tau$}, asumiendo que $M \in \Lambda$ y $\tau$ es un tipo bien definido. A continuación, se explican algunos detalles a tomar en cuenta para cada término que, desde ahora, llevan consigo un tipo.
+
+  \begin{enumerate}
+    \item Aplicación: para cubrir el caso donde $M \cdot N$, es menester conocer la signatura de $M$. Sea $M$ y $N$ términos en $\Lambda$, donde $M$ es de tipo $\sigma  \to \tau$ y $N$ de tipo $\sigma$, es claro observar que $N$ posee el mismo tipo que el del dominio de $M$ por tanto, es asertado confirmar que el tipo de la aplicación es de tipo $M \cdot N : \tau $.
+    \item abstracción: cuando $\lambda x : \tau . M$ donde $M : \gamma$, podemos asertar que es una abstraccion con codominio en $\gamma$ y dominio en $\tau$.
+          \end{enumerate}
+
     
     \section{Tipos Dependientes}
-    Los tipos dependientes son, en principio, tipos que dependen de términos. Antes de adentrarnos en la teoría de tipos dependientes, es necesario dedicar de forma breve una introduccion a los sistemas de tipos puros, framework de donde parte esta formalización lógica. Un PTS es un framework para especificar y formalizar el lambda cálculo y extender su teoría. Fue propuesto inicialmente por Berardi y Terlow como una generalizacion del cubo lambda de \cite{cube1991}. A diferencia del lambda cálculo tradicional, un PTS dispone de pseudo-términos que heredan, en gran parte, sintáxis del $\lambda$ cálculo simplemente tipado que hasta ahora conocemos.
+    Los tipos dependientes son, en principio, tipos que dependen de términos. Antes de adentrarnos en la teoría de tipos dependientes, es necesario dedicar de forma breve una introducción a los sistemas de tipos puros, framework de donde parte esta formalización lógica. Un PTS es un framework para especificar y formalizar el lambda cálculo y extender su teoría. Fue propuesto inicialmente por Berardi y Terlow como una generalizacion del cubo lambda de \cite{cube1991}. A diferencia del lambda cálculo tradicional, un PTS dispone de pseudo-términos que heredan, en gran parte, sintáxis del $\lambda$ cálculo simplemente tipado que hasta ahora conocemos.
 
     El conjunto de pseudo-términos, se define como sigue:
     \begin{definition} Pseudo-términos de un PTS
     \begin{align*}
-      T = T \mid T\, T \mid S \mid \lambda V: T.\, T \mid \Pi V: T.\, T
+      \mathcal{T} = \mathcal{T} \mid \mathcal{T}\, \mathcal{T} \mid \mathcal{S} \mid \lambda \mathcal{V}: \mathcal{T}.\, \mathcal{T} \mid \Pi \mathcal{V}: \mathcal{T}.\, \mathcal{T}
     \end{align*}
     \end{definition}
 
-    Asimismo, resalta \cite{barthe-coquand} algunas caracteristicas a tomar en cuenta, que ofrecen una imágen más amplia de la definición de un sistema de tipos puro.
+    Asimismo, resaltan \cite{barthe-coquand} algunas características a tomar en cuenta que ofrecen una imágen más amplia de la definición de un sistema de tipos puro.
 
     \begin{enumerate}
             \item Se utiliza la misma convención para extraer el conjunto de variables libres en un pseudo-término $FV(M)$. Adicional a ello, se escribirá $A \to B$ para todo tipo de función en el que $x$ no aparezca libre en $B$. Y se usará $\Pi x: A . B(x)$, en caso contrario.
@@ -647,9 +688,9 @@ $\lambda P$ representa los tipos que dependen de términos. Los tipos dependient
             \item Los sistemas de tipos puros proveen los cimientos de los tipos dependientes, de hecho, es en el constructor del tipo $\Pi$ donde se evidencia, por primera vez, la dependiencia en esta teoría, capturando la noción del producto cartesiano generalizado.
     \end{enumerate}
 
-    La noción de tipo dependiente es análoga al producto cartesiano dependiente, o generalizado de la teoría de conjuntos. En los conjuntos es posible, para cada conjunto $A$, y una familia de conjuntos $B(x)_{x\in A}$ indexados por $A$, formar un nuevo conjunto $\Pi _{x\in A} B_x$, donde sus elementos son funciones con dominion en $A$, tal que $f(a) \in B_a$ para todo $a \in A$. Consideramos, entonces, $\Pi _{x\in A} B_x$ un producto cartesiano dependiente, pues $B_a$ en el cual $f(a)$ vive, depende de $a$. De igual forma opera el tipo $\Pi$ que hemos mencionado en el conjunto de pseudo-términos que conforman un $PTS$: sea $A$ un tipo definido en $\Gamma$ y $B(x)$ un tipo, donde $x$ es una variale de tipo $A$, decimos pues, que $\Pi x : A . B(x)$ es un tipo dependiente, donde para todo $x$ en $A$, existe una familia de tipos $B(x)$.
+    La noción de tipo dependiente es análoga al producto cartesiano dependiente, o generalizado de la teoría de conjuntos. En los conjuntos es posible, para cada conjunto $A$, y una familia de conjuntos $B(x)_{x\in A}$ indexados por $A$, formar un nuevo conjunto $\Pi _{x\in A} B_x$, donde sus elementos son funciones con dominio en $A$, tal que $f(a) \in B_a$ para todo $a \in A$. Consideramos, entonces, $\Pi _{x\in A} B_x$ un producto cartesiano dependiente, pues $B_a$ en el cual $f(a)$ vive, depende de $a$. De igual forma opera el tipo $\Pi$ que hemos mencionado en el conjunto de pseudo-términos que conforman un $PTS$: sea $A$ un tipo definido en $\Gamma$ y $B(x)$ un tipo, donde $x$ es una variale de tipo $A$, decimos pues, que $\Pi x : A . B(x)$ es un tipo dependiente donde para todo $x$ en $A$, existe una familia de tipos $B(x)$.
 
-    \begin{definition} Especificación. La especificación de un PTS es una tripla $S = (S, A , R)$, donde:
+    \begin{definition} Especificación. La especificación de un PTS es una tripla $\mathcal{S} = (\mathcal{S}, \mathcal{A} , \mathcal{R})$, donde:
       \begin{enumerate}
         \item $\mathcal{S}$ es un conjunto de sorts.
         \item $\mathcal{A} \subseteq \mathcal{S} \times \mathcal{S}$ es un conjunto de axiomas.
@@ -660,16 +701,16 @@ $\lambda P$ representa los tipos que dependen de términos. Los tipos dependient
     Además, se presentan las reglas de formación de un $PTS$, según lo sugiere \cite{barthe-coquand}:
     \newline
     \newline
-    Nótese que, a diferencia de los sistemas de tipos estudiados hasta ahora, existe una ligera disparidad en el contexto presente en el lambda cálculo simplemente tipado y uno dependientemente tipado, y es que, primero, los contextos ahora pueden tener presencia de variables de tipos, de la forma $A : s$ con $s : \mathcal{S}$. Segundo, el orden en el que se insertan juicios $A : s$ en $\Gamma$ importa para poder manejar de manera correcta y consistente las dependencias, por ejemplo, un juicio de la forma $A : s, \sigma : A$ es totalmente valido, pero $\sigma : A, A : s$ carece de sentido, pues no existe un juicio previo a $\sigma : A$ del que sea posible derivar que $A$ es un tipo bien formado.
+    Nótese que, a diferencia de los sistemas de tipos estudiados hasta ahora, existe una ligera disparidad en el contexto presente entre el lambda cálculo simplemente tipado y uno dependientemente tipado, y es que, primero, los contextos ahora pueden tener presencia de variables de tipos, de la forma $A : s$ con $s : \mathcal{S}$. Segundo, el orden en el que se insertan juicios $A : s$ en $\Gamma$ importa para poder manejar de manera correcta y consistente las dependencias, por ejemplo, un juicio de la forma $A : s, \sigma : A$ es totalmente válido, pero $\sigma : A, A : s$ carece de sentido, pues no existe un juicio previo a $\sigma : A$ del que sea posible derivar que $A$ es un tipo bien formado.
     \newline
     \newline
-    \indent Como se ha mencionado ya con anterioridad, la extensión a la que se dedicará el estudio del presente trabajo sera $\lambda P$, sin embargo, se invita al lector a revisar con más detalles el resto de teorías que, con bastante precisión \cite{barthe-coquand} abordan sobre el Cubo Lambda de Barendregt.
+    \indent Como se ha mencionado ya con anterioridad, la extensión a la que se dedicará el estudio del presente trabajo sera $\lambda P$, sin embargo, se invita al lector a revisar con más detalles el resto de teorías que, con bastante precisión \cite{barthe-coquand} abordan sobre el Cubo Lambda de Barendregt \citep{cube1991}.
 \newline
     \begin{definition}\label{def:lambdaP}
-      Sea $S =\{*, \Box\}$ de sorts y el conjunto $\mathcal{A} =\{(* : \Box)\}$. Es posible obtener $\lambda P$ extendiendo el conjunto de reglas, de forma que $\mathcal{R} = \{(*, *), (*, \Box)\}$. Permitiendo $\lambda P$ introducir los axiomas $\{*, \Box\}$ es posible definir los tipos dependientes, por tanto $B : *$ podria contener una subexpresion $M : A : *$.
+      Sea $S =\{\star, \Box\}$ de sorts y el conjunto $\mathcal{A} =\{(\star : \Box)\}$ de axiomas. Es posible obtener $\lambda P$ extendiendo el conjunto de reglas, de forma que $\mathcal{R} = \{(\star, \star), (\star, \Box)\}$. Permitiendo $\lambda P$ introducir los axiomas $\{\star, \Box\}$ es posible definir los tipos dependientes, por tanto $B : \star$ podria contener una subexpresión $M : A : \star$.
     \end{definition}
 
-    La importancia o interés de estudio de los tipos dependientes, radica en como estos habilitan al entendimiento de la correspondencia entre las proposiciones como tipos y los programas como pruebas, a la luz de la logica de predicados. El conjunto de reglas definidas en ~\ref{def:lambdaP} nos muestra que es posible formar expresiones que habitan en $*$ y obtenemos como resultado una expresion que, tambien, habita en $*$. De forma intuitiva, esto corresponde a una funcion ordinaria del tipo $\mathbb{N}\to\mathbb{N} : *$, donde el dominion es de sort *, y el codominio de sortt *. Adicional a ello, el segundo miembro de la tupla, nos indica que podemos formar una expresion que habita en $*$ y como resultado, obtenemos una que habita en $\Box$. Esto ultimo corresponde a la posibilidad de derivaciones como $\Pi x : A . B(x)$ cuando $A : *$ y $B : \Box$, siendo $B$ un tipo indexado por $A$. Por tanto, la siguiente derivacion es posible:
+    La importancia o interés de estudio de los tipos dependientes, radica en cómo estos habilitan al entendimiento de la correspondencia entre las proposiciones como tipos y los programas como pruebas a la luz de la lógica de predicados. El conjunto de reglas definidas en ~\ref{def:lambdaP} nos muestra que es posible formar expresiones que habitan en $*$ y así obtener como resultado una expresión que, también, habita en $*$. De forma intuitiva, esto corresponde a una función ordinaria del tipo $\mathbb{N}\to\mathbb{N} : *$, donde el dominio es de sort *, y el codominio de sort *. Adicional a ello, el segundo miembro de la tupla, nos indica que podemos formar una expresión que habita en $*$ y como resultado, obtenemos una que habita en $\Box$. Esto último corresponde a la posibilidad de derivaciones como $\Pi x : A . B(x)$ cuando $A : *$ y $B : \Box$, siendo $B$ un tipo indexado por $A$. Por tanto, la siguiente derivación es posible:
     
 \begin{gather}
   \infer[\text{Vec-Form}]
@@ -679,39 +720,39 @@ $\lambda P$ representa los tipos que dependen de términos. Los tipos dependient
 
 Donde $\textit{Vec}\,A\, n : *$ habita en $\Box$.
 \newpage
-\indent Dado que a los tipos pudiesen contener términos, una noción de igualdad definicional es necesaria en la teoría, por ejemplo, conviene considerar los términos $0 : \mathbb{N}$ y $0 + 0 : \mathbb{N}$ como definicionalmente iguales y, por tanto, no habria distinción entre los términos \textit{Vec(0)} y \textit{Vec 0 + 0}. Si \textit{M : Vec(0)} y \textit{N: Vec 0 + 0}, nos lleva a un juicio de la forma $M = N : \sigma$ que se lee \textit{M y N son terminos definicionalmente iguales en el tipo sigma}, y, además, que $\sigma = \tau : A$, que se lee \textit{sigma y tau son tipos definicionalmente iguales en A}.
+\indent Dado que a los tipos pudiesen contener términos, una noción de igualdad definicional es necesaria en la teoría, por ejemplo, conviene considerar los términos $0 : \mathbb{N}$ y $0 + 0 : \mathbb{N}$ como definicionalmente iguales y, por tanto, no habría distinción entre los términos \textit{Vec(0)} y \textit{Vec 0 + 0}. Si \textit{M : Vec(0)} y \textit{N: Vec 0 + 0}, nos lleva a un juicio de la forma $M = N : \sigma$ que se lee \textit{M y N son términos definicionalmente iguales en el tipo sigma}, y, además, que $\sigma = \tau : A$, que se lee \textit{sigma y tau son tipos definicionalmente iguales en A}.
 
-\begin{definition}[Igualdad definicional] Decimos que dos terminos son definicionalmente iguales cuando reducen, luego de cero o mas pasos de reducción, a un termino en comun \cite{mimram2020}. La igualdad a la que hacemos referencia en este caso, no es igualdad propocional, denotada con $\equiv$, si no, a la igualdad que es inherente del lenguaje base $=$ que corresponde a la equivalencia de terminos bajo $\beta$-reducción. 
+\begin{definition}[Igualdad definicional] Decimos que dos términos son definicionalmente iguales cuando reducen, luego de cero o más pasos de reducción, a un término en común \cite{mimram2020}. La igualdad a la que hacemos referencia en este caso, no es igualdad proposicional, denotada con $\equiv$, si no, a la igualdad que es inherente del lenguaje base $=$ que corresponde a la equivalencia de términos bajo $\beta$-reducción. 
 \begin{lstlisting}
   op _+_ : Nat Nat -> Nat .
   eq 0 + N = N .
   eq s(N) + M = s(N + M) .
 \end{lstlisting}
-En este tipo de igualdad, el lenguaje no puede descirnir de dos terminos, pues son exactamente iguales por definicion. Por ejemplo, es posible asertar que \textit{0 + n} y \textit{n} son definicionalmente iguales dada la definicion inductiva de la suma que en Maude, podemos proponer que \textit{0 + N} reduce a \textit{N} en un  solo paso, por tanto, es posible usar \textit{0 + N} y \textit{N}  de forma intercambiable.
+En este tipo de igualdad el lenguaje no puede descirnir de dos términos, pues son exactamente iguales por definición. Por ejemplo, es posible asertar que \textit{0 + N} y \textit{N} son definicionalmente iguales dada la definición inductiva de la suma que en Maude, podemos proponer que \textit{0 + N} reduce a \textit{N} en un  solo paso, por tanto, es posible usar \textit{0 + N} y \textit{N}  de forma intercambiable a lo largo del programa.
 \newline
 \newline
-\indent Sin embargo, esto no siempre es el caso: en contraste \textit{n + 0}, que no es definicionalmente igual a \textit{n} porque \textit{no existe} una ecuacion en nuestra definicion de la suma que inmediatamente pueda asertar que, en este caso, \textit{0 + n} sí reduce a \textit{n}. Pero sí que podemos demostrar proposicionalmente, mediante una prueba más elaborada por induccion en $n$, de que esta igualdad sí se cumple y, finalmente, concluir que \textit{n + 0} $\equiv$ \textit{n}.
+\indent Sin embargo, esto no siempre es el caso: en contraste \textit{n + 0}, que no es definicionalmente igual a \textit{n} porque \textit{no existe} una ecuación en nuestra definición de la suma que inmediatamente pueda asertar que, en este caso, \textit{0 + n} sí reduce a \textit{n}. Pero sí que podemos demostrar proposicionalmente, mediante una prueba más elaborada por inducción en $n$, de que esta igualdad sí se cumple y, finalmente, concluir que \textit{n + 0} $\equiv$ \textit{n}.
 \end{definition}
 
-\begin{definition}[Igualdad proposicional] Decimos que dos terminos son proposicionalmente iguales cuando existe un termino $p$ que habita $\text{Id}_{A}(a, b)$, por tanto, existe una prueba tal que $p : Id(a, b)$ es un testigo de esta igualdad en $A$. A diferencia de la igualdad definicional, que se obtiene en términos de $\beta$-reducción y es una igualdad inherente del lenguaje, la igualdad proposional debe ser demostrada explícitamente mediante la construcción de un testigo. El constructor canónico del tipo identidad es $\text{refl}_a : \text{Id}_A(a, a)$, que atestigua que todo término es trivialmente igual a sí mismo. Para demostrar igualdades no triviales, se requiere construir un término del tipo correspondiente, tipicamente, por inducción.
+\begin{definition}[Igualdad proposicional] Decimos que dos términos son proposicionalmente iguales cuando existe un término $p$ que habita $\text{Id}_{A}(a, b)$, por tanto, existe una prueba tal que $p : Id(a, b)$ es un testigo de esta igualdad en $A$. A diferencia de la igualdad definicional, que se obtiene en términos de $\beta$-reducción y es una igualdad inherente del lenguaje, la igualdad proposicional debe ser demostrada explícitamente mediante la construcción de un testigo, esto es, un término $p$ que es prueba de dicha igualdad. El constructor canónico del tipo identidad es $\text{refl}_a : \text{Id}_A(a, a)$, que atestigua que todo término es trivialmente igual a sí mismo. Para demostrar igualdades no triviales, se requiere construir un término del tipo correspondiente, tipicamente, por inducción.
 \newline
 \begin{example}
-Considerando el mismo ejemplo de la suma sobre naturales, definida por recursion sobre el primer argumento, la proposicion $0 + n \equiv n$ es una igualdad definicional, pues el termino $0 + n$
+Considerando el mismo ejemplo de la suma sobre naturales, definida por recursion sobre el primer argumento, la proposicion $0 + n \equiv n$ es una igualdad definicional, pues el término $0 + n$
 reduce directamente a $n$ por la primera clausula, de modo que $\text{refl}_n$
 basta como testigo. En cambio, la proposicion $n + 0 \equiv n$ no es una igualdad
 definicional, ya que cuando $n$ es una variable, la expresion $n + 0$ no puede
 reducirse porque Maude no encuentra una ecuacion que inmediatamente pueda cubrir este caso. Es necesario construir el
-testigo por induccion sobre $n$:
+testigo por inducción sobre $n$:
 \begin{itemize}
   \item El caso base, donde si $n = 0$, entonces $0 + 0$ reduce a $0$, y $\text{refl}_0$
         es el testigo.
   \item El caso inductivo, donde si $n \coloneqq \text{suc}(k)$, entonces $\text{suc}(k) + 0$ reduce a
         $\text{suc}(k + 0)$ por la segunda clausula. Aplicando
-        $\text{cong}_{\text{suc}}$ a la hipotesis inductiva $p_k : k + 0 \equiv k$,
+        $\text{cong}_{\text{suc}}$ a la hipótesis inductiva $p_k : k + 0 \equiv k$,
         obtenemos el testigo $\text{cong}_{\text{suc}}(p_k) : \text{suc}(k + 0) \equiv \text{suc}(k)$.
 \end{itemize}
 
-En Maude, podemos simular este comportameinto de la siguiente manera, asumiendo que el el tipo de proposicion es un sort cualquiera.
+En Maude, podemos simular este comportameinto de la siguiente manera, asumiendo que el tipo de proposición es un sort cualquiera.
 \begin{lstlisting}
   sort A B .
   subsort A B < Nat .
@@ -729,11 +770,11 @@ La existencia de esta prueba es lo que nos permite concluir que $n + 0 \equiv n$
 \end{definition}
 
 \begin{corollary}
-    Dos términos que son definicionalmente iguales, también lo son propocionalmente. Lo contrario no tiene por qué cumplirse.
+    Dos términos que son definicionalmente iguales, también lo son proposicionalmente. Lo contrario no tiene por qué cumplirse.
 \end{corollary}
 
 \subsection{Tipos Sigma}
-Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el proximo tipo que estudiaremos que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma. Representado en el lambda cálculo simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, mas bien, asegurar la decibiliad del prototipo, este tipo estará acompanado de su ascripcion.
+Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el próximo constructor o tipo al que dedicarémos un breve acercamiento, que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma. Representado en el lambda cálculo simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, más bien, asegurar la decibiliad del prototipo, este tipo estará acompañado de su ascripción.
 
 El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembro representando los tipos sigma:
 
@@ -741,7 +782,7 @@ El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembr
       T = ... \mid \Pi V: T.\, T \,|\, \langle T, T \rangle\, | \textit{fst}\,T\,|\, \textit{snd}\, T
     \end{align*}
 
-    Donde \textit{fst} y \textit{snd} son \textit{proyecciones} que extraen el primer y segundo componente de la tupa $\langle T, T \rangle$. Sus reglas de formacion y eliminacion, se definen como sigue, como sugiere \citep{hoffman2009}:
+    Donde \textit{fst} y \textit{snd} son \textit{proyecciones} que extraen el primer y segundo componente de la tupa $\langle T, T \rangle$. Sus reglas de formación y eliminación, plantea \citep{hoffman2009}, se definen como sigue:
 
 \begin{gather}
   \infer[\text{$\Sigma$-Form}]
@@ -755,10 +796,10 @@ El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembr
   {\Gamma \vdash A : * & \Gamma \vdash n : \mathbb{N}}
 \end{gather}
 
-Los tipos sigma serán utiles para probar propiedades teoricas de la teoría y, con suerte, comprobar que la formalizacion de la teoria de tipos estudiada en este trabajo cumple su funcion.
+Los tipos sigma serán utiles para probar propiedades teóricas de la teoría y, con suerte, comprobar que la formalización de la teoria de tipos estudiada en este trabajo cumple su función.
     
     \section{Tipos Cociente}
-    Los cociente son un termino ubicuo en matemáticas, sin embargo, desde la teoría de conjuntos estan presentes y se extiende el concepto con naturalidad a la teoría de tipos. En los conjuntos, es posible definir el cociente de un conjunto $S$ en clases de equivalencia, obteniendo el cociente del conjunto, donde cada elemento que lo conforma es considerado igual, o equivalente, dada una relacion de equivalencia $\sim$. Así mismo, es posible definir el cociente de un tipo, donde dada una relación de equivalencia, los elementos son iguales dentro del cociente. Los cocientes nos permiten redefinir, entonces, la igualdad proposicional de un tipo.
+    Los cociente son un término ubicuo en matemáticas, sin embargo, desde la teoría de conjuntos están presentes y se extiende dicho concepto con naturalidad a la teoría de tipos. En los conjuntos, es posible definir el cociente de un conjunto $S$ en clases de equivalencia, obteniendo el cociente del conjunto, donde cada elemento que lo conforma es considerado igual, o equivalente, dada una relacion de equivalencia $\sim$. Así mismo, es posible definir el cociente de un tipo, donde dada una relación de equivalencia, los elementos son iguales dentro del cociente pero, fuera de ellos, aún es posible distinguir uno de otro. Los tipo cociente nos permiten redefinir, entonces, la igualdad proposicional en un sistema de tipos.
     \newline
     \newline
     \indent Los tipos cociente son el concepto clave del presente trabajo, puesto a que son sumamente importantes en la formalización de conceptos matemáticos y el razonamiento de programas de lenguajes funcionales. Los cocientes, son un concepto de la teoría de tipos extensional. En un principio, Martin Löf propuso dos variantes de la teoría de tipos que se diferencian por el tratamiento que dan a la igualdad: la teoria de tipos intencional, y la teoria de tipos extensional. La mayoria de lenguajes de programación de hoy en día, parten de una teoría de tipos intencional porque sus propiedades son decidibles, donde en la teoría de tipos extensional no se garantiza del todo. La razón de esto, es que en la teoría de tipos intensional, la igualdad proposicional definida por tipos de identidad no implica igualdad definicional, y la verificación de tipos es decidible. En la teoría de tipos extensional, por otro lado, la igualdad proposicional se identifica con la igualdad definicional, lo que hace que la verificación de tipos sea indecidible \citep{nuoli}.
@@ -767,13 +808,13 @@ Los tipos sigma serán utiles para probar propiedades teoricas de la teoría y, 
     \indent Debido a sus buenas propiedades computacionales, la teoría de tipos intensional es más popular, sin embargo, carece de algunos conceptos extensionales importantes, como la extensionalidad funcional y los tipos cociente, que estaremos abordando.
     \newline
     \newline
-\indent Muchos asistentes de pruebas y lenguajes con tipos dependientes como Coq, Agda o Lean se apoyan en la teoría intensional. Al ser decidible su igualdad definicional, la verificación de tipos se puede automatizar y todo programa bien tipado es terminante, que son justo las garantías que se espera de una herramienta con la que se pretende razonar de forma fiable. Lo que se paga a cambio es la ausencia de los conceptos extensionales que venimos comentando: la extensionalidad funcional, la identificación de pruebas distintas de una misma proposición y los tipos cociente \citep{nuoli}.
+\indent Muchos asistentes de pruebas y lenguajes con tipos dependientes como Coq, Agda o Lean se apoyan en la teoría intensional. Al ser decidible su igualdad definicional, la verificación de tipos se puede automatizar y todo programa bien tipado es terminante, que son justo las garantías que se espera de un lenguaje con el que se pretende razonar de forma fiable o, mejor dicho, sensata. Lo que se paga a cambio es la ausencia de los conceptos extensionales que venimos comentando: la extensionalidad funcional, la identificación de pruebas distintas de una misma proposición y los tipos cociente \citep{nuoli}.
 \newline
 \newline
 \indent Podría pensarse que basta con postular estos conceptos como axiomas, pero esa vía tiene un coste, y es que un axioma se limita a afirmar que cierto término existe, sin decir cómo se calcula, y esa falta de garantía es lo que imposibilita al sistema de tipos determinar si una determinada prueba de igualdad existe o no. Como consecuencia de esto, pues, obtenemos términos cerrados que ya no reducen a ningún valor concreto, con lo que perdemos la canonicidad y, con ella, la razón de haber elegido la teoría intensional desde el principio.
 \newline
 \newline
-\indent La alternativa que ha resultado viable, consiste en dejar intacta la sintaxis y buscar interpretaciones donde los tipos sean algo más que conjuntos. En esa línea aparecieron durante los años noventa varios modelos, entre ellos los modelos de setoides de Hofmann y de Altenkirch, y el modelo de grupoides de Hofmann y Streicher \citep{hoffman}. Leer los tipos como grupoides abrió una puerta que otros siguieron hacia estructuras de dimensión cada vez mayor, y en esa misma dirección se sitúa la teoría homotópica de tipos propuesta por Voevodsky, donde los tipos se piensan como espacios, los términos como puntos en dichos espacios y los tipos de identidad como caminos entre ellos. Bajo esa lectura la igualdad deja de ser un predicado auxiliar y pasa a ser un tipo con estructura propia en cada nivel. Estos ultimos detalles, los abordaremos de forma superficial en la teoria de tipos de Martin Lof para complementar la teoria de tipos extensional y dar una breve introduccion a la teoria homotopica de tipos.
+\indent La alternativa que ha resultado viable, consiste en dejar intacta la sintaxis y buscar interpretaciones donde los tipos sean algo más que conjuntos. En esa línea aparecieron durante los años noventa varios modelos, entre ellos los modelos de setoides de Hofmann y de Altenkirch, y el modelo de grupoides de Hofmann y Streicher \citep{hoffman}. Leer los tipos como grupoides abrió una puerta que otros siguieron hacia estructuras de dimensión cada vez mayor, y en esa misma dirección se sitúa la teoría homotópica de tipos propuesta por Voevodsky, donde los tipos se piensan como espacios, los términos como puntos en dichos espacios y los tipos de identidad como caminos entre ellos. Bajo esa lectura la igualdad deja de ser un predicado auxiliar y pasa a ser un tipo con estructura propia en cada nivel. Estos últimos detalles, los abordaremos de forma superficial en la teoria de tipos de Martin Lof para complementar la teoria de tipos extensional y dar una breve introduccion a las ideas de la teoría homotópica de tipos.
 
 \begin{definition} Una relaci\'on de equivalencia $\sim$ en un conjunto $A$ es una relaci\'on binaria de signatura $R : A \to A \to Prop$ que cumple las siguientes propiedades:
   \begin{enumerate}
@@ -803,13 +844,13 @@ En la teoria de tipos intensional, como se mencionó, no existe la noción de ti
 \indent Es necesario mencionar la utilidad practica de los cocientes y, dejar claro que no son un concepto puramente matemtico. Tómese como ejemplo el caso de los naturales representados como un par $(a, b)$, donde con su diferencia $a - b$ permite identificar que muchos de ellos pueden representarse comeo un mismo entero, donde, $(3, 1), (4, 2) y (5, 3)$ representaria el numero $2$ y ser, de alguna forma, indistiguibles para el programa. La condicion que los agrupa, $a + b = b + c$ es en este caso, la relacion de equivalencia, formar el cociente dada esta relacion es lo que nos permite que colapsen estos elementos en un solo valor, $[t]$, conocido como \textit{representante}, que es indiscernible por el sistema de tipos.
  \newline 
  \newline 
-\indent Los multiconjuntos siguen el mismo patrón. Podemos verlos como listas a las que les hemos quitado la información del orden: partimos del tipo de las listas y cocientamos por la relación que identifica dos de ellas cuando una es permutación de la otra. Así $[1, 2, 2]$ y $[2, 1, 2]$ se vuelven el mismo objeto, pero sin llegar al extremo de un conjunto, porque seguimos recordando cuántas veces aparece cada elemento. Si además olvidamos las repeticiones, cocientando un paso más, recuperamos la noción habitual de conjunto finito.
+\indent Los multiconjuntos o $Set$ siguen el mismo patrón. Recuérdese estas como listas en las que el orden y la repetición de los elementos que la conforman carecen de importancia alguna. Partimos, pues, del tipo de las listas y cocientamos por la relación que identifica dos de ellas cuando una es permutación de la otra. Así $[1, 2, 2]$ y $[2, 1, 2]$ se vuelven el mismo objeto dentro del cociente.
 \newline 
 \newline 
-\indent En definitiva, desde el lado de la programación, disponer de cocientes amplía el repertorio de tipos de datos algebraicos y facilita razonar sobre tipos infinitos y sobre la semántica de programas concurrentes, como sugieren \cite{nuoli} y \cite{hoffman}.
+\indent En definitiva, desde el lado de la programación, disponer de cocientes amplía el repertorio de tipos de datos algebraicos y facilita razonar sobre tipos dependientes, nociones de igualdad y sobre la semántica de programas concurrentes, como sugieren \cite{nuoli} y \cite{hoffman}.
 \newline
 \newline
-Segun lo estudiado por \cite{nuoli}, las reglas de formacion de los tipos cociente se definen como sigue:
+Según lo estudiado por \cite{nuoli}, las reglas de formación de los tipos cociente se definen como sigue:
 \begin{gather}
   \infer[\text{Q-Form}]
   {\Gamma \vdash A/\sim}
@@ -854,23 +895,23 @@ La regla de cómputo $Q-comp$ indica que al aplicar $f$ (asumiendo que $f$ es un
 El resto de reglas estudiadas por \cite{nuoli} se omitiran, pues se consideran fuera del alcance de este trabajo.
     \section{Teoría de tipos de Martin-Löf}
 \section{Reescritura de t\'erminos en Maude}
-La reescritura de t\'erminos constituye, a la luz de los cap\'itulos anteriores, una generalizaci\'on natural de la $\beta$-reducci\'on del $\lambda$-c\'alculo. Donde antes orient\'abamos un redex de la forma $(\lambda x.\, M)\, N$ hacia $M[x := N]$, ahora disponemos de un conjunto arbitrario de ecuaciones $l = r$, le\'idas como reglas $l \to r$, y las aplicamos a un t\'ermino siempre que en \'el aparezca una instancia del lado izquierdo. El proceso de c\'omputo se reduce, entonces, a buscar redexes y a contraerlos, exactamente igual que antes, pero en un marco mucho m\'as flexible que permite especificar tipos de datos, funciones y, como veremos, sistemas concurrentes enteros.
+La reescritura de términos constituye, a la luz de los capítulos anteriores, una generalización natural de la $\beta$-reducción del $\lambda$-cálculo. Donde antes orientábamos un redex de la forma $(\lambda x.\, M)\, N$ hacia $M[x := N]$, ahora disponemos de un conjunto arbitrario de ecuaciones $l = r$, leídas como reglas $l \to r$, y las aplicamos a un término siempre que en él aparezca una instancia del lado izquierdo. El proceso de cómputo se reduce, entonces, a buscar redexes y a contraerlos, exactamente igual que antes, pero en un marco mucho más flexible que permite especificar tipos de datos, funciones y, como veremos, sistemas concurrentes enteros.
 \newline
 \newline
-Maude es un lenguaje declarativo de alto rendimiento, dise\~nado y mantenido a lo largo de m\'as de dos d\'ecadas por un consorcio en el que participan SRI International, la Universitat Polit\`ecnica de Val\`encia, la Universidad Complutense de Madrid, la Universidad de M\'alaga, la Universidad de Illinois en Urbana-Champaign y la Universidad de Stanford \citep{duran2019, clavel2007}. Su fundamento te\'orico es la l\'ogica de reescritura, que admite simult\'aneamente dos lecturas. Por un lado, es un marco sem\'antico en el que pueden especificarse de modo natural una amplia variedad de sistemas concurrentes, desde redes de Petri hasta c\'alculos de procesos. Por otro, es un marco l\'ogico en el que se pueden codificar otras l\'ogicas tomando sus reglas de inferencia como reglas de reescritura. La m\'axima que sintetiza esta dualidad, y que articula buena parte del dise\~no del lenguaje, es la equivalencia
+Maude es un lenguaje declarativo de alto rendimiento, diseáado y mantenido a lo largo de más de dos décadas por un consorcio en el que participan SRI International, la Universitat Politécnica de Valéncia, la Universidad Complutense de Madrid, la Universidad de Málaga, la Universidad de Illinois en Urbana-Champaign y la Universidad de Stanford \citep{duran2019, clavel2007}. Su fundamento teórico es la lógica de reescritura, que admite simultáneamente dos lecturas. Por un lado, es un marco semántico en el que pueden especificarse de modo natural una amplia variedad de sistemas concurrentes, desde redes de Petri hasta cálculos de procesos. Por otro, es un marco lógico en el que se pueden codificar otras lógicas tomando sus reglas de inferencia como reglas de reescritura. La máxima que sintetiza esta dualidad, y que articula buena parte del diseño del lenguaje, es la equivalencia
 \[
 \text{C\'omputo} \;=\; \text{Deducci\'on}
 \]
-de modo que un programa Maude no es otra cosa que una teor\'ia de reescritura, y la ejecuci\'on del programa coincide con la b\'usqueda de derivaciones en dicha teor\'ia \citep{clavel2007}. Esta correspondencia es la que hace de Maude un candidato especialmente adecuado para implementar prototipos ejecutables de sistemas de tipos, pues la sintaxis abstracta del lenguaje que se quiera modelar y sus reglas de tipado pueden trasladarse de manera casi directa a Maude.
+de modo que un programa Maude no es otra cosa que una teoría de reescritura, y la ejecución del programa coincide con la búsqueda de derivaciones en dicha teoría \citep{clavel2007}. Esta correspondencia es la que hace de Maude un candidato especialmente adecuado para implementar prototipos ejecutables de sistemas de tipos, pues la sintaxis abstracta del lenguaje que se quiera modelar y sus reglas de tipado pueden trasladarse de manera casi directa a Maude.
 
-\subsection{Sorts y l\'ogica ecuacional ordenada}
-La primera diferencia notable respecto del $\lambda$-c\'alculo es que Maude obliga a tipar los t\'erminos desde la propia signatura. Cada constante y cada operaci\'on declara expl\'icitamente los sorts de sus argumentos y de su resultado, donde por \textit{sort} entendemos lo que en la teor\'ia de tipos llamar\'iamos un tipo base. La idea de organizar el universo de discurso en sorts disjuntos proviene de la l\'ogica many-sorted, una variante de la l\'ogica de primer orden en la que el dominio se descompone en una colecci\'on indexada de subdominios y cada s\'imbolo de funci\'on o predicado especifica el sort de cada uno de sus argumentos \citep{sep-logic-many-sorted}. Esta restricci\'on sint\'actica es muy poco aparente, pero realmente nos permite distinguir, por ejemplo, los t\'erminos aritm\'eticos de los t\'erminos booleanos sin necesidad de codificarlos en un dominio com\'un, y descarta en principio expresiones sin sentido como sumar un valor de verdad a un n\'umero natural.
+\subsection{Sorts y Lógica Ecuacional Ordenada}
+La primera diferencia notable respecto del $\lambda$-cálculo es que Maude obliga a tipar los términos desde la propia signatura. Cada constante y cada operación declara explícitamente los sorts de sus argumentos y de su resultado, donde por \textit{sort} entendemos lo que en la teoría de tipos llamaríamos un tipo base. La idea de organizar el universo de discurso en sorts proviene de la lógica many-sorted, una variante de la lógica de primer orden en la que el dominio se descompone en una colección indexada de subdominios y cada símbolo de función o predicado especifica el sort de cada uno de sus argumentos \citep{sep-logic-many-sorted}. Esta restricción sintáctica es muy poco distinguible, pero realmente nos permite determinar, por ejemplo, los términos aritméticos de los términos booleanos sin necesidad de codificarlos en un dominio común, y descarta en principio expresiones sin sentido como sumar un valor de verdad a un número natural.
 \newline
 \newline
 Maude va, sin embargo, un paso m\'as all\'a de la l\'ogica many-sorted habitual y adopta la l\'ogica ecuacional \textit{order-sorted}. En esta variante, los sorts forman un conjunto parcialmente ordenado $(S, \leq)$ en el que la relaci\'on $s \leq s'$ se interpreta como inclusi\'on de subsort. La idea es la siguiente: si declaramos que $\mathsf{NzNat} \leq \mathsf{Nat}$, todo n\'umero natural no nulo es tambi\'en, autom\'aticamente, un n\'umero natural, sin necesidad de coerciones expl\'icitas. Las operaciones pueden adem\'as estar sobrecargadas a lo largo de la jerarqu\'ia de subsorts, de manera que una misma suma puede declararse a la vez sobre $\mathsf{Nat}$ y sobre $\mathsf{NzNat}$, y el sistema seleccionar\'a en cada caso el sort m\'as preciso para el resultado.
 
-\subsection{M\'odulos funcionales}
-La unidad b\'asica de especificaci\'on en Maude es el m\'odulo. Un m\'odulo funcional, declarado entre las palabras clave \texttt{fmod} y \texttt{endfm}, agrupa una signatura de sorts y operaciones junto con un conjunto de ecuaciones que se interpretan como reglas de reescritura de izquierda a derecha. Es la unidad an\'aloga, en este lenguaje, a lo que en programaci\'on funcional ser\'ia un m\'odulo con sus tipos algebraicos y sus funciones puras. Considerese el siguiente ejemplo, en el que especificamos los n\'umeros naturales en notaci\'on de Peano:
+\subsection{Módulos Funcionales}
+La unidad básica de especificación en Maude es el módulo. Un módulo funcional, declarado entre las palabras clave \texttt{fmod} y \texttt{endfm}, agrupa una signatura de sorts y operaciones junto con un conjunto de ecuaciones que se interpretan como reglas de reescritura de izquierda a derecha. Es la unidad análoga, en este lenguaje, a lo que en programación funcional sería un módulo con sus tipos algebraicos y sus funciones puras. Considerese el siguiente ejemplo, en el que especificamos los números naturales en notación de Peano:
 
 \begin{lstlisting}
 fmod NAT-PEANO is
@@ -885,29 +926,29 @@ fmod NAT-PEANO is
 endfm
 \end{lstlisting}
 
-El m\'odulo declara dos sorts, $\mathsf{NzNat}$ y $\mathsf{Nat}$, con la inclusi\'on $\mathsf{NzNat} \leq \mathsf{Nat}$. La constante $0$ se introduce con el atributo \texttt{ctor}, que la marca como constructor del tipo, y el sucesor $s$ se declara con el mismo atributo. La suma se especifica con notaci\'on infija mediante guiones bajos, y sus dos ecuaciones recogen, casi literalmente, la definici\'on est\'andar por inducci\'on sobre el primer argumento. Una vez introducido el m\'odulo en el int\'erprete, podemos solicitar la evaluaci\'on de una expresi\'on mediante el comando \texttt{reduce}:
+El módulo declara dos sorts, $\mathsf{NzNat}$ y $\mathsf{Nat}$, con la inclusión $\mathsf{NzNat} \leq \mathsf{Nat}$. La constante $0$ se introduce con el atributo \texttt{ctor}, que la marca como constructor del tipo, y el sucesor $s$ se declara con el mismo atributo. La suma se especifica con notación infija mediante guiones bajos, y sus dos ecuaciones recogen, casi literalmente, la definición estándar por inducción sobre el primer argumento. Una vez introducido el módulo en el intérprete, podemos solicitar la evaluación de una expresión mediante el comando \texttt{reduce}:
 
 \begin{lstlisting}
 Maude> reduce s(s(0)) + s(s(s(0))) .
 result NzNat: s(s(s(s(s(0)))))
 \end{lstlisting}
 
-El int\'erprete aplica las ecuaciones como reglas de reescritura hasta alcanzar la forma normal e infiere el menor sort posible para el resultado, en este caso $\mathsf{NzNat}$.
+El intérprete aplica las ecuaciones como reglas de reescritura hasta alcanzar la forma normal e infiere el menor sort posible para el resultado, en este caso $\mathsf{NzNat}$.
 \newline
 \newline
-Para que un m\'odulo funcional tenga buenas propiedades operacionales, las ecuaciones deben ser confluentes y operacionalmente terminantes, las mismas dos nociones que estudi\'abamos en el cap\'itulo del $\lambda$-c\'alculo, ahora reformuladas en el contexto de un sistema de reescritura arbitrario. La terminaci\'on operacional garantiza que toda secuencia de reescritura concluye en un n\'umero finito de pasos, y la confluencia, que el resultado de la evaluaci\'on no depende del orden en que se contraen los redexes. Ambas propiedades, indecidibles en general, pueden chequearse autom\'aticamente con las herramientas del \textit{Maude Formal Environment} \citep{duran2019}, entre las que destacan \texttt{MTT} para terminaci\'on y \texttt{ChC} para confluencia y suficiente completitud. Bajo estas condiciones, todo t\'ermino se reduce a una forma normal \'unica, lo que dota al lenguaje de una sem\'antica determinista para sus m\'odulos funcionales.
+Para que un módulo funcional tenga buenas propiedades operacionales, las ecuaciones deben ser confluentes y operacionalmente terminantes, las mismas dos nociones que estudiábamos en el capítulo del $\lambda$-cálculo, ahora reformuladas en el contexto de un sistema de reescritura arbitrario. La terminación operacional garantiza que toda secuencia de reescritura concluye en un número finito de pasos, y la confluencia, que el resultado de la evaluación no depende del orden en que se contraen los redexes. Ambas propiedades, indecidibles en general, pueden chequearse automáticamente con las herramientas del \textit{Maude Formal Environment} \citep{duran2019}, entre las que destacan \texttt{MTT} para terminación y \texttt{ChC} para confluencia y suficiente completitud. Bajo estas condiciones, todo término se reduce a una forma normal única, lo que dota al lenguaje de una semántica determinista para sus módulos funcionales.
 
-\subsection{M\'odulos de sistema y reescritura no determinista}
-Junto a los m\'odulos funcionales, Maude provee m\'odulos de sistema, declarados entre \texttt{mod} y \texttt{endm}. Un m\'odulo de sistema extiende a uno funcional con un conjunto adicional de reglas de reescritura $l \to r$ que modelan transiciones de un sistema, sem\'anticamente distintas de las ecuaciones \citep{clavel2007}. Las ecuaciones describen \textit{c\'omo se calcula el estado de un t\'ermino}, esto es, c\'omo se simplifica a su forma normal. Las reglas, en cambio, describen \textit{c\'omo evoluciona el sistema}, qu\'e transiciones puede dar de un estado a otro. La diferencia es que las reglas no se asumen confluentes ni terminantes, sino que codifican el comportamiento intr\'insecamente no determinista del sistema. Un mismo t\'ermino puede reescribirse de maneras distintas y conducir a estados muy diferentes, y eso es justamente lo que se quiere capturar al describir, por ejemplo, las transiciones de un protocolo de comunicaci\'on, las jugadas de un juego, o los pasos de una m\'aquina abstracta de evaluaci\'on para un lenguaje de programaci\'on.
+\subsection{Módulos de Sistema y Reescritura no Determinista}
+Junto a los módulos funcionales, Maude provee módulos de sistema, declarados entre \texttt{mod} y \texttt{endm}. Un módulo de sistema extiende a uno funcional con un conjunto adicional de reglas de reescritura $l \to r$ que modelan transiciones de un sistema, semánticamente distintas de las ecuaciones \citep{clavel2007}. Las ecuaciones describen \textit{cómo se calcula el estado de un término}, esto es, cómo se simplifica a su forma normal. Las reglas, en cambio, describen \textit{cómo evoluciona el sistema}, qué transiciones puede dar de un estado a otro. La diferencia es que las reglas no se asumen confluentes ni terminantes, sino que codifican el comportamiento intrínsecamente no determinista del sistema. Un mismo término puede reescribirse de maneras distintas y conducir a estados muy diferentes, y eso es justamente lo que se quiere capturar al describir, por ejemplo, las transiciones de un protocolo de comunicación, las jugadas de un juego, o los pasos de una máquina abstracta de evaluación para un lenguaje de programación.
 \newline
 \newline
-La sem\'antica operacional resultante combina ambos niveles. Ante un t\'ermino, Maude normaliza primero con las ecuaciones y aplica despu\'es una regla al resultado. Para explorar el espacio de estados alcanzables desde un t\'ermino inicial, Maude provee los comandos \texttt{rewrite}, que sigue una traza de reescrituras, y \texttt{search}, que explora todos los estados alcanzables en anchura buscando uno que satisfaga un patr\'on dado \citep{duran2019}. Este \'ultimo es de especial utilidad cuando se modela un sistema de tipos como un m\'odulo de sistema: la b\'usqueda de derivaciones de tipado se reduce a una b\'usqueda en el grafo de reescrituras, y el comando devuelve, si la hay, la derivaci\'on que justifica el juicio.
+La semántica operacional resultante combina ambos niveles. Ante un término, Maude normaliza primero con las ecuaciones y aplica después una regla al resultado. Para explorar el espacio de estados alcanzables desde un término inicial, Maude provee los comandos \texttt{rewrite}, que sigue una traza de reescrituras, y \texttt{search}, que explora todos los estados alcanzables en anchura buscando uno que satisfaga un patrón dado \citep{duran2019}. Este último es de especial utilidad cuando se modela un sistema de tipos como un módulo de sistema: la búsqueda de derivaciones de tipado se reduce a una búsqueda en el árbol de reescrituras, y el comando devuelve, si la hay, la derivación que justifica el juicio.
 
-\subsection{Formalizaci\'on de lenguajes y sistemas de tipos}
-La capacidad de Maude para definir sintaxis con notaci\'on definible por el usuario, junto con su soporte para reescritura y para reescritura no determinista, lo convierten en una plataforma especialmente apropiada para formalizar lenguajes de programaci\'on y sistemas de tipos. La idea general es trasladar la sintaxis abstracta del lenguaje a una signatura $\Sigma$, las reglas de tipado o de evaluaci\'on de la sem\'antica operacional a reglas de reescritura $R$, y las identidades estructurales sobre los t\'erminos, como la $\alpha$-equivalencia o la igualdad definicional, a ecuaciones $E$. Esta metodolog\'ia ha sido aplicada con \'exito a lenguajes reales, desde fragmentos de C hasta Java o JavaScript, dando lugar a prototipos no solo ejecutables, sino tambi\'en analizables con las herramientas del entorno formal de Maude \citep{duran2019}.
+\subsection{Formalización de Lenguajes y Sistemas de Tipos}
+La capacidad de Maude para definir sintaxis con notación definible por el usuario, junto con su soporte para reescritura y para reescritura no determinista, lo convierten en una plataforma especialmente apropiada para formalizar lenguajes de programación y sistemas de tipos. La idea general es trasladar la sintaxis abstracta del lenguaje a una signatura $\Sigma$, las reglas de tipado o de evaluaci\'on de la sem\'antica operacional a reglas de reescritura $R$, y las identidades estructurales sobre los t\'erminos, como la $\alpha$-equivalencia o la igualdad definicional, a ecuaciones $E$. Esta metodolog\'ia ha sido aplicada con \'exito a lenguajes reales, desde fragmentos de C hasta Java o JavaScript, dando lugar a prototipos no solo ejecutables, sino tambi\'en analizables con las herramientas del entorno formal de Maude \citep{duran2019}.
 \newline
 \newline
-Para hacer visible este traslado en el caso m\'as elemental, consideremos un fragmento del lambda c\'alculo sin tipos. Especificamos los t\'erminos con tres constructores que reflejan directamente la definici\'on inductiva del cap\'itulo anterior:
+Para hacer visible este traslado en el caso más elemental, consideremos un fragmento del lambda cálculo sin tipos. Especificamos los términos con tres constructores que reflejan directamente la definición inductiva del capítulo anterior:
 
 \begin{lstlisting}
 fmod LAMBDA-SYNTAX is
@@ -922,18 +963,18 @@ fmod LAMBDA-SYNTAX is
 endfm
 \end{lstlisting}
 
-Aquí $\mathsf{Var}$ es subsort de $\mathsf{Term}$, lo que captura sintácticamente el hecho de que toda variable es un término. Tanto la aplicación como la lambda abstracción, son constructres que, proporcionando los arugmentos que exige su signatura será posible producir un sort. Aún así, Maude posee capacidades de expresividad más avanzadas, pues es posible sacar provecho de los operadores infix, permitiendonos redefinir, por ejemplo, la aplicacion como sigue:
+Aquí $\mathsf{Var}$ es subsort de $\mathsf{Term}$, lo que captura sintácticamente el hecho de que toda variable es un término. Tanto la aplicación como la lambda abstracción, son constructres que, proporcionando los argumentos que exige su signatura será posible producir un sort. Aún así, Maude posee capacidades de expresividad más avanzadas, pues es posible sacar provecho de los operadores infix, permitiéndonos redefinir, por ejemplo, la aplicación como sigue:
 
 \begin{lstlisting}
   op _@_: Term Term -> Term [ctor] .
 \end{lstlisting}
-El underscore es un placeholder para los argumentos de la expresion.
-La $\beta$-reducci\'on puede expresarse despu\'es como una regla de reescritura en un m\'odulo de sistema que extienda al anterior. Para evitar la captura de variables se necesitar\'ia una operaci\'on auxiliar de sustituci\'on, definida por ecuaciones, que renombre las variables ligadas con identificadores frescos cuando sea necesario. Sin embargo, omitirémos esta funcionalidad por propósitos prácticos a lo largo de esta tesis para implementar el lenguaje dependientemente tipado y, posteriormente, su extensi\'on con tipos cociente.
+El underscore es un placeholder para los argumentos de la expresión.
+La $\beta$-reducción puede expresarse después como una regla de reescritura en un módulo de sistema que extienda al anterior. Para evitar la captura de variables se necesitaría una operación auxiliar de sustitución, definida por ecuaciones, que renombre las variables ligadas con identificadores frescos cuando sea necesario. Sin embargo, omitirémos esta funcionalidad por propósitos prácticos a lo largo de esta tesis para implementar el lenguaje dependientemente tipado y, posteriormente, su extensión con tipos cociente.
 \newline
 \newline
 La fuerza de esta aproximación se aprecia mejor con un ejemplo menos trivial. Los términos de un sistema de tipos a la Church incluuyen, junto a las variables y aplicaciones, anotaciones de tipo en cada uno de sus binders, y las reglas de tipado se expresan en forma de juicios: $\Gamma \vdash M : A$. En Maude, basta con introducir un sort para los contextos, otro para los juicios de tipado, y reglas de reescritura que codifiquen cada regla de inferencia.
 
-Tomando como ejemplo el contexto, el mismo puede definirse como un mapeo de variables a tipos, y tipos a tipos de variable $\mathsf{x \to \tau}$, $\mathsf{Nat \to \mathcal{U}}$. El contexto por tanto, almacena información sobre los tipos bien formados en nuestro programa. De no existir un tipo o termino para un tipo en $\Gamma$, decimos que es un término o tipo malformado.
+Tomando como ejemplo el contexto, el mismo puede definirse como un mapeo de variables a tipos, y tipos a tipos de variable $\mathsf{x \to \tau}$, $\mathsf{Nat \to \mathcal{U}}$. El contexto por tanto, almacena información sobre los tipos bien formados en nuestro programa. De no existir un tipo o término para un tipo en $\Gamma$, decimos que es un término o tipo malformado.
 \begin{align}
   \Gamma := \quad \emptyset \\
   \mid \quad & (x, \tau) :: \Gamma &
@@ -976,7 +1017,7 @@ Obsérvese que su interpretación no es muy distinta a lo que la regla \textit{(
 La ejecución del prototipo, pues, se convierte entonces en la búsqueda de derivaciones, y el comando \texttt{search} permite preguntar al sistema si existe una derivación con un consecuente dado, recuperando el término y la sustitución que la justifican \citep{duran2019, clavel2007}.
 
 \subsection{Reflexi\'on y meta-programaci\'on}
-Un \'ultimo aspecto que conviene mencionar, dada su utilidad cuando se construye un prototipo de un sistema de tipos, es que la l\'ogica de reescritura es reflexiva \citep{clavel2007}. Esto quiere decir que existe una teor\'ia universal $\mathcal{U}$, finita y axiomatizable, en la que toda teor\'ia de reescritura $\mathcal{R}$, incluida la propia $\mathcal{U}$, puede representarse como un t\'ermino $\overline{\mathcal{R}}$, y los pasos de reescritura $t \to t'$ de $\mathcal{R}$ se corresponden con pasos de reescritura $\langle \overline{\mathcal{R}}, \overline{t}\rangle \to \langle \overline{\mathcal{R}}, \overline{t'}\rangle$ en $\mathcal{U}$. Maude implementa esta reflexi\'on en el m\'odulo predefinido \texttt{META-LEVEL}, que ofrece operaciones para manipular m\'odulos, t\'erminos y reglas como datos de primera clase \citep{duran2019}. Esto resulta de gran ayuda al implementar verificadores de tipos: el verificador puede inspeccionar el m\'odulo que codifica el lenguaje, aplicar reglas de inferencia a t\'erminos meta-representados y devolver derivaciones como resultado, todo dentro de Maude y sin necesidad de salir al lenguaje anfitri\'on.
+Un último aspecto que conviene mencionar, dada su utilidad cuando se construye un prototipo de un sistema de tipos, es que la l\'ogica de reescritura es reflexiva \citep{clavel2007}. Esto quiere decir que existe una teor\'ia universal $\mathcal{U}$, finita y axiomatizable, en la que toda teor\'ia de reescritura $\mathcal{R}$, incluida la propia $\mathcal{U}$, puede representarse como un t\'ermino $\overline{\mathcal{R}}$, y los pasos de reescritura $t \to t'$ de $\mathcal{R}$ se corresponden con pasos de reescritura $\langle \overline{\mathcal{R}}, \overline{t}\rangle \to \langle \overline{\mathcal{R}}, \overline{t'}\rangle$ en $\mathcal{U}$. Maude implementa esta reflexi\'on en el m\'odulo predefinido \texttt{META-LEVEL}, que ofrece operaciones para manipular m\'odulos, t\'erminos y reglas como datos de primera clase \citep{duran2019}. Esto resulta de gran ayuda al implementar verificadores de tipos: el verificador puede inspeccionar el m\'odulo que codifica el lenguaje, aplicar reglas de inferencia a t\'erminos meta-representados y devolver derivaciones como resultado, todo dentro de Maude y sin necesidad de salir al lenguaje anfitri\'on.
 \newline
 \newline
 \indent En definitiva, Maude provee una forma sumamente natural de implementar reglas de inferencia y la semantica de un lenguaje de manera ecuacional y visual los pasos en los que se computa cada expresión que se suministre en pasos de reducción.
@@ -995,7 +1036,7 @@ e, \rho, k := \quad & \alpha & \tag{1}\\
   \mid \quad & e \; e' \tag{6}&
 \end{align}
 
-Nótese, como anteriormente se ha cubierto, los términos y los tipos comparten el mismo nivel sintáctico y no existe distinción entre embos, por tanto, pudiese un término ocurrir en un tipo. Con respecto a $(2)$, por motivos prácticos, nuestra implementación no manejará un nodo de anotación explícita, por lo que, en Maude, será totalmente seguro omitirlo. 
+Nótese, como anteriormente se ha cubierto, los términos y los tipos comparten el mismo nivel semántico y no existe distinción entre ambos, por tanto, pudiese un término ocurrir en un tipo. Con respecto a $(2)$, por motivos prácticos, nuestra implementación no manejará un nodo de anotación explícita, por lo que, en Maude, será totalmente seguro omitirlo. 
 \newpage
 \begin{lstlisting}
 fmod LAMBDA-QTT is
@@ -1018,7 +1059,7 @@ El segmento de constructor de tipos es de mayor interés. Es tentador definir un
 \begin{lstlisting}
   subsort Type < Term .
 \end{lstlisting}
-Pero esto es incorrecto pues, no tiene \textit{Type} un orden estructuralmente menor que \textit{Term} por el contrario, dado que defininimos un cálculo dependiente, términos y tipos vienen siendo lo mismo semánticamente.
+Pero esto es incorrecto, pues no tiene \textit{Type} un orden estructuralmente menor que \textit{Term}, por el contrario, dado que defininimos un cálculo dependiente, términos y tipos vienen siendo lo mismo semánticamente.
 
 \section{Sustitución}
 Las reglas de sustitución para nuestro lenguaje no son necesariamente distintas de las del lambda cálculo sin tipos discutidas en en un capitulo previo a este, aún así, existen diferencias que son notables en la sustitución del cálculo dependiente. Se pretende, por tanto, que las mismas sean triviales para el lector:
@@ -1028,12 +1069,12 @@ Las reglas de sustitución para nuestro lenguaje no son necesariamente distintas
     \item Cuando se sustituye bajo un binder de variable $y$ distinta de $x$, el cuerpo del binder se sustituye normalmente; cuando $y = x$, la sustituci\'on se detiene en la anotaci\'on de tipo pero no avanza al cuerpo, pues $x$ queda capturada por el binder.
 \end{enumerate}
 
-La regla correspondiente a la sustitución en el tipo de funcion dependiente es omitida por \cite{loh2010} sin embargo, es prudente mencionarla en nuestra implementacion.
+La regla correspondiente a la sustitución en el tipo de función dependiente es omitida por \cite{loh2010} sin embargo, es prudente mencionarla en nuestra implementación.
 \begin{align}
 & \quad \Pi y : A . B[x := s] = \Pi y : A[x := s] . B[x := s] \notag
 \end{align}
 
-La regla es trivial para $\lambda$ y $\Sigma$ que describirémos posteriormente. Para el resto de casos, la sustitución se propaga estrucuturalmente.
+La regla es trivial para $\lambda$ y $\Sigma$ que describirémos posteriormente. Para el resto de casos, la sustitución se propaga estructuralmente.
 \newline
 \newline
 \indent Luego, la implementación en Maude define las reglas de cómputo para la sustitución en el cálculo dependientemente tipado, se define una regla por cada constructor del cálculo, definiendo la condición de igualdad o desigualdad sobre los nombres de las variables, expresada de manera ecuacional:
@@ -1060,7 +1101,7 @@ fmod LAMBDA-QTT is
 endfm
 \end{lstlisting}
 \section{Normalización}
-Se define, a continuación, la semántica operacional \textit{big step} del proceso de normalización para cada término en el lenguaje, y con a ella, la ecuación que corresponde a cada regla de evaluación.
+Se define, a continuación, la semántica operacional \textit{big step} del proceso de normalización para cada término en el lenguaje, y con ella, la ecuación de Maude que corresponde a cada regla de evaluación.
 
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}l@{}}
@@ -1234,7 +1275,7 @@ Se define, a continuación, la semántica operacional \textit{big step} del proc
 \end{center}
 
 \section{Verificación de Tipos}
-La verficación de tipos que se implementa es bidireccional. Se proponen las siguientes ecuaciones $check$ ($\downarrow$) e $infer$ ($\uparrow$) para asertar que un término es de un tipo o respectivamente, sintetizar su tipo dado un contexto $\Gamma$ cuando no hay suficiente informacion para asertar su estructura ne un principio. Para propósitos prácticos, cada término en el lenguaje que se formaliza tiene una ascripción (es decir, anotado con su signatura o el tipo que habita) y cualquier término no tipado será rechazado por el typechecker.
+La verficación de tipos que se implementa es bidireccional. Se proponen las siguientes ecuaciones $check$ ($\downarrow$) e $infer$ ($\uparrow$) para asertar que un término es de un tipo o respectivamente, sintetizar su tipo dado un contexto $\Gamma$ cuando no hay suficiente información para asertar su estructura en un principio. Para propósitos prácticos, cada término en el lenguaje que se formaliza tiene una ascripción (es decir, está anotado con su signatura o el tipo en el que habita) y cualquier término no tipado será rechazado por el typechecker.
 \begin{align}
   & \quad \texttt{op check : Ctx Term Term -> [Bool] .} \\
   & \quad \texttt{op infer : Ctx Term -> [Term] .} \\
@@ -1383,7 +1424,7 @@ listan las reglas de formación, introducción, eliminación y computación, y a
 cada una de ellas se le hace corresponder la ecuación Maude que la realiza en el prototipo.
 \newline
 \newline
-\indent Antes de detallar las reglas, conviene precisar de qué forma se amplia la sintaxis del lenguaje. La gram\'atica presentada en el capitulo anterior se extiende con tres nuevos constructores, que se corresponden con la formacion del cociente, la formacion de una clase de equivalencia y la eliminacion por \textit{lifting}, respectivamente:
+\indent Antes de detallar las reglas, conviene precisar de qué forma se amplía la sintaxis del lenguaje. La gramática presentada en el capítulo anterior se extiende con tres nuevos constructores, que se corresponden con la formación del cociente, la formación de una clase de equivalencia y la eliminación por \textit{lifting}, respectivamente:
 
 \begin{align}
 e, \rho, k := \quad & \dots & \tag{$\ast$}\\
@@ -1393,8 +1434,8 @@ e, \rho, k := \quad & \dots & \tag{$\ast$}\\
 \end{align}
 
 Donde $(7)$ construye el tipo cociente $A/{\sim}$ a partir de un tipo $A$ y de una
-relaci\'on $R$; $(8)$ construye la clase de equivalencia $[t]$ de
-un representante $t : A$, anotada con el tipo cociente al que pertenece; y $(9)$ eleva una función $f$ definida sobre representantes a una función definida sobre el cociente, exigiendo un testigo $\mathit{resp}$ de que $f$ respeta la relaci\'on. Su correspondencia en Maude, se indica como sigeu:
+relación $R$; $(8)$ construye la clase de equivalencia $[t]$ de
+un representante $t : A$, anotada con el tipo cociente al que pertenece; y $(9)$ eleva una función $f$ definida sobre representantes a una función definida sobre el cociente, exigiendo un testigo $\mathit{resp}$ de que $f$ respeta la relación. Su correspondencia en Maude, se indica como sigue:
 
 \begin{lstlisting}
   op qtype : Term Term -> Term [ctor] .
@@ -1402,7 +1443,7 @@ un representante $t : A$, anotada con el tipo cociente al que pertenece; y $(9)$
   op qelim : Term Term Term -> Term [ctor] .
 \end{lstlisting}
 
-\indent La sustitucion se propaga sobre cada constructor y recursivamente sobre los tipos presentes en cada uno de ellos. Una vez mas, cualquier caso de captura de variables es evitable, pues ningun constructor introduce un binder propio sobre la variable que se sustituye:
+\indent La sustitución se propaga sobre cada constructor y recursivamente sobre los tipos presentes en cada uno de ellos. Una vez más, cualquier caso de captura de variables es evitable, pues ningún constructor introduce un binder propio sobre la variable que se sustituye:
 \begin{lstlisting}
   eq subst(qtype(A, R), V, S) = qtype(subst(A, V, S), subst(R, V, S)) .
   eq subst(qclass(A, R), V, S) = qclass(subst(A, V, S), subst(R, V, S)) .
@@ -1410,7 +1451,7 @@ un representante $t : A$, anotada con el tipo cociente al que pertenece; y $(9)$
     qelim(subst(F, V, S), subst(A, V, S), subst(R, V, S)) .
 \end{lstlisting}
 
-Es importante mencionar otra distinción con respecto a lo propuesto por \cite{nuoli} y nuestra teoría, y es que en su trabajo propone que toda relación $\sim$ habite en $Prop$, esto es por la teoría de tipos de Martin Lof, en donde los cocientes se encuentran como extensión de la metateoría, existe una distinción entre $Type$ y $Prop$, nuestro sistema de tipos se limita a habitar en un solo universo $\ast$. Esta decisión no compromete en su totalidad los resultados obtenidos.
+Es importante mencionar otra distinción con respecto a lo propuesto por \cite{nuoli} y nuestra teoría, y es que en su trabajo propone que toda relación $\sim$ habite en $Prop$, esto es por la teoría de tipos de Martin Lof, en donde los cocientes se encuentran como extensión de la metateoría y existe una distinción entre $Type$ y $Prop$. Nuestro sistema de tipos se limita a habitar en un solo universo $\ast$. Esta decisión no compromete en su totalidad los resultados obtenidos.
 \section{Introducción}
 
 \begin{gather}
@@ -1426,7 +1467,7 @@ Según lo fijado por la regla, la ecuación en Maude aserta que el tipo de un re
     if true := check(G, T, A) .
 \end{lstlisting}
 
-\indent La decisión de anotar el tipo cociente sobre la clase responde al mismo principio que en el capítulo anterior abordamos en las tuplas del tipo $\Sigma$, donde $\mathrm{pair}$ posee su anotación. Sin dicha anotación, la síntesis del tipo de una clase sería ambigua, pues un mismo representante $t : A$ pertenece a tantos cocientes como relaciones puedan definirse sobre $A$. Portando la clase su tipo cociente, la inferencia permanece dirigida por la sintaxis y, por tanto, se mantiene decidible.
+\indent La decisión de anotar el tipo cociente sobre la clase responde al mismo principio que en el capítulo anterior abordamos con las tuplas del tipo $\Sigma$, donde $\mathrm{pair}$ posee su anotación. Sin dicha anotación, la síntesis del tipo de una clase sería ambigua, pues un mismo representante $t : A$ pertenece a tantos cocientes como relaciones puedan definirse sobre $A$. Portando la clase su tipo cociente, la inferencia permanece dirigida por la sintaxis y, por tanto, se mantiene decidible.
 \newline
 \newline
 \indent Puesto a que $A$ y $R$ son dentro de nuestro universo $*$ términos, es sensato normalizar ambos argumentos. De manera que la ecuación en Maude es congruente:
@@ -1442,7 +1483,7 @@ Según lo fijado por la regla, la ecuación en Maude aserta que el tipo de un re
   {\Gamma \vdash A \uparrow *, & \Gamma a, b : A \vdash x \sim y \downarrow Pi(a, A, Pi(b, A, Type))}
 \end{gather}
 
-La regla de formación sostiene que para inferir que $A/\sim$ es de tipo $*$, primero $~$ debe atestiguar que la relción de equivalencia entre $a$ y $b$ es transitiva, reflexiva y simetrica y, ademas, habitar en el tipo $\Pi$. Adicionalmente, $a$ y $b$ habitan $A$. 
+La regla de formación sostiene que para inferir que $A/\sim$ es de tipo $*$, primero $~$ debe atestiguar que la relación de equivalencia entre $a$ y $b$ es transitiva, reflexiva y simétrica y, además, habitar en el tipo $\Pi$. Adicionalmente, $a$ y $b$ habitan $A$. 
 \newline
 \begin{lstlisting}
   ceq infer(G, qtype(A, R)) = Type
