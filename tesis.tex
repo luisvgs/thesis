@@ -138,7 +138,7 @@
 
 \chapter{Fundamentos te\'oricos}
 \section{El Lambda c\'alculo}
-El lambda cálculo fue inventado por Alonzo Church en la decada de los 80 con el proposito de capturar la nocion abstracta de la aplicabilidad de una funcion, sin embargo, conviene precisar en qué sentido. Una función puede entenderse de dos maneras: de forma extensional, como el conjunto de pares entrada–salida que la determina, o de forma intensional, como la regla o el proceso de cómputo que, dado un argumento, prescribe cómo obtener el resultado \citep{geuvers2014}. Es esta segunda lectura, la de la función como algoritmo, la que el lambda cálculo formaliza \citep{barendregt1984, geuvers2014}. En su origen, Church concibió el sistema como parte de una fundamentación de la lógica y las matemáticas; dicha formulación resultó ser inconsistente, tal y como evidenciaron Kleene y Rosser, por lo que Church aisló su núcleo puramente computacional, libre de constantes lógicas, dando lugar al lambda cálculo tal y como se conoce hoy (Barendregt, 1984), siendo ampliamente adoptado como un sistema formal de lógica matemática.
+El lambda cálculo fue inventado por Alonzo Church en la decada de los 80 con el proposito de capturar la nocion abstracta de la aplicabilidad de una función, sin embargo, conviene precisar en qué sentido. Una función puede entenderse de dos maneras: de forma extensional, como el conjunto de pares entrada–salida que la determina, o de forma intensional, como la regla o el proceso de cómputo que, dado un argumento, prescribe cómo obtener el resultado \citep{geuvers2014}. Es esta segunda lectura, la de la función como algoritmo, la que el lambda cálculo formaliza \citep{barendregt1984, geuvers2014}. En su origen, Church concibió el sistema como parte de una fundamentación de la lógica y las matemáticas; dicha formulación resultó ser inconsistente, tal y como evidenciaron Kleene y Rosser, por lo que Church aisló su núcleo puramente computacional, libre de constantes lógicas, dando lugar al lambda cálculo tal y como se conoce hoy (Barendregt, 1984), siendo ampliamente adoptado como un sistema formal de lógica matemática.
 \newline
 \newline
 Este sistema ocupa, además, un lugar cenral el diseño de lenguajes de programación. De forma análoga, la manera en la que se programa en el mismo es muy similar a cómo se programa en un lenguaje funcional hoy en dia. De hecho, lenguajes como Haskell, Agda, la familia de lenguajes basados en ML, y LISP, estan ampliamente inspirados en un conjunto del lambda calculus y, pueden entenderse, en buena medida, como extensiones  dotadas de azucar sintáctico, sistemas de tipos y otras primitivas \citep{pierce2002}.
@@ -261,7 +261,7 @@ sustituci\'on \textit{que evita la captura} \citep{pierce2002}.
 \end{example}
 
 \subsection{Confluencia}
-Anteriormente señalamos cómo la $\beta$-reducción emula, en cierto sentido, el proceso de cómputo de una funcion dada: evaluado un término, aspiramos a obtener su forma normal, esto es, un término en el que ya no resta redex alguno que nos permita seguir reduciendo \citep{barendregt1984, pierce2002}.
+Anteriormente señalamos cómo la $\beta$-reducción emula, en cierto sentido, el proceso de cómputo de una función dada: evaluado un término, aspiramos a obtener su forma normal, esto es, un término en el que ya no resta redex alguno que nos permita seguir reduciendo \citep{barendregt1984, pierce2002}.
 \newline
 \newline
 Ahora bien, el orden en que se contraen tales redexes no es indiferente, pues puede influir en si el cómputo termina o, mejor dicho, en si alcanza una forma normal. Surge así una pregunta: dado un término $t$ del que divergen dos reducciones, $t \to_\beta^{\ast} t_1$ y $t \to_\beta^{\ast} t_2$, en uno o varios pasos, ¿es posible reconciliar ambas ramas en un término común $u$ alcanzable tanto desde $t_1$ como desde $t_2$? Cuando tal $u$ existe para cualquier par de reducciones divergentes, decimos que la reducción es \textit{confluente} sobre $t$.
@@ -839,13 +839,13 @@ En la teoria de tipos intensional, como se mencionó, no existe la noción de ti
   \begin{enumerate}
     \item Un tipo $A : Type$.
     \item Una relacion binaria $\sim : A \to A \to Prop$.
-    \item Una prueba $p$ de que una funcion $f$ respeta la equivalencia (es decir, que es reflexiva, transitiva y simetrica).
+    \item Una prueba $p$ de que una función $f$ respeta la equivalencia (es decir, que es reflexiva, transitiva y simetrica).
   \end{enumerate}
 
-  Una funcion $f : A \to B$ respeta la equivalencia $\sim$ si $\forall(x, y: A) \to x \sim y \to f(x)  =_B f(y)$.
+  Una función $f : A \to B$ respeta la equivalencia $\sim$ si $\forall(x, y: A) \to x \sim y \to f(x)  =_B f(y)$.
 \newline
 \newline
-\indent Sin embargo, en la practica el modelo de los setoides no es para nada practico pues, las pruebas de que una funcion $f$ respeta una equivalencia $\sim$ debe pasarse a toda funcion repetidas veces.
+\indent Sin embargo, en la practica el modelo de los setoides no es para nada practico pues, las pruebas de que una función $f$ respeta una equivalencia $\sim$ debe pasarse a toda función repetidas veces.
 \newline
 \newline
 \indent Es necesario mencionar la utilidad practica de los cocientes y, dejar claro que no son un concepto puramente matemtico. Tómese como ejemplo el caso de los naturales representados como un par $(a, b)$, donde con su diferencia $a - b$ permite identificar que muchos de ellos pueden representarse comeo un mismo entero, donde, $(3, 1), (4, 2) y (5, 3)$ representaria el numero $2$ y ser, de alguna forma, indistiguibles para el programa. La condicion que los agrupa, $a + b = b + c$ es en este caso, la relacion de equivalencia, formar el cociente dada esta relacion es lo que nos permite que colapsen estos elementos en un solo valor, $[t]$, conocido como \textit{representante}, que es indiscernible por el sistema de tipos.
