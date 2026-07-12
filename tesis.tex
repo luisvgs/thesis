@@ -607,11 +607,11 @@ Donde $\Lambda$ representa el cuantificador universal sobre los tipos del lengua
 \newline
 \newline
 $\lambda\underline{\omega}$ añade operadores a nivel de tipos, o bien, funciones que toman uno o varios tipos y devuelven otro. Para ello se introduce un sistema de \textit{kinds} que distingue los tipos propios, de kind $\star$, de los constructores de tipos, de kind $\star \Rightarrow \star$. Un tipo puede entonces
-\textit{depender} de otros mediante abstracción y aplicación a nivel de
+depender de otros mediante abstracción y aplicación a nivel de
 tipos, del mismo modo que un término depende de otros a nivel de valores.
 
 \begin{example}
-  El constructor de pares toma dos tipos y devuelve el tipo de sus parejas.
+  El constructor de pares toma dos tipos y devuelve el tipo de la tupla.
   \begin{align*}
     \mathit{Pair} &\;\equiv\; \lambda \alpha : \star.\ \lambda \beta : \star.\
     \alpha \times \beta
@@ -641,11 +641,17 @@ $\lambda P$ representa los tipos que dependen de términos. Los tipos dependient
 \newline
 \indent Tómese como ejemplo \textit{Vec A n} donde la longitud $n$ del vector, depende de cierto parámetro. Decimos, por tanto, que \textit{Vec A n} es un tipo dependiente o bien una familia de tipos indexado por $n$. Asimismo, la linea con la que se distinguen términos y tipos se hace más difusa y, en consecuencia, ambos comparten el mismo espacio semántico. Por ello, encontramos la constante $\star$ que representa el \textit{sort} en el que habitan todos los tipos, por tanto, la siguiente derivación es posible en $\lambda P$: $A : \star \vdash (A \to A) : \star$, que expresa que \textit{dado que A es un tipo bien formado, (A $\to$ A), es entonces, un tipo} \citep{cube1991}. El símbolo $\Box$ no es propiamente un término en la sintaxis, en cambio, es un símbolo en la meta-teoría para afirmar que se tiene una derivación de kinds válida y predicativa, por tanto, se puede entender $\Gamma \vdash (\kappa : \Box)$ mediante la siguiente lectura: \textit{k es un kind bien formado dado el contexto $\Gamma$}.
 
-Combinando todos los vértices obtenémos $\lambda C$ o \textit{Calculus of Constructions} donde el lambda cálculo alcanza un nivel expresivo bastante avanzado y los sistemas del cubo cohabitan en uno solo. Lenguajes como Coq y Agda, están basados en $\lambda C$. Este es un sistema de tipos puro bajo el paradigma de proposiciones como tipos, con tipos dependientes, jerarquias de universisos de tipos y un tipo Prop que distingue de $\star$.
+Combinando todos los vértices obtenémos $\lambda C$ o \textit{Calculus of Constructions} donde el lambda cálculo alcanza un nivel expresivo bastante avanzado y los sistemas del cubo cohabitan en uno solo. Lenguajes como Coq y Agda, están basados en $\lambda C$. Este es un sistema de tipos puro bajo el paradigma de proposiciones como tipos, con tipos dependientes, jerarquias de universos de tipos y un tipo Prop que distingue de $\star$.
 
-\subsection{Tipos a la Curry}
-\subsection{Tipos a la Church} 
-\section{Lambda Cálculo Simplemente Tipado}
+\subsection{Tipado à la Curry y à la Church}
+En el lenguaje que se formaliza en el presente trabajo, cada variable lleva consigo su tipo. Pese a que garantiza decibilidad en cada expresión que se construya, esta decisión no es arbitraria. Describe \cite{reynolds2000} que existen dos formas en las que es posible entender qué significa que una expresión tenga un tipo. En la semántica intrínseca solo los términos (a los que Reynols se refiere como frases) guardan un sentido si satisfacen un juicio de tipado y, por otro lado, una expresion  carece de sentido si no satisface ningun juicio de tipado y, de satisfacer varios, poseerá tantos significados como juicios.
+
+El tipado à la Church, que es la forma que adoptarémos, deja en evidencia de forma explícita el tipo al que pertenece una variable ligada, por otro lado, el tipado à la Curry omite las anotaciones y el chequeo para determinar su tipo es delegado a otro proceso de búsqueda o inferencia. La ventaja que se manifiesta en el tipado à la Church es que la verificación del tipo en Maude viene dada por pattern matching y, de manera ecuacional, restringimos que cada término bien formado admita un único tipo o pertenezca a un tipo en concreto.
+
+Considérese como ejemplo la expresión $\lambda x : int . x $ su significado intrínseco es la función identidad sobre los enteros. La identidad sobre los booleanos, por otro lado, que se denota como $\lambda x : bool . x$ es una función distinta y, por tanto, un término distinto. Es decir, el tipo determina el significado del término. Por el contrario $\lambda x . x$, su significado extrínseco es la función identidad sobre el universo de valores que pudiesen aparecer en un cómputo, por tanto, los tipos $bool \to bool$, $int \to int$ se le atribuyen de forma externa, como predicados que dicho significado satisface.
+
+
+\subsection{Lambda Cálculo Simplemente Tipado}
 Añadir tipos al lambda cálculo resuelve el problema de la terminación que en un capitulo previo estudiamos, permitiendo la creación y evaluación de términos en el cálculo mucho más restrictivo, esto es, anotando cada término con un tipo previamente definido que nos brindará un poco más de información sobre el dominio o tipo de valor que esperamos retornar. Este sistema es también denotado como $\lambda\to$ y en definitiva, tiene como objeto evitar anomalías que permitan la construcción de programas no terminantes o no lógicamente plausibles \cite{geuvers2014}.
 
 La forma canónica de implementar tipos en $\lambda$ es, en principio, definir un conjunto infinito de variables $\mathbb{V} = \{\alpha, \beta, \gamma\}$ y un conjunto $\mathbb{T}$ de tipos: $\tau, \tau \to \tau$. Los miembros de este conjunto estan definidos como:
@@ -669,9 +675,9 @@ La gramática para el lambda calculo simplemente tipado, se extiende, como sigue
     \item abstracción: cuando $\lambda x : \tau . M$ donde $M : \gamma$, podemos asertar que es una abstraccion con codominio en $\gamma$ y dominio en $\tau$.
           \end{enumerate}
 
-    
     \section{Tipos Dependientes}
-    Los tipos dependientes son, en principio, tipos que dependen de términos. Antes de adentrarnos en la teoría de tipos dependientes, es necesario dedicar de forma breve una introducción a los sistemas de tipos puros, framework de donde parte esta formalización lógica. Un PTS es un framework para especificar y formalizar el lambda cálculo y extender su teoría. Fue propuesto inicialmente por Berardi y Terlow como una generalizacion del cubo lambda de \cite{cube1991}. A diferencia del lambda cálculo tradicional, un PTS dispone de pseudo-términos que heredan, en gran parte, sintáxis del $\lambda$ cálculo simplemente tipado que hasta ahora conocemos.
+    Los tipos dependientes son, en principio, tipos que dependen de términos. Conforman parte del trabajo de Per Martin-Löf y su teoría de tipos intuisionista \citep{martinlof75} que tiene como objeto extender la interpretación de proposiciones como tipos en la lógica de predicados, como estarémos estudiando en este capítulo. Antes de adentrarnos en la teoría de tipos dependientes, es necesario dedicar de forma breve una introducción a los sistemas de tipos puros, framework de donde parte esta formalización lógica. Un PTS es un framework para especificar y formalizar el lambda cálculo y extender su teoría. Fue propuesto inicialmente por Berardi y Terlow como una generalizacion del cubo lambda de \cite{cube1991}. A diferencia del lambda cálculo tradicional, un PTS dispone de pseudo-términos que heredan, en gran parte, sintáxis del $\lambda$ cálculo simplemente tipado que hasta ahora conocemos.
+    
 
     El conjunto de pseudo-términos, se define como sigue:
     \begin{definition} Pseudo-términos de un PTS
@@ -719,8 +725,9 @@ La gramática para el lambda calculo simplemente tipado, se extiende, como sigue
 \end{gather}
 
 Donde $\textit{Vec}\,A\, n : *$ habita en $\Box$.
-\newpage
-\indent Dado que a los tipos pudiesen contener términos, una noción de igualdad definicional es necesaria en la teoría, por ejemplo, conviene considerar los términos $0 : \mathbb{N}$ y $0 + 0 : \mathbb{N}$ como definicionalmente iguales y, por tanto, no habría distinción entre los términos \textit{Vec(0)} y \textit{Vec 0 + 0}. Si \textit{M : Vec(0)} y \textit{N: Vec 0 + 0}, nos lleva a un juicio de la forma $M = N : \sigma$ que se lee \textit{M y N son términos definicionalmente iguales en el tipo sigma}, y, además, que $\sigma = \tau : A$, que se lee \textit{sigma y tau son tipos definicionalmente iguales en A}.
+\newline
+\newline
+\indent Dado que a los tipos pudiesen contener términos, una noción de igualdad definicional es necesaria en la teoría, por ejemplo, conviene considerar los términos $0 : \mathbb{N}$ y $0 + 0 : \mathbb{N}$ como definicionalmente iguales y, por tanto, no habría distinción entre \textit{Vec(0)} y \textit{Vec 0 + 0}. Si \textit{M : Vec(0)} y \textit{N: Vec 0 + 0}, nos lleva a un juicio de la forma $M = N : \sigma$ que se lee \textit{M y N son términos definicionalmente iguales en el tipo sigma}, y, además, que $\sigma = \tau : A$, que se lee \textit{sigma y tau son tipos definicionalmente iguales en A}.
 
 \begin{definition}[Igualdad definicional] Decimos que dos términos son definicionalmente iguales cuando reducen, luego de cero o más pasos de reducción, a un término en común \cite{mimram2020}. La igualdad a la que hacemos referencia en este caso, no es igualdad proposicional, denotada con $\equiv$, si no, a la igualdad que es inherente del lenguaje base $=$ que corresponde a la equivalencia de términos bajo $\beta$-reducción. 
 \begin{lstlisting}
@@ -774,7 +781,7 @@ La existencia de esta prueba es lo que nos permite concluir que $n + 0 \equiv n$
 \end{corollary}
 
 \subsection{Tipos Sigma}
-Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el próximo constructor o tipo al que dedicarémos un breve acercamiento, que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma. Representado en el lambda cálculo simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, más bien, asegurar la decibiliad del prototipo, este tipo estará acompañado de su ascripción.
+Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el próximo constructor o tipo al que dedicarémos un breve acercamiento, que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma. Representado en el lambda cálculo simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, más bien, asegurar la decibiliad del prototipo, este tipo estará acompañado de su adscripción.
 
 El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembro representando los tipos sigma:
 
@@ -796,7 +803,7 @@ El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembr
   {\Gamma \vdash A : * & \Gamma \vdash n : \mathbb{N}}
 \end{gather}
 
-Los tipos sigma serán utiles para probar propiedades teóricas de la teoría y, con suerte, comprobar que la formalización de la teoria de tipos estudiada en este trabajo cumple su función.
+Los tipos sigma serán utiles para probar propiedades del lenguaje en la práctica y, con suerte, comprobar que la formalización de la teoria de tipos estudiada en este trabajo cumple con su función.
     
     \section{Tipos Cociente}
     Los cociente son un término ubicuo en matemáticas, sin embargo, desde la teoría de conjuntos están presentes y se extiende dicho concepto con naturalidad a la teoría de tipos. En los conjuntos, es posible definir el cociente de un conjunto $S$ en clases de equivalencia, obteniendo el cociente del conjunto, donde cada elemento que lo conforma es considerado igual, o equivalente, dada una relacion de equivalencia $\sim$. Así mismo, es posible definir el cociente de un tipo, donde dada una relación de equivalencia, los elementos son iguales dentro del cociente pero, fuera de ellos, aún es posible distinguir uno de otro. Los tipo cociente nos permiten redefinir, entonces, la igualdad proposicional en un sistema de tipos.
@@ -893,7 +900,6 @@ La regla de cómputo $Q-comp$ indica que al aplicar $f$ (asumiendo que $f$ es un
 \end{gather}
 
 El resto de reglas estudiadas por \cite{nuoli} se omitiran, pues se consideran fuera del alcance de este trabajo.
-    \section{Teoría de tipos de Martin-Löf}
 \section{Reescritura de t\'erminos en Maude}
 La reescritura de términos constituye, a la luz de los capítulos anteriores, una generalización natural de la $\beta$-reducción del $\lambda$-cálculo. Donde antes orientábamos un redex de la forma $(\lambda x.\, M)\, N$ hacia $M[x := N]$, ahora disponemos de un conjunto arbitrario de ecuaciones $l = r$, leídas como reglas $l \to r$, y las aplicamos a un término siempre que en él aparezca una instancia del lado izquierdo. El proceso de cómputo se reduce, entonces, a buscar redexes y a contraerlos, exactamente igual que antes, pero en un marco mucho más flexible que permite especificar tipos de datos, funciones y, como veremos, sistemas concurrentes enteros.
 \newline
@@ -1275,7 +1281,7 @@ Se define, a continuación, la semántica operacional \textit{big step} del proc
 \end{center}
 
 \section{Verificación de Tipos}
-La verficación de tipos que se implementa es bidireccional. Se proponen las siguientes ecuaciones $check$ ($\downarrow$) e $infer$ ($\uparrow$) para asertar que un término es de un tipo o respectivamente, sintetizar su tipo dado un contexto $\Gamma$ cuando no hay suficiente información para asertar su estructura en un principio. Para propósitos prácticos, cada término en el lenguaje que se formaliza tiene una ascripción (es decir, está anotado con su signatura o el tipo en el que habita) y cualquier término no tipado será rechazado por el typechecker.
+La verficación de tipos que se implementa es bidireccional. Se proponen las siguientes ecuaciones $check$ ($\downarrow$) e $infer$ ($\uparrow$) para asertar que un término es de un tipo o respectivamente, sintetizar su tipo dado un contexto $\Gamma$ cuando no hay suficiente información para asertar su estructura en un principio. Para propósitos prácticos, cada término en el lenguaje que se formaliza tiene una adscripción (es decir, está anotado con su signatura o el tipo en el que habita) y cualquier término no tipado será rechazado por el typechecker.
 \begin{align}
   & \quad \texttt{op check : Ctx Term Term -> [Bool] .} \\
   & \quad \texttt{op infer : Ctx Term -> [Term] .} \\
