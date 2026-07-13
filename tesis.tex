@@ -658,7 +658,7 @@ La gramática para el lambda calculo simplemente tipado, se extiende, como sigue
     \item Abstracción: si $\lambda x : \tau . M$ con $M : \gamma$, podemos afirmar que es una abstracción con dominio en $\tau$ y codominio en $\gamma$.
           \end{enumerate}
 
-    \section{Tipos Dependientes}
+    \section{Tipos dependientes}
     Los tipos dependientes son, en principio, tipos que dependen de términos. Conforman parte del trabajo de Per Martin-Löf y su teoría de tipos intuisionista \citep{martinlof75} que tiene como objeto extender la interpretación de proposiciones como tipos en la lógica de predicados. Antes de adentrarnos en la teoría de tipos dependientes, es necesario dedicar de forma breve una introducción a los sistemas de tipos puros, framework de donde parte esta formalización lógica. Un PTS es un framework para especificar y formalizar el cálculo lambda y extender su teoría. Fue propuesto inicialmente por Berardi y Terlow como una generalizacion del cubo lambda de \cite{cube1991}. A diferencia del cálculo lambda tradicional, un PTS dispone de pseudo-términos que heredan, en gran parte, sintáxis del $\lambda$ cálculo simplemente tipado que hasta ahora conocemos.
     
 
@@ -759,7 +759,7 @@ La existencia de esta prueba es lo que nos permite concluir que $n + 0 \equiv n$
     Dos términos que son definicionalmente iguales, también lo son proposicionalmente. Lo contrario no tiene por qué cumplirse.
 \end{corollary}
 
-\subsection{Tipos Sigma}
+\subsection{Tipos sigma}
 Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el próximo constructor o tipo al que dedicarémos un breve acercamiento, que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma. Representado en el cálculo lambda simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, más bien, asegurar la decibiliad del prototipo, este tipo estará acompañado de su adscripción.
 
 El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembro representando los tipos sigma:
@@ -784,7 +784,7 @@ El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembr
 
 Los tipos sigma se emplean en los casos de uso de \cref{ch:casos}.
     
-    \section{Tipos Cociente}
+    \section{Tipos cociente}
     Los cociente son un término ubicuo en matemáticas, sin embargo, desde la teoría de conjuntos están presentes y se extiende dicho concepto con naturalidad a la teoría de tipos. En los conjuntos, es posible definir el cociente de un conjunto $S$ en clases de equivalencia, obteniendo el cociente del conjunto, donde cada elemento que lo conforma es considerado igual, o equivalente, dada una relacion de equivalencia $\sim$. Así mismo, es posible definir el cociente de un tipo, donde dada una relación de equivalencia, los elementos son iguales dentro del cociente pero, fuera de ellos, aún es posible distinguir uno de otro. Los tipo cociente nos permiten redefinir, entonces, la igualdad proposicional en un sistema de tipos.
 
 Los tipos cociente son el concepto central del presente trabajo: intervienen en la formalizaci\'on de conceptos matem\'aticos y en el razonamiento sobre programas de lenguajes funcionales. Los cocientes pertenecen a la teor\'ia de tipos extensional; las alternativas que la teor\'ia intensional ofrece para simularlos se discuten en \cref{ch:arte}.
