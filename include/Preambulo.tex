@@ -1,0 +1,166 @@
+\documentclass[a4paper,11pt]{book}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{bookman}
+\usepackage[spanish,es-noshorthands]{babel}
+\decimalpoint
+
+\usepackage[top=3cm, bottom=3cm, right=2.54cm, left=2.54cm]{geometry}
+\usepackage{parskip}
+\usepackage{setspace}
+\usepackage{afterpage}
+\newcommand{\bigrule}{\titlerule[0.5mm]}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{stmaryrd}
+\usepackage{proof}
+
+\usepackage{array}
+\usepackage{dcolumn}
+\usepackage{colortbl,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usetikzlibrary{arrows.meta,positioning,matrix}
+
+\usepackage{listings}
+
+\usepackage{fancyhdr}
+\usepackage{appendix}
+\usepackage{pdfpages}
+\usepackage{url}
+\usepackage[stable]{footmisc}
+
+\usepackage[round]{natbib}
+\bibliographystyle{plainnat}
+
+\usepackage[pdfborder={0 0 0}]{hyperref}
+\usepackage{cleveref}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definici\'on}[chapter]
+\newtheorem{example}{Ejemplo}[chapter]
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Teorema}[chapter]
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{proposition}[theorem]{Proposici\'on}
+\newtheorem{corollary}[theorem]{Corolario}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Observaci\'on}[chapter]
+
+\newcommand{\ctx}{\Gamma}
+\newcommand{\entails}{\vdash}
+\newcommand{\chk}{\Leftarrow}
+\newcommand{\syn}{\Rightarrow}
+\newcommand{\Type}{\mathsf{Type}}
+\newcommand{\Set}{\mathsf{Set}}
+\newcommand{\Nat}{\mathsf{Nat}}
+\newcommand{\zero}{\mathsf{zero}}
+\newcommand{\suc}{\mathsf{suc}}
+\newcommand{\elim}[1]{\mathsf{elim}_{#1}}
+\newcommand{\refl}{\mathsf{refl}}
+\newcommand{\Id}{\mathsf{Id}}
+\newcommand{\transport}{\mathsf{transport}}
+\newcommand{\ap}{\mathsf{ap}}
+\newcommand{\Quotient}[2]{#1 / #2}
+\newcommand{\qclass}[1]{[#1]}
+\newcommand{\qelim}{\mathsf{Q\text{-}elim}}
+\newcommand{\qintro}{\mathsf{Q\text{-}intro}}
+\newcommand{\sound}{\mathsf{sound}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LO]{\leftmark}
+\fancyhead[RE]{\rightmark}
+\setlength{\headheight}{1.5\headheight}
+\cfoot{\thepage}
+
+\renewcommand{\chaptermark}[1]{\markboth{\textbf{#1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{\textbf{\thesection. #1}}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\addto\captionsspanish{\renewcommand{\contentsname}{Tabla de contenidos}}
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
+\renewcommand{\appendixname}{Anexos}
+\renewcommand{\appendixtocname}{Anexos}
+
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+
+\lstset{
+  frame=Ltb,
+  framerule=0pt,
+  aboveskip=0.5cm,
+  framextopmargin=3pt,
+  framexbottommargin=3pt,
+  framexleftmargin=0.4cm,
+  framesep=0pt,
+  rulesep=.4pt,
+  backgroundcolor=\color{gray97},
+  rulesepcolor=\color{black},
+  stringstyle=\ttfamily,
+  showstringspaces=false,
+  basicstyle=\scriptsize\ttfamily,
+  commentstyle=\itshape\color{gray45},
+  keywordstyle=\bfseries,
+  numbers=left,
+  numbersep=6pt,
+  numberstyle=\tiny,
+  numberfirstline=false,
+  breaklines=true,
+  columns=flexible
+}
+
+\lstnewenvironment{listing}[1][]{\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+
+\lstdefinestyle{consola}{
+  basicstyle=\scriptsize\bf\ttfamily,
+  backgroundcolor=\color{gray75}
+}
+
+\lstdefinestyle{CodigoC}{
+  basicstyle=\scriptsize,
+  frame=single,
+  language=C,
+  numbers=left
+}
+
+\lstdefinestyle{CodigoC++}{
+  basicstyle=\small,
+  frame=single,
+  backgroundcolor=\color{gray75},
+  language=C++,
+  numbers=left
+}
+
+\lstdefinestyle{Python}{language=Python}
+
+\lstdefinestyle{Haskell}{language=Haskell}
+
+\makeatletter
+\newcolumntype{.}{D{.}{\esperiod}{-1}}
+\addto\shorthandsspanish{\let\esperiod\es@period@code}
+
+\def\clearpage{
+  \ifvmode
+    \ifnum \@dbltopnum =\m@ne
+      \ifdim \pagetotal <\topskip
+        \hbox{}
+      \fi
+    \fi
+  \fi
+  \newpage
+  \thispagestyle{empty}
+  \write\m@ne{}
+  \vbox{}
+  \penalty -\@Mi
+}
+\makeatother
