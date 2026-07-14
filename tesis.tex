@@ -1,9 +1,86 @@
 \input{include/Preambulo}
 \begin{document}
+<<<<<<< Updated upstream
 \input{include/Portada}
 % ============================================================
 % PORTADA
 % ============================================================
+=======
+\begin{titlepage}
+
+\begin{minipage}{0.12\linewidth}
+\vspace*{0.7cm}
+\hspace*{-2cm}
+\noindent
+\includegraphics[scale=0.75]{include/logo-upv.png} \qquad\qquad
+\end{minipage}
+\begin{minipage}{0.74\linewidth}
+\begin{center}
+\huge{ Universitat Politècnica\\de València }\\
+\vspace*{0.5cm}
+\Large{\textbf{Departamento de Sistemas Informáticos y Computación}}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.12\linewidth}
+\includegraphics[scale=0.9]{include/DSIC.png} 
+\end{minipage}
+
+\vspace*{0.5cm}
+\begin{center}
+\Large{Máster Universitario en Ingeniería y Tecnología de Sistemas Software }
+\end{center}
+
+\vspace*{0.5cm}
+\begin{center}
+\huge{ Trabajo Fin de Máster }
+\end{center}
+
+\vspace*{0.5cm}
+\begin{center}
+\huge\bfseries {Tipos Cociente en un Lenguaje Dependientemente Tipado} 
+\end{center}
+
+\vspace*{7cm} % Ajustar en funcion del tamaño del título
+
+\noindent
+\large{Autor(a): Luis Vegas }\\
+\large{Director(a): Santiago Escobar } \\
+
+\vspace*{3cm} % poner 2 cm si hay más de un director/a
+\begin{center}
+Valencia, 2026
+\end{center}
+
+%%--------------------------------
+\newpage
+\thispagestyle{empty}
+%%--------------------------------
+\noindent
+Este Trabajo Fin de Máster se ha depositado en el Departamento de Sistemas Informàticos y Computación de la Universitat Politècnica de València para su defensa.
+
+\vspace*{4cm}
+\noindent
+\textit{Trabajo Fin de Máster}\\
+\textit{Máster Universitario en} Ingeniería y Tecnología de Sistemas Software
+
+\begin{enumerate}
+\item[\textit{Título:}] Tipos Cociente en un Lenguaje Dependientemente Tipado
+\end{enumerate}
+Septiembre de 2026
+
+\vspace*{3cm}
+
+\noindent
+\begin{tabular}{ll}
+\textit{Autor(a):} & Luis Vegas  \\ 
+\textit{Director(a):} & Santiago Escobar  \\ 
+                & Departamento de Sistemas Informáticos y Computación \\
+                & Universitat Politècnica de València  \\
+
+\end{tabular} 
+
+\end{titlepage}
+>>>>>>> Stashed changes
 
 % ============================================================
 % FRONT MATTER
@@ -796,13 +873,13 @@ En un principio, Martin Löf propuso dos variantes de la teoría de tipos que se
 \newline
 \indent La alternativa que ha resultado viable, consiste en dejar intacta la sintaxis y buscar interpretaciones donde los tipos sean algo más que conjuntos. En esa línea aparecieron durante los años noventa varios modelos, entre ellos los modelos de setoides de Hofmann y de Altenkirch, y el modelo de grupoides de Hofmann y Streicher \citep{hoffman}. Leer los tipos como grupoides abrió una puerta que otros siguieron hacia estructuras de dimensión cada vez mayor, y en esa misma dirección se sitúa la teoría homotópica de tipos propuesta por Voevodsky, donde los tipos se piensan como espacios, los términos como puntos en dichos espacios y los tipos de identidad como caminos entre ellos. Bajo esa lectura la igualdad deja de ser un predicado auxiliar y pasa a ser un tipo con estructura propia en cada nivel. Estos últimos detalles, los abordaremos de forma superficial en la teoria de tipos de Martin Lof para complementar la teoria de tipos extensional y dar una breve introduccion a las ideas de la teoría homotópica de tipos.
 
-\section{Nuprl y la teor\'ia de tipos extensional}
+\section{Nuprl y la teoría de tipos extensional}
 
 \section{El cociente en Lean}
 
-\section{Tipos inductivos superiores y teor\'ia cubical}
+\section{Tipos inductivos superiores y teoría cubical}
 
-\section{Formalizaci\'on de sistemas de tipos en l\'ogica de reescritura}
+\section{Formalización de sistemas de tipos en lógica de reescritura}
 
 La capacidad de Maude para definir sintaxis con notación definible por el usuario, junto con su soporte para reescritura y para reescritura no determinista, lo convierten en una plataforma especialmente apropiada para formalizar lenguajes de programación y sistemas de tipos. La idea general es trasladar la sintaxis abstracta del lenguaje a una signatura $\Sigma$, las reglas de tipado o de evaluaci\'on de la sem\'antica operacional a reglas de reescritura $R$, y las identidades estructurales sobre los t\'erminos, como la $\alpha$-equivalencia o la igualdad definicional, a ecuaciones $E$. Esta metodolog\'ia ha sido aplicada con \'exito a lenguajes reales, desde fragmentos de C hasta Java o JavaScript, dando lugar a prototipos no solo ejecutables, sino tambi\'en analizables con las herramientas del entorno formal de Maude \citep{duran2019}.
 
@@ -934,7 +1011,36 @@ Un último aspecto que conviene mencionar, dada su utilidad cuando se construye 
 \indent En definitiva, Maude provee una forma sumamente natural de implementar reglas de inferencia y la semantica de un lenguaje de manera ecuacional y visual los pasos en los que se computa cada expresión que se suministre en pasos de reducción.
 
 \chapter{Un Lenguaje Dependientemente Tipado en Maude}\label{ch:lang}
+<<<<<<< Updated upstream
     El lenguaje que se propone en el presente trabajo, parte de un subconjunto del lambda cálculo simplemente tipado, según lo descrito por \citet{loh2010} en su publicación sobre un lambda cálculo dependientemente tipado, donde nuestra implementación, pese a que difiere ligeramente de la suya, definirá las bases para el prototipo de lenguaje que en las próximas páginas estaremos formalizando. Asimismo, se ha elegido Maude como lenguaje base, por su simpleza para formalizar reglas de inferencia, como se ha podido demostrar. La sintáxis abstracta para términos y tipos, se define como sigue.
+=======
+El lenguaje que se propone parte de un subconjunto del cálculo lambda dependientemente tipado descrito por \citet{loh2010}, del que la implementación aquí presentada difiere en algunos puntos. Se ha elegido Maude como lenguaje base por la correspondencia directa entre sus ecuaciones y las reglas de inferencia, según lo expuesto en \cref{ch:maude}.
+
+\section{Decisiones de dise\~no y alcance}\label{sec:alcance}
+El prototipo que se describe en este cap\'itulo y en \cref{ch:quot} se restringe en cinco
+puntos respecto de la teor\'ia presentada en \cref{ch:prelim}. Se enuncian aqu\'i de forma
+conjunta, indicando en cada caso el motivo de la decisi\'on y la consecuencia que acarrea.
+
+\paragraph{Sustitución que evita capturas.}
+La operación \texttt{subst} no renombra las variables ligadas con identificadores frescos. Los términos que se manipulan en los casos de estudio son cerrados, por lo que la captura no se produce. Extenderla a términos abiertos requeriría una operación auxiliar de renombrado
+con variables frescas que, por simpleza del prototipo, no se implementará.
+
+\paragraph{Anotación explícita de términos.}
+La gramatica de \cref{sec:sintaxis} contempla el constructor de anotación $e :: \rho$, pero el prototipo no lo incorpora como nodo independiente. La anotación es explícita y cada ecuación de Maude especifica el tipo que se espera de un término en concreto.
+
+\paragraph{Universo \'unico.}
+A distinción con respecto a lo propuesto por \cite{nuoli} y nuestra teoría, en su trabajo propone que toda relación $\sim$ habite en $Prop$, esto es, por la teoría de tipos de Martin Lof, en donde los cocientes se encuentran como extensión de la metateoría y existe una distinción entre $Type$ y $Prop$. Nuestro sistema de tipos se limita a habitar en un solo universo $\star$. Esta decisión no compromete en su totalidad las reglas de formación, introducción, eliminación y cómputo.k
+
+
+\paragraph{Ausencia de tipo identidad y de la regla \emph{Q-Ax}.}
+El lenguaje no implementa el tipo identidad, por lo que no puede enunciarse internamente la igualdad proposicional $[a] =_{A/\sim} [b]$ que produce \emph{Q-Ax}. Dicha igualdad se asume en la metateoría, o bien, de forma externa, y se supone que $\sim$ es una relación de equivalencia y que el testigo $\mathit{Resp}$ de que una función la respeta es válido.
+
+\paragraph{Regla de c\'omputo del cociente.}
+No se declara una ecuaci\'on independiente para \emph{Q-Comp}: su contenido operacional se
+realiza dentro de la normalizaci\'on de \texttt{qelim}, que contrae el eliminador cuando su
+tercer argumento es una clase can\'onica.
+
+>>>>>>> Stashed changes
     \section{Sintaxis}\label{sec:sintaxis}
 \begin{align}
 e, \rho, k := \quad & \alpha & \tag{1}\\
