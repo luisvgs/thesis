@@ -1406,7 +1406,7 @@ La regla de formación sostiene que para inferir que $A/\sim$ es de tipo $*$, pr
   {\Gamma \vdash qelim(F, Resp, Q) \uparrow B}
   {\Gamma \vdash Q \uparrow A/\sim & F \uparrow Pi(a, A, B)}
 \end{gather}
-Tanto la eliminación como la computación, juegan un papel importante en esta extensión a los cocientes pues, indican a Maude la forma en que deben reducirse las reglas del lenguaje. En esta regla en concreto, inferimos que \textit{qelim} es de tipo $B$, asumiendo que $F$ es una función cualquiera donde su $Resp$ es válida. Nótese que en nuestra implementación de Maude, agregamos como clausula la inferencia de que $Q$ es de tipo $A/\sim$, es decir, $A$ es un testigo bien definido bajo el cociente en $\Gamma$ y es válido aplicar $F$ sobre el.
+Tanto la eliminación como la computación, juegan un papel importante en esta extensión a los cocientes, ellos indican a Maude la forma en que deben reducirse las reglas del lenguaje. En esta regla en concreto, inferimos que \textit{qelim} es de tipo $B$, asumiendo que $F$ es una función cualquiera donde su $Resp$ es válida. Nótese que en nuestra implementación de Maude, agregamos como clausula la inferencia de que $Q$ es de tipo $A/\sim$, es decir, $A$ es un testigo bien definido bajo el cociente en $\Gamma$ y es válido aplicar $F$ sobre el.
 \begin{lstlisting}
   ceq infer(G, qelim(F, Resp, Q)) = B
   if qtype(A,R) := norm(infer(G, Q)) 
