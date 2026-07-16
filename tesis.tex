@@ -446,20 +446,20 @@ la dependencia que define cada vertice, es descrita por la siguiente tabla:
 \hline
 Sistema & \multicolumn{4}{l|}{Conjunto de reglas} \\
 \hline
-$\lambda{\rightarrow}$                       & $(\ast,\ast)$ &                 &                 &                     \\
-$\lambda 2$                                   & $(\ast,\ast)$ & $(\square,\ast)$ &                 &                     \\
-$\lambda\mathrm{P}$                           & $(\ast,\ast)$ &                 & $(\ast,\square)$ &                     \\
-$\lambda\mathrm{P}2$                          & $(\ast,\ast)$ & $(\square,\ast)$ & $(\ast,\square)$ &                     \\
-$\lambda\underline{\omega}$                   & $(\ast,\ast)$ &                 &                 & $(\square,\square)$ \\
-$\lambda\omega$                               & $(\ast,\ast)$ & $(\square,\ast)$ &                 & $(\square,\square)$ \\
-$\lambda\mathrm{P}\underline{\omega}$         & $(\ast,\ast)$ &                 & $(\ast,\square)$ & $(\square,\square)$ \\
-$\lambda\mathrm{P}\omega = \lambda\mathrm{C}$ & $(\ast,\ast)$ & $(\square,\ast)$ & $(\ast,\square)$ & $(\square,\square)$ \\
+$\lambda{\rightarrow}$                       & $(\star,\star)$ &                 &                 &                     \\
+$\lambda 2$                                   & $(\star,\star)$ & $(\square,\star)$ &                 &                     \\
+$\lambda\mathrm{P}$                           & $(\star,\star)$ &                 & $(\star,\square)$ &                     \\
+$\lambda\mathrm{P}2$                          & $(\star,\star)$ & $(\square,\star)$ & $(\star,\square)$ &                     \\
+$\lambda\underline{\omega}$                   & $(\star,\star)$ &                 &                 & $(\square,\square)$ \\
+$\lambda\omega$                               & $(\star,\star)$ & $(\square,\star)$ &                 & $(\square,\square)$ \\
+$\lambda\mathrm{P}\underline{\omega}$         & $(\star,\star)$ &                 & $(\star,\square)$ & $(\square,\square)$ \\
+$\lambda\mathrm{P}\omega = \lambda\mathrm{C}$ & $(\star,\star)$ & $(\square,\star)$ & $(\star,\square)$ & $(\square,\square)$ \\
 \hline
 \end{tabular}
 \end{center}
 \medskip
 
-\indent Es necesaria una explicación a los conjuntos de reglas más relevantes y nivel de expresividad que permite cada sistema. $\lambda\to$ es posiblemente el más común. Formalmente este sistema es conocido como el lambda cálculo simplemente tipado que se abordará con más dedicación en un capítulo aparte, donde para construir una abstracción lambda, basta con proveer otro término. Por tanto $FM$ es, por ejemplo, un término en $\Lambda$ donde $F$ depende de $M$. La notación $(*, *)$ indica precisamente en qué nivel del sistema de tipos viven los términos para poder formarse.
+\indent Es necesaria una explicación a los conjuntos de reglas más relevantes y nivel de expresividad que permite cada sistema. $\lambda\to$ es posiblemente el más común. Formalmente este sistema es conocido como el lambda cálculo simplemente tipado que se abordará con más dedicación en un capítulo aparte, donde para construir una abstracción lambda, basta con proveer otro término. Por tanto $FM$ es, por ejemplo, un término en $\Lambda$ donde $F$ depende de $M$. La notación $(\star, \star)$ indica precisamente en qué nivel del sistema de tipos viven los términos para poder formarse.
 \begin{example}
 \begin{align}
 % \infer{\Gamma \vdash (\lambda x . t)\,3 : \mathbb{N}}{%
