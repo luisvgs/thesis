@@ -659,24 +659,31 @@ La existencia de esta prueba es lo que nos permite concluir que $n + 0 \equiv n$
 \subsection{Tipos sigma}
 Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el próximo constructor o tipo al que dedicarémos un breve acercamiento, que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma. Representado en el lambda cálculo simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, más bien, asegurar la decibiliad del prototipo, este tipo estará acompañado de su adscripción.
 
-El conjunto de pseudo-términos $T$, se extiende, por tanto, con un nuevo miembro representando los tipos sigma:
+El conjunto de pseudo-términos $\mathcal{T}$, se extiende, por tanto, con un nuevo miembro representando los tipos sigma:
 
     \begin{align*}
-      T = ... \mid \Pi V: T.\, T \,|\, \langle T, T \rangle\, | \textit{fst}\,T\,|\, \textit{snd}\, T
+      \mathcal{T} = ... \mid \Pi \mathcal{V}: \mathcal{T}.\, \mathcal{T} \,|\, \langle \mathcal{T}, \mathcal{T} \rangle\, |\, \textit{fst}\,\mathcal{T}\,|\, \textit{snd}\, \mathcal{T}
     \end{align*}
 
-    Donde \textit{fst} y \textit{snd} son \textit{proyecciones} que extraen el primer y segundo componente de la tupa $\langle T, T \rangle$. Sus reglas de formación y eliminación, plantea \citep{hoffman2009}, se definen como sigue: 
+    Donde \textit{fst} y \textit{snd} son \textit{proyecciones} que extraen el primer y segundo componente de la tupa $\langle \mathcal{T}, \mathcal{T} \rangle$. Sus reglas de formación y eliminación, plantea \cite{barthe-coquand}, se definen como sigue:
+    
 
 \begin{gather}
-  \infer[\text{$\Sigma$-Form}]
-  {\Gamma \vdash \mathrm{Vec}\ A\ n : \star}
-  {\Gamma \vdash A : \star & \Gamma \vdash n : \mathbb{N}}
+  \infer[\text{$\Sigma$-form}]
+  {\Gamma \vdash \langle M, N\rangle_{\Sigma x : A . B} : \Sigma x : A .\, B}
+  {\Gamma \vdash M : A & \Gamma \vdash N : B [x := M] & \Gamma \vdash \Sigma x : A. B : \star}
 \end{gather}
 
 \begin{gather}
-  \infer[\text{$\Sigma$-Form}]
-  {\Gamma \vdash \mathrm{Vec}\ A\ n : \star}
-  {\Gamma \vdash A : \star & \Gamma \vdash n : \mathbb{N}}
+  \infer[\text{$\Sigma$-fst}]
+  {\Gamma \vdash \mathrm{fst}\ M : A}
+  {\Gamma \vdash M : \Sigma x : A . \,B}
+\end{gather}
+
+\begin{gather}
+  \infer[\text{$\Sigma$-snd}]
+  {\Gamma \vdash \mathrm{snd}\ M : B(\mathrm{fst}\, M)}
+  {\Gamma \vdash M : \Sigma x : A . \,B}
 \end{gather}
 
 
