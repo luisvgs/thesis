@@ -4,13 +4,13 @@
 \pagenumbering{roman}
 
 \section*{Resumen}
-Este trabajo presenta el diseño e implementación de un lenguaje de programación con tipos dependientes, extendido con tipos cociente. Los tipos dependientes permiten expresar propiedades de los programas directamente en sus tipos, mientras que los tipos cociente permiten identificar elementos de un tipo que deberían considerarse iguales según una relacion de equivalencia dada, garantizando automáticamente que las funciones definidas sobre ellos sean coherentes con dicha relación. La formalización de tipos cociente sobre sistemas de tipos dependientes mendiante lenguajes basados en la reescritura, como Maude, ha recibido poca atención a lo largo de los años, y con el presente trabajo se pretende cubrir, en la medida de lo posible, esta brecha. Adicional a ello, se pretende demostrar que Maude es totalmente viable para la formalización, exploración y estudio de la teoría de tipos bajo el lente de la reescritura de términos, como lo son probadores de teoremas como Agda, Coq y Lean. El lenguaje se construye sobre un núcleo formal basado en el cálculo lambda dependientemente tipado, al que se añaden los tipos cociente como extensión principal. A diferencia del enfoque clásico, que resuelve la igualdad entre elementos cociente mediante relaciones de equivalencia explícitas y pruebas formales de igualdad, las relaciones se resuelven por reducción, aprovechando la lógica de reescritura ecuacional de Maude. El trabajo incluye la definición formal del sistema de tipos, su semántica operacional, justificación de cada decisión de diseño tomada, la demostración de propiedades del lenguaje resualtante,junto con su implementación completa en Maude.
+Este trabajo presenta el diseño e implementación de un lenguaje de programación con tipos dependientes, extendido con tipos cociente. Los tipos dependientes permiten expresar propiedades de los programas directamente en sus tipos, mientras que los tipos cociente permiten identificar elementos de un tipo que deberían considerarse iguales según una relacion de equivalencia dada, garantizando automáticamente que las funciones definidas sobre ellos sean coherentes con dicha relación. La formalización de tipos cociente sobre sistemas de tipos dependientes mendiante lenguajes basados en la reescritura, como Maude, ha recibido poca atención a lo largo de los años, y con el presente trabajo se pretende cubrir, en la medida de lo posible, esta brecha. Adicional a ello, se pretende demostrar que Maude es totalmente viable para la formalización, exploración y estudio de la teoría de tipos bajo el lente de la reescritura de términos, como lo son probadores de teoremas como Agda, Coq y Lean. El lenguaje se construye sobre un núcleo formal basado en el cálculo lambda dependientemente tipado, al que se añaden los tipos cociente como extensión principal. Aprovechando la lógica de reescritura ecuacional de Maude, las reglas de tipado del sistema se trasladan de forma directa a ecuaciones, y el cómputo sobre las clases del cociente se realiza por reducción de términos. El trabajo incluye la definición formal del sistema de tipos, su semántica operacional, justificación de cada decisión de diseño tomada, la demostración de propiedades del lenguaje resualtante,junto con su implementación completa en Maude.
 \input{chapters/Introduction}
 \tableofcontents
 
 \cleardoublepage
 \pagenumbering{arabic}
-\chapter{Preliminares}\label{ch:prelim}
+\chapter{El cálculo lambda y sus extensiones}\label{ch:prelim}
 \section{El cálculo lambda}
 El cálculo lambda fue inventado por Alonzo Church en la década de los 80 con el propósito de capturar la noción abstracta de la aplicabilidad de una función, sin embargo, conviene precisar en qué sentido. Una función puede entenderse de dos maneras: de forma extensional, como el conjunto de pares entrada–salida que la determina, o de forma intensional, como la regla o el proceso de cómputo que, dado un argumento, prescribe cómo obtener el resultado \citep{geuvers2014}. Es esta segunda lectura, la de la función como algoritmo, la que el lambda cálculo formaliza \citep{barendregt1984, geuvers2014}. En su origen, Church concibió el sistema como parte de una fundamentación de la lógica y las matemáticas; dicha formulación resultó ser inconsistente, tal y como evidenciaron Kleene y Rosser, por lo que Church aisló su núcleo puramente computacional, libre de constantes lógicas, dando lugar al cálculo lambda tal y como se conoce hoy \citep{barendregt1984}, siendo ampliamente adoptado como un sistema formal de lógica matemática.
 \newline
@@ -138,7 +138,7 @@ sustituci\'on \textit{que evita la captura} \citep{pierce2002}.
 Anteriormente señalamos cómo la $\beta$-reducción emula, en cierto sentido, el proceso de cómputo de una función dada: evaluado un término, aspiramos a obtener su forma normal, esto es, un término en el que ya no resta redex alguno que nos permita seguir reduciendo \citep{barendregt1984, pierce2002}.
 \newline
 \newline
-Ahora bien, el orden en que se contraen tales redexes no es indiferente, pues puede influir en si el cómputo termina o, mejor dicho, en si alcanza una forma normal. Surge así una pregunta: dado un término $t$ del que divergen dos reducciones, $t \to_\beta^{\ast} t_1$ y $t \to_\beta^{\ast} t_2$, en uno o varios pasos, ¿es posible reconciliar ambas ramas en un término común $u$ alcanzable tanto desde $t_1$ como desde $t_2$? Cuando tal $u$ existe para cualquier par de reducciones divergentes, decimos que la reducción es \textit{confluente} sobre $t$.
+Ahora bien, el orden en que se contraen tales redexes puede influir en si el cómputo termina o, mejor dicho, en si alcanza una forma normal. Surge así una pregunta: dado un término $t$ del que divergen dos reducciones, $t \to_\beta^{\ast} t_1$ y $t \to_\beta^{\ast} t_2$, en uno o varios pasos, ¿es posible reconciliar ambas ramas en un término común $u$ alcanzable tanto desde $t_1$ como desde $t_2$? Cuando tal $u$ existe para cualquier par de reducciones divergentes, decimos que la reducción es \textit{confluente} sobre $t$.
 \newline
 \newline
 En el presente apartado describimos con detenimiento la propiedad de confluencia y, exponémos también, por qué la $\beta$-reducción la satisface.
@@ -819,8 +819,6 @@ En el sistema de tipos de Lean, es suficiente con demostrar que dos elementos de
 
 En definitiva, Lean provee un sistema de tipos sumamente sofisticado y robusto para formalizar y permitir el razonar sobre programas. El tipo $Quotient$ que implementa de forma interna (hay otra palabra para esto, pero no me acuerdo), constituido en principio por Setoids, provee una referencia de suma importancia para entender los fundamentos y antecedentes de este tipo de abstracción en lenguajes actuales.
 
-\section{Tipos inductivos superiores y teoría cubical}
-
 \section{Formalización de sistemas de tipos en lógica de reescritura}
 
 La capacidad de Maude para definir sintaxis con notación definible por el usuario, junto con su soporte para reescritura y para reescritura no determinista, lo convierten en una plataforma especialmente apropiada para formalizar lenguajes de programación y sistemas de tipos. La idea general es trasladar la sintaxis abstracta del lenguaje a una signatura $\Sigma$, las reglas de tipado o de evaluación de la semántica operacional a reglas de reescritura $R$, y las identidades estructurales sobre los términos, como la $\alpha$-equivalencia o la igualdad definicional, a ecuaciones $E$. Esta metodología ha sido aplicada con éxito a lenguajes reales, desde fragmentos de C hasta Java o JavaScript, dando lugar a prototipos no solo ejecutables, sino también analizables con las herramientas del entorno formal de Maude \citep{duran2019}.
@@ -963,26 +961,25 @@ El lenguaje que se propone en el presente trabajo, parte de un subconjunto del l
 \section{Decisiones de dise\~no y alcance}\label{sec:alcance}
 El prototipo que se describe en este capítulo y en \cref{ch:quot} se restringe en ciertos puntos respecto de la teoría presentada en \cref{ch:prelim}. Se enuncian aquí de forma conjunta, indicando en cada caso el motivo de la decisión y la consecuencia que estas puedan traer en el resultado final.
 
-\paragraph{Sustitución que evita capturas.}
+\subsection{Sustitución que evita capturas.}
 La operación \texttt{subst} no renombra las variables ligadas con variables frescas. Los términos que se manipulan en los casos de estudio son cerrados, por lo que la captura no se produce. Extenderla a términos abiertos requeriría una operación auxiliar de renombrado
 con variables frescas que, por simpleza del prototipo, no se implementará.
 
-\paragraph{Anotación explícita de términos.}
+\subsection{Anotación explícita de términos.}
 La gramatica de \cref{sec:sintaxis} contempla el constructor de anotación $e :: \rho$, pero el prototipo no lo incorpora como nodo independiente. La anotación es explícita y cada ecuación de Maude especifica el tipo que se espera de un término en concreto.
 
-\paragraph{Universo único.}
-A distinción de lo propuesto por \cite{nuoli} y nuestra teoría, en su trabajo propone que toda relación $\sim$ habite en $Prop$, esto es, por la teoría de tipos de Martin Lof, en donde los cocientes se encuentran como extensión de la metateoría y existe una distinción entre $Type$ y $Prop$. Nuestro sistema de tipos se limita a habitar en un solo universo $\star$ que, a su vez, habita en un $Sort$ de maude. Esta decisión no compromete en su totalidad las reglas de formación, introducción, eliminación y cómputo.
+\subsection{Universo único.}
+A distinción de lo propuesto por \cite{nuoli} y nuestra teoría, en su trabajo propone que toda relación $\sim$ habite en $Prop$, esto es, por la teoría de tipos de Martin Lof, en donde los cocientes se asumen como consecuencia de la teoría de tipos extensiones y además existe una distinción entre $Type$ y $Prop$. Nuestro sistema de tipos se limita a habitar en un solo universo $\star$ que, a su vez, habita en un $Sort$ de Maude. Esta decisión no compromete en su totalidad las reglas de formación, introducción, eliminación y cómputo.
 
-
-\paragraph{Ausencia de tipo identidad y de la regla \emph{Q-Ax}.}
+\subsection{Ausencia de tipo identidad y de la regla \emph{Q-Ax}.}
 El lenguaje no implementa el tipo identidad, por lo que no puede enunciarse internamente la igualdad proposicional $[a] =_{A/\sim} [b]$ que produce \emph{Q-Ax}. Dicha igualdad se asume en la metateoría, o bien, de forma externa, y se supone que $\sim$ es una relación de equivalencia y que el testigo $\mathit{Resp}$ de que una función la respeta es válido.
 
-\paragraph{Regla de c\'omputo del cociente.}
+\subsection{Regla de cómputo del cociente.}
 No se declara una ecuaci\'on independiente para \emph{Q-Comp}: su contenido operacional se
 realiza dentro de la normalizaci\'on de \texttt{qelim}, que contrae el eliminador cuando su
 tercer argumento es una clase can\'onica.
 
-    \section{Sintaxis}\label{sec:sintaxis}
+\section{Sintaxis}\label{sec:sintaxis}
 \begin{align}
 e, \rho, k := \quad & \alpha & \tag{1}\\
   \mid \quad & e :: \rho & \tag{2}\\
@@ -1523,6 +1520,54 @@ red infer(
 result Term: Type
 \end{lstlisting}
 
+En este primer caso se declara en el contexto una relación $R$ sobre el tipo $Nat \times Nat$, y se pregunta al sistema por el tipo del cociente que dicha relación induce. Maude resuelve la ecuación asociada a $Q-Form$ verificando sus dos premisas: que $Nat \times Nat$ es un tipo bien formado y que $R$ tiene la signatura de una relación binaria sobre ese tipo, es decir, que habita en $Pi(a, Nat \times Nat, Pi(b, Nat \times Nat, Type))$. Satisfechas ambas por reducción, el sistema concluye que el cociente es de tipo $Type$, tal y como se observa en el resultado.
+
+Una vez formado el cociente, la regla $Q-Intro$ permite construir sus clases. El siguiente caso comprueba que un representante concreto, el par $(0, 1)$, habita efectivamente en el cociente.
+
+\begin{lstlisting}
+red infer(
+  mt ; var("R") : Pi(var("a"), Sigma(var("_"), Nat, Nat), Pi(var("b"), Sigma(var("_"), Nat, Nat), Type)),
+  qclass(pair(zero, suc(zero), Sigma(var("_"), Nat, Nat)), qtype(Sigma(var("_"), Nat, Nat), var("R")))
+) .
+
+result Term: qtype(Sigma(var("_"), Nat, Nat), var("R"))
+\end{lstlisting}
+
+Obtenemos como tipo el propio cociente, porque Maude comprueba, mediante la premisa de $Q-Intro$, que el par $(0, 1)$ habita en $Nat \times Nat$ y, en consecuencia, que su clase $[(0, 1)]$ habita en $(Nat \times Nat) / R$. La anotación del tipo cociente sobre la clase es lo que permite que esta síntesis permanezca dirigida por la sintaxis, según se justificó al presentar la regla.
+
+\section{Elevación de funciones sobre el cociente}
+
+El eliminador \texttt{qelim} permite elevar una función definida sobre representantes a una función definida sobre el cociente. Antes de estudiar la consistencia de estas funciones, conviene comprobar que el eliminador no solo computa un valor, sino que además está bien tipado. El siguiente caso eleva la función sucesor sobre un cociente de $Nat$, computa su valor y sintetiza su tipo.
+
+\begin{lstlisting}
+red norm(qelim(lam(var("x"), Nat, suc(var("x"))), var("resp"), qclass(zero, qtype(Nat, var("R"))))) .
+
+result Term: suc(zero)
+
+red infer(mt, qelim(lam(var("x"), Nat, suc(var("x"))), var("resp"), qclass(zero, qtype(Nat, var("R"))))) .
+
+result Term: Nat
+\end{lstlisting}
+
+La primera reducción corresponde a la regla de cómputo: al encontrar una clase canónica $[zero]$ como tercer argumento, Maude desenvuelve la clase y aplica la función a su representante, obteniendo $suc(zero)$. La segunda ejercita la regla $Q-Elim$ de tipado, donde el sistema infiere que $zero$ habita el cociente y que la función va de $Nat$ a $Nat$, concluyendo que la elevación es de tipo $Nat$. Con ello queda comprobado que la operación no es solo computacionalmente correcta, sino también un término bien formado.
+
+De la misma manera es posible elevar operaciones sobre los pares. Tomando la función que incrementa la primera componente, elevamos el sucesor de enteros y lo aplicamos al representante $(3, 1)$, que denota el entero $+2$.
+
+\begin{lstlisting}
+red norm(qelim(
+  lam(var("x"), Sigma(var("_"), Nat, Nat),
+    qclass(pair(suc(fst(var("x"))), snd(var("x")), Sigma(var("_"), Nat, Nat)),
+           qtype(Sigma(var("_"), Nat, Nat), var("R")))),
+  var("resp"),
+  qclass(pair(suc(suc(suc(zero))), suc(zero), Sigma(var("_"), Nat, Nat)),
+         qtype(Sigma(var("_"), Nat, Nat), var("R")))
+)) .
+
+result Term: qclass(pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(var("_"), Nat, Nat)), qtype(Sigma(var("_"), Nat, Nat), var("R")))
+\end{lstlisting}
+
+El resultado es la clase de $(4, 1)$, que representa el entero $+3$. Maude aplica la función al representante, incrementa la primera componente del par y devuelve la clase resultante, de modo que la operación sucesor sobre los enteros queda realizada por elevación de una operación sobre sus representantes.
+
 \section{Consistencia sobre representantes}
 
 Los pares $(3, 0)$, $(4, 1)$ y $(5, 2)$ son representantes distintos del entero $+3$,
@@ -1540,6 +1585,8 @@ red norm(qelim(
          qtype(Sigma(var("_"), Nat, Nat), var("R")))
 )) .
 
+result Term: qclass(pair(zero, suc(suc(suc(zero))), Sigma(var("_"), Nat, Nat)), qtype(Sigma(var("_"), Nat, Nat), var("R")))
+
 red norm(qelim(
   lam(var("p"), Sigma(var("_"), Nat, Nat),
     qclass(pair(snd(var("p")), fst(var("p")), Sigma(var("_"), Nat, Nat)),
@@ -1549,6 +1596,8 @@ red norm(qelim(
          qtype(Sigma(var("_"), Nat, Nat), var("R")))
 )) .
 
+result Term: qclass(pair(suc(zero), suc(suc(suc(suc(zero)))), Sigma(var("_"), Nat, Nat)), qtype(Sigma(var("_"), Nat, Nat), var("R")))
+
 red norm(qelim(
   lam(var("p"), Sigma(var("_"), Nat, Nat),
     qclass(pair(snd(var("p")), fst(var("p")), Sigma(var("_"), Nat, Nat)),
@@ -1557,9 +1606,11 @@ red norm(qelim(
   qclass(pair(suc(suc(suc(suc(suc(zero))))), suc(suc(zero)), Sigma(var("_"), Nat, Nat)),
          qtype(Sigma(var("_"), Nat, Nat), var("R")))
 )) .
+
+result Term: qclass(pair(suc(suc(zero)), suc(suc(suc(suc(suc(zero))))), Sigma(var("_"), Nat, Nat)), qtype(Sigma(var("_"), Nat, Nat), var("R")))
 \end{lstlisting}
 
-Los resultados son $(0, 3)$, $(1, 4)$ y $(2, 5)$ respectivamente. Aunque son pares
+Los resultados son $(0, 3)$, $(1, 4)$ y $(2, 5)$ respectivamente. El sistema devuelve la clase completa \texttt{qclass}, y para abreviar nos referimos a su representante. Aunque son pares
 sintácticamente distintos, los tres representan el entero $-3$, pues
 $0 - 3 = 1 - 4 = 2 - 5 = -3$. Esto evidencia que la función \texttt{negate},
 al respetar la relación de equivalencia $R$, produce resultados consistentes
@@ -1579,13 +1630,80 @@ red norm(fst(pair(suc(suc(suc(suc(suc(zero))))), suc(suc(zero)), Sigma(var("_"),
 $fst((3, 0)) = 3$, $fst((4, 1)) = 4$ y $fst((5, 2)) = 5$: tres resultados distintos
 para el mismo enetero $+3$. La función $fst$ no respeta la relación de equivalencia y, por tanto, no podría proveer una prueba de respeto válida para \texttt{qelim}. El sistema de tipos cociente previene precisamente este tipo de inconsistencia al exigir dicha prueba.
 
+\section{Igualdad proposicional entre representantes}
+
+Los casos anteriores muestran que las operaciones que respetan la relación producen resultados consistentes, pero esa consistencia se observa por inspección de los representantes. Con el tipo identidad y la regla $Q-Ax$, el sistema puede además enunciar internamente que dos representantes relacionados dan la misma clase. Antes de llegar a ello, el siguiente caso comprueba el constructor más básico del tipo identidad sobre los naturales.
+
+\begin{lstlisting}
+red infer(mt, refl(zero)) .
+
+result Term: Id(Nat, zero, zero)
+\end{lstlisting}
+
+Maude infiere que $refl(zero)$ es un testigo de $Id(Nat, zero, zero)$, es decir, la prueba de que $zero$ es igual a sí mismo. La regla de la reflexividad sintetiza el tipo del punto y construye la identidad sobre él.
+
+El caso central de esta sección aplica $Q-Ax$. Partiendo de un contexto donde $R$ es una relación sobre los pares y $p$ es una prueba de que los representantes $(3, 0)$ y $(4, 1)$ están relacionados, se pregunta al sistema por el tipo de $qax$.
+
+\begin{lstlisting}
+red infer(
+  mt ; var("R") : Pi(var("a"), Sigma(var("_"), Nat, Nat), Pi(var("b"), Sigma(var("_"), Nat, Nat), Type))
+     ; var("p") : app(app(var("R"), pair(suc(suc(suc(zero))), zero, Sigma(var("_"), Nat, Nat))),
+                                     pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(var("_"), Nat, Nat))),
+  qax(pair(suc(suc(suc(zero))), zero, Sigma(var("_"), Nat, Nat)),
+      pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(var("_"), Nat, Nat)),
+      qtype(Sigma(var("_"), Nat, Nat), var("R")),
+      var("p"))
+) .
+
+result Term: Id(qtype(Sigma(var("_"), Nat, Nat), var("R")),
+                qclass(pair(suc(suc(suc(zero))), zero, Sigma(var("_"), Nat, Nat)), qtype(Sigma(var("_"), Nat, Nat), var("R"))),
+                qclass(pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(var("_"), Nat, Nat)), qtype(Sigma(var("_"), Nat, Nat), var("R"))))
+\end{lstlisting}
+
+El resultado es la identidad $[(3, 0)] = [(4, 1)]$ en el cociente. Maude verifica, por la premisa de $Q-Ax$, que $p$ tiene tipo $R\ (3, 0)\ (4, 1)$, esto es, que atestigua la relación entre ambos representantes, y a partir de ello sintetiza el tipo identidad entre sus clases. El propio tipo resultante exhibe los dos representantes dentro de sus respectivas clases. Conviene notar que estas siguen siendo formas normales sintácticamente distintas, por lo que el sistema no las identifica de manera definicional. Lo que $Q-Ax$ produce es la igualdad proposicional, un testigo de que ambas clases coinciden dentro del cociente, que era precisamente lo que en el caso de la negación se observaba solo de forma externa.
+
+Por último, el tipo identidad opera módulo cómputo. El siguiente caso construye la reflexividad sobre un término que primero debe reducirse.
+
+\begin{lstlisting}
+red infer(mt, refl(norm(app(lam(var("x"), Nat, suc(var("x"))), zero)))) .
+
+result Term: Id(Nat, suc(zero), suc(zero))
+\end{lstlisting}
+
+El argumento $(\lambda x : Nat.\ suc(x))\ zero$ se normaliza a $suc(zero)$ antes de que $refl$ actúe, de modo que la identidad se construye sobre el resultado ya reducido. Esto muestra que la igualdad proposicional del sistema es coherente con la reducción del lenguaje base, pues opera sobre la forma normal de los términos y no sobre su forma sintáctica de partida.
+
+
 \chapter{Conclusiones, limitaciones y trabajo futuro}\label{ch:concl}
 
 \section{Conclusiones}
 
+El presente trabajo ha diseñado e implementado en Maude un lenguaje de programación dependientemente tipado y lo ha extendido con tipos cociente, cumpliendo el objetivo general planteado en la introducción. Partiendo de un núcleo basado en el cálculo lambda dependiente de Löh et al. (2010), se construyó un sistema con tipos $\Pi$, $\Sigma$, naturales y su eliminador, sobre el que se añadieron los constructores de formación, introducción, eliminación y computación del cociente siguiendo la formulación de Li (2014), junto con el tipo identidad y la regla $Q-Ax$.
+
+La aportación central es haber mostrado que la lógica de reescritura constituye un sustrato natural para esta tarea. Cada regla de inferencia del sistema de tipos se traslada de forma directa a una ecuación condicional de Maude, donde las premisas de la regla se corresponden con los fragmentos de la condición y la conclusión con el lado derecho. Esta correspondencia, visible a lo largo de los capítulos 5 y 6, permite que la especificación del lenguaje sea a la vez su implementación ejecutable, sin necesidad de un intérprete externo. La normalización de términos se realiza por reescritura ecuacional, y la verificación bidireccional de tipos reduce el chequeo a la comparación de formas normales.
+
+Los casos de uso del capítulo 7 validan la factibilidad del prototipo. La construcción de los enteros como pares de naturales cocientados muestra que las funciones que respetan la relación de equivalencia, como la negación y el sucesor, producen resultados consistentes con independencia del representante elegido, mientras que una función que no la respeta, como la proyección directa, produce resultados divergentes. Con la incorporación del tipo identidad y de la regla $Q-Ax$, el sistema es capaz además de enunciar internamente que dos representantes relacionados dan la misma clase, obteniendo un testigo de esa igualdad proposicional dentro del cociente.
+
+En conjunto, el trabajo respalda la tesis de que Maude es una herramienta apta para la formalización y el estudio de la teoría de tipos, en la misma línea que los asistentes de pruebas convencionales, aportando como valor propio la inmediatez con que las reglas de inferencia se expresan y ejecutan en su forma ecuacional.
+
 \section{Limitaciones}
 
+El prototipo asume una serie de restricciones, adoptadas de forma deliberada para acotar el alcance del trabajo, que conviene enunciar con precisión.
+
+El sistema habita en un único universo, con la regla $Type : Type$. Esta decisión simplifica la implementación al eliminar la jerarquía de universos, a costa de la consistencia lógica, pues admite la paradoja de Girard. El prototipo es, por tanto, un verificador de tipos y no un asistente de pruebas: su propósito es explorar la mecánica de los cocientes, no servir de fundamento lógico consistente.
+
+La sustitución no renombra las variables ligadas con variables frescas, de modo que no evita la captura en el caso general. Los términos manipulados en los casos de uso son cerrados, por lo que la captura no llega a producirse, pero una extensión a términos abiertos requeriría una operación auxiliar de renombrado. En la misma línea, la igualdad de tipos se decide por comparación sintáctica de formas normales, lo que no contempla la $\alpha$-equivalencia; términos que difieren solo en el nombre de sus variables ligadas se considerarían distintos.
+
+El testigo $Resp$ del eliminador del cociente se asume válido y no se verifica. El sistema computa la elevación de una función bajo la hipótesis de que dicha función respeta la relación de equivalencia, hipótesis que se garantiza de forma externa. Esta es la posición propia del modelo de setoides, y la validación del capítulo 7 procede en consecuencia por inspección de representantes y no por garantía automática del sistema. Tampoco se verifica que la relación suministrada sea efectivamente una equivalencia, es decir, reflexiva, simétrica y transitiva.
+
+Finalmente, aunque el lenguaje incorpora el tipo identidad, la regla de reflexividad y $Q-Ax$, no implementa el eliminador $J$ del tipo identidad. En consecuencia, las pruebas de igualdad que el sistema construye son inertes: pueden enunciarse y exhibirse, pero no pueden emplearse para transportar propiedades de un lado de la igualdad al otro. La igualdad proposicional del prototipo es, en este sentido, de solo introducción.
+
 \section{Trabajo futuro}
+
+La extensión más inmediata y de mayor rédito es la implementación del eliminador $J$ del tipo identidad, con su regla de cómputo sobre $refl$. Al ser $J$ el principio del que se derivan las operaciones fundamentales sobre igualdades, su incorporación desbloquearía de una sola vez el transporte de propiedades a lo largo de una igualdad, la congruencia de funciones y la simetría y transitividad de la identidad. Con ello, las pruebas que hoy son inertes pasarían a ser utilizables, y el caso de estudio de los enteros podría enriquecerse demostrando propiedades algebraicas de las operaciones como teoremas, en lugar de por inspección de representantes.
+
+Una vez disponible $J$, la validación del testigo $Resp$ deja de ser un obstáculo. Sería entonces posible endurecer la regla $Q-Elim$ para exigir que $Resp$ tenga el tipo de una prueba de respeto, y construir dicha prueba para funciones concretas como la negación, cerrando así la garantía de buena definición que ahora se asume.
+
+Otras líneas de mejora, de carácter más incremental, incluyen dotar a la sustitución de renombrado con variables frescas para admitir términos abiertos, incorporar una jerarquía de universos que restaure la consistencia lógica, y verificar que la relación suministrada al cociente es una equivalencia. En una dirección más ambiciosa, sería de interés explorar la conexión entre esta realización por reescritura y los modelos extensionales del cociente estudiados en el capítulo 3, así como comparar el rendimiento del prototipo con el de las implementaciones de cocientes en asistentes basados en la teoría intensional.
 
 % ============================================================
 % BACK MATTER
@@ -1594,14 +1712,14 @@ para el mismo enetero $+3$. La función $fst$ no respeta la relación de equival
 
 \chapter{C\'odigo Maude}
 \begin{lstlisting}
-fmod LAMBDA-QT is
+fmod calc is
   pr STRING .
   sort Var .
   sort Term .
   subsort Var < Term .
 
   vars N N' : String .
-  vars T T1 T1' T2 S A F B R QT Resp Q : Term .
+  vars T T1 T1' T2 S A F B R QT Resp Q a b : Term .
   var V : Var .
 
   op Nat : -> Term [ctor] .
@@ -1619,6 +1737,10 @@ fmod LAMBDA-QT is
   op lam : Var Term Term -> Term [ctor] .
   op app : Term Term -> Term [ctor] .
 
+  op refl : Term -> Term [ctor]
+  op Id : Term Term Term -> Term [ctor]
+  op qax : Term Term Term Term -> Term [ctor] .
+  
   op qtype : Term Term -> Term [ctor] .
   op qclass : Term Term -> Term [ctor] .
   op qelim : Term Term Term -> Term [ctor] .
@@ -1656,6 +1778,10 @@ fmod LAMBDA-QT is
   eq subst(qclass(A, R), V, S) = qclass(subst(A, V, S), subst(R, V, S)) .
   eq subst(qelim(F, A, R), V, S) = qelim(subst(F, V, S), subst(A, V, S), subst(R, V, S)) .
 
+  eq subst(Id(A, a, b), V, S) = Id(subst(A, V, S), subst(a, V, S), subst(b, V, S)) .
+  eq subst(refl(a), V, S) = refl(subst(a, V, S)) .
+  eq subst(qax(a, b, A, T), V, S) = qax(subst(a, V, S), subst(b, V, S), subst(A, V, S), subst(T, V, S)) .
+
   op norm : Term -> Term .
   op normApp : Term Term -> Term .
 
@@ -1664,6 +1790,10 @@ fmod LAMBDA-QT is
 
   eq norm(Pi(V, A, B)) = Pi(V, norm(A), norm(B)) .
   eq norm(lam(V, A, T)) = lam(V, norm(A), norm(T)) .
+
+  eq norm(Id(A, a, b)) = Id(norm(A), norm(a), norm(b)) .
+  eq norm(refl(a)) = refl(norm(a)) .
+  eq norm(qax(a, b, A, T)) = qax(norm(a), norm(b), norm(A), norm(T)) .
 
   eq norm(app(T1, T2)) = normApp(norm(T1), norm(T2)) .
 
@@ -1717,6 +1847,17 @@ fmod LAMBDA-QT is
   op check : Ctx Term Term -> [Bool] .
 
   eq infer(G, Type) = Type .
+
+  ceq infer(G, Id(A, a, b)) = Type
+  if Type := norm(infer(G, A))
+  /\ A := infer(G, a)
+  /\ A := infer(G, b) .
+
+  ceq infer(G, refl(a)) = Id(A, a, a) if A := infer(G, a) .
+
+  ceq infer(G, qax(a, b, qtype(A, R), T)) =
+    Id(qtype(A, R), qclass(a, qtype(A, R)), qclass(b, qtype(A, R)))
+    if true := check(G, T, app(app(R, a), b)) .
 
   eq infer(G, var(N)) = lookup(var(N), G) .
 
