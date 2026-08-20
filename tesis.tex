@@ -4,7 +4,7 @@
 \pagenumbering{roman}
 
 \section*{Resumen}
-Este trabajo presenta el diseño e implementación de un lenguaje de programación con tipos dependientes, extendido con tipos cociente. Los tipos dependientes permiten expresar propiedades de los programas directamente en sus tipos, mientras que los tipos cociente permiten identificar elementos de un tipo que deberían considerarse iguales según una relacion de equivalencia dada, garantizando automáticamente que las funciones definidas sobre ellos sean coherentes con dicha relación. La formalización de tipos cociente sobre sistemas de tipos dependientes mendiante lenguajes basados en la reescritura, como Maude, ha recibido poca atención a lo largo de los años, y con el presente trabajo se pretende cubrir, en la medida de lo posible, esta brecha. Adicional a ello, se pretende demostrar que Maude es totalmente viable para la formalización, exploración y estudio de la teoría de tipos bajo el lente de la reescritura de términos, como lo son probadores de teoremas como Agda, Coq y Lean. El lenguaje se construye sobre un núcleo formal basado en el cálculo lambda dependientemente tipado, al que se añaden los tipos cociente como extensión principal. Aprovechando la lógica de reescritura ecuacional de Maude, las reglas de tipado del sistema se trasladan de forma directa a ecuaciones, y el cómputo sobre las clases del cociente se realiza por reducción de términos. El trabajo incluye la definición formal del sistema de tipos, su semántica operacional, justificación de cada decisión de diseño tomada, la demostración de propiedades del lenguaje resualtante,junto con su implementación completa en Maude.
+Este trabajo presenta el diseño e implementación de un lenguaje de programación con tipos dependientes, extendido con tipos cociente. Los tipos dependientes permiten expresar propiedades de los programas directamente en sus tipos, mientras que los tipos cociente permiten identificar elementos de un tipo que deberían considerarse iguales según una relacion de equivalencia dada, garantizando automáticamente que las funciones definidas sobre ellos sean coherentes con dicha relación. La formalización de tipos cociente sobre sistemas de tipos dependientes mendiante lenguajes basados en la reescritura, como Maude, ha recibido poca atención a lo largo de los años, y con el presente trabajo se pretende cubrir esta brecha. Adicional a ello, se pretende demostrar que Maude es totalmente viable para la formalización, exploración y estudio de la teoría de tipos bajo el lente de la reescritura de términos, como lo son probadores de teoremas como Agda, Coq y Lean. El lenguaje se construye sobre un núcleo formal basado en el cálculo lambda dependientemente tipado, al que se añaden los tipos cociente como extensión principal. Aprovechando la lógica de reescritura ecuacional de Maude, las reglas de tipado del sistema puede verse como una tripla $\mathcal{R} = (\Sigma, E, R)$ que se trasladan de forma directa a ecuaciones, y el cómputo sobre las clases del cociente se realiza por reducción de términos. El trabajo incluye la definición formal del sistema de tipos, su semántica operacional, justificación de cada decisión de diseño tomada, junto con su implementación completa en Maude.
 \input{chapters/Introduction}
 \tableofcontents
 
@@ -90,19 +90,13 @@ una aplicaci\'on son, simplemente, la uni\'on de las libres de cada subt\'ermino
 $M$ tal que $FV(M) = \emptyset$ se denomina \textit{cerrado}.
 \newline
 \newline
-Por último, el nombre concreto de una variable ligada carece de relevancia: lo \'unico que
-importa es la estructura de ligaduras que establece. As\'i, $\lambda x.\, x$ y
-$\lambda y.\, y$ denotan exactamente la misma funci\'on identidad. A esta noci\'on, que
-identifica t\'erminos que difieren \'unicamente en el nombre de sus variables ligadas, se le
-conoce como \textit{$\alpha$-equivalencia}, y se denota $=_\alpha$. El proceso de renombrar
-una variable ligada para obtener un t\'ermino $\alpha$-equivalente recibe el nombre de
-\textit{$\alpha$-conversi\'on}, y ser\'a fundamental para definir correctamente la
-sustituci\'on bajo un binder.
+Por último, el nombre concreto de una variable ligada carece de relevancia, porque lo único que importa es la estructura de binders que establece. Así, $\lambda x.\, x$ y $\lambda y.\, y$ denotan exactamente la misma funci\'on identidad. A esta noci\'on, que identifica t\'erminos que difieren \'unicamente en el nombre de sus variables ligadas, se le conoce como \textit{$\alpha$-equivalencia}, y se denota $=_\alpha$. El proceso de renombrar una variable ligada para obtener un t\'ermino $\alpha$-equivalente recibe el nombre de \textit{$\alpha$-conversión}.
+
 \subsection{Sustitución}
 Anteriormente, definimos la sustitución en términos de $\to_\beta$ reducción, sin embargo, la sustitución posee en sí reglas de cómputo que valen la pena considerar pues, dependiendo del término que se esté evaluando, la sustitución tendrá, o no, efecto alguno.
 \newline
 \newline
-Se definen, pues, las reglas de cómputo de la sustitución de acuerdo a lo discutido por \cite{pierce2002}. Más formalmente:
+Se definen, pues, las reglas de cómputo de la sustitución de acuerdo a lo discutido por \cite{pierce2002}. Formalmente:
 
 \begin{align}
 & (1) \; x[x := N] \equiv N, \notag \\
@@ -1039,7 +1033,7 @@ La regla es trivial para $\lambda$ y $\Sigma$ que describirémos posteriormente.
 
 \newline
 \newline
-\indent A diferencia del enfoque empleado por \cite{stehr}, el cálculo de sistuticiones no es explícito, y cada regla es expresada de manera ecuacional. Dado que los términos del prototipo son cerrados y no hay variable que pueda ser capturada por un binder, una aproximación \textit{naive} es suficiente para los casos de uso. Luego, la implementación en Maude define las reglas de cómputo para la sustitución en el cálculo dependientemente tipado, se define una regla por cada constructor del cálculo, definiendo la condición de igualdad o desigualdad sobre los nombres de las variables, expresadas en las ecuaciones:
+\indent A diferencia del enfoque empleado por \cite{stehr}, el cálculo de sustituciones no es explícito, y cada regla es expresada de manera ecuacional. Dado que los términos del prototipo son cerrados y no hay variable que pueda ser capturada por un binder, una aproximación \textit{naive} es suficiente para los casos de uso. Luego, la implementación en Maude define las reglas de cómputo para la sustitución en el cálculo dependientemente tipado, se define una regla por cada constructor del cálculo, definiendo la condición de igualdad o desigualdad sobre los nombres de las variables, expresadas en las ecuaciones:
 \begin{lstlisting}
 fmod LAMBDA-QTT is
   ...
@@ -1502,7 +1496,7 @@ Maude>
 \indent En este ejemplo, dado que tenémos una clase canónica $[zero]$ donde $R$ sí respeta la equivalencia, el tercer argumento de \textit{qelim} tiene la forma \textit{(T, R)}, es decir, un tipo bien formado y el cociente en el que está definida su relacíon de equivalencia, por tanto, la ecuación se reduce desenvolviendo la clase de equivalencia $[zero]$, aplicando $f$ a su representante, en este caso $zero$, donde trivialmente obtenemos \textit{suc(zero)} como resultado.
 \newline
 \newline
-Es importante justificar una limitación, consecuencia de las decisiones tomadas para implementar el prototipo que, pese a que difieren del trabajo de \cite{nuoli} no afecta de ninguna manera la simulación de los cocientes en nuestro lenguaje. Primero, la ausencia de la regla $Qax$, que se muestra:
+Conviene detenerse para discutir el alcance de la igualdad proposicional en nuestro lenguaje. El sistema implementa el tipo identidad \textit{Id}, su constructor de reflexividad \textit{refl}, y la regla $Q-Ax$, que se muestra:
 
 \begin{gather}
   \infer[\text{Q-Ax}]
@@ -1510,10 +1504,17 @@ Es importante justificar una limitación, consecuencia de las decisiones tomadas
   {\Gamma \vdash a, b : A \quad \Gamma \vdash p : a \sim b}
 \end{gather}
 
-La regla produce la igualdad proposicional $[a]$ y $[b]$ en el cociente. Internamente, nuestro lenguaje no implementa el tipo identidad que transporta pruebas de que dos elementos son iguales y, por tanto, enunciar que $[a]$ = $[b]$ proposicionalmente cuando $a \sim b$, no es posible. Es por ello que esta igualdad es solo cierta en la metateoria del lenguaje y se asume de forma externa, es decir, asumimos que la relación es una equivalencia y las pruebas $Resp$ de que una $f$ cualquiera respeta dicha relación para todos los elementos relacionados, es válida. Para apoyar este argumento, el tipo de $Resp$ es como sigue $Resp : (a, b : A) \to p : a \sim b \to f(a) = f(b)$, donde $f(a) = f(b)$ es un término que habita el tipo $Id(f(a), f(b))$, que es exactamente el testigo necesario para acertar esta igualdad.
+Dada una prueba $p$ de que dos representates $a$ y $b$ están relacionados, $Q-Ax$ produce una prueba $p$ que enuncia que sus representantes son iguales también dentro del cociente. El sistema puede, por tanto, declarar de manera interna la igualdad proposicional $[a] =_{A/\sim} [b]$, y no asumirla en la metateoría.
+
+Además, el lenguaje no implementa el eliminador de la identidad $J$, por lo que las pruebas de igualdad pueden enunciarse, pero no pueden emplearse para transportar propiedades de un lado de la igualdad al otro. La igualdad proposicional es, en este sentido, de solo introducción.
+
+Esta ausencia tiene una consecuencia directa sobre el testigo $Resp$ del eliminador del cociente. Su tipo es
+\[
+  Resp : (a, b : A) \to a \sim b \to Id(B, f(a), f(b)),
+\]
+esto es, la prueba de que $f$ respeta la relación. Maude verifica que el $Resp$ suministrado tenga efectivamente ese tipo, pero sin $J$ no dispone de los medios para construir tales pruebas para funciones no triviales, pues ello requiere la congruencia que $J$ habilita. En consecuencia, $Resp$ se suministra como hipótesis en el contexto, del mismo modo que la relación $\sim$ se asume como una equivalencia sin que el sistema verifique su reflexividad, simetría y transitividad. Estas asunciones no comprometen la simulación de los cocientes en los casos de uso presentados.
 \newline
-\newline
-\indent Con las reglas de formaci\'on, introducci\'on, eliminaci\'on y computaci\'on ya implementadas, el lenguaje dispone de tipos cociente en el sentido intensional de \cite{nuoli}. Los constructores $\mathrm{fst}$, $\mathrm{snd}$ y el tipo $\Sigma$ que se incorporaron en el capítulo anterior cobran ahora utilidad, pues permiten expresar los casos de uso característicos del cociente, como los enteros representados por pares de naturales o los multiconjuntos representados por listas m\'odulo permutaci\'on, ejemplos que se desarrollan en \cref{ch:casos}.
+\indent Con las reglas de formación, introducción, eliminación y computación ya implementadas, el lenguaje dispone de tipos cociente en el sentido intensional de \cite{nuoli}. Los constructores $\mathrm{fst}$, $\mathrm{snd}$ y el tipo $\Sigma$ que se incorporaron en el capítulo anterior cobran ahora utilidad, pues permiten expresar los casos de uso característicos del cociente, como los enteros representados por pares de naturales o los multiconjuntos, ejemplos que se desarrollan en \cref{ch:casos}.
 
 \chapter{Casos de uso y validaci\'on}\label{ch:casos}
 
@@ -1709,9 +1710,9 @@ Finalmente, aunque el lenguaje incorpora el tipo identidad, la regla de reflexiv
 
 \section{Trabajo futuro}
 
-Una posible extensión, de la que podría beneficiarse la implementación es la codificación del eliminador $J$ del tipo identidad, con su regla de cómputo sobre $refl$. Al ser $J$ el principio del que se derivan las operaciones fundamentales sobre igualdades, su incorporación daría paso al transporte de propiedades a lo largo de una igualdad, la congruencia de funciones y la simetría y transitividad de la identidad. Con ello, las pruebas que hoy son inertes pasarían a ser utilizables, y el caso de estudio de los enteros podría enriquecerse demostrando propiedades algebraicas de las operaciones como teoremas, en lugar de por inspección de representantes.
+Una posible extensión, de la que podría beneficiarse la implementación es la codificación del eliminador $J$ del tipo identidad, con su regla de cómputo sobre $refl$. Al ser $J$ el principio del que se derivan las operaciones fundamentales sobre igualdades, su incorporación permite la operación de transporte de propiedades a lo largo de una igualdad, la congruencia de funciones y la simetría y transitividad de la identidad. Con ello, sería posible enunciar que dado dos representates $[a]$ y $[b]$ y un testigo $ p : [a] ~ [b]$ en el cociente, una propiedad $P$ que es cierta para $[a]$ también lo sería para $[b]$.
 
-Una vez disponible $J$, la validación del testigo $Resp$ deja de ser un obstáculo. Sería entonces posible mejorar la regla $Q-Elim$ para imponer que $Resp$ tenga el tipo de una prueba de respeto, y construir dicha prueba para funciones concretas como la negación, cerrando así la garantía de buena definición que ahora solamente se asume.
+Adicional a ello, una vez disponible $J$, sería posible construir un $Resp$ que sea válido para funciones concretas, pues justo ahora el sistema no posee los medios para construir y, de esta forma, no asumirlo como hipótesis en el contexto.
 
 % ============================================================
 % BACK MATTER
