@@ -12,10 +12,10 @@ Este trabajo presenta el diseño e implementación de un lenguaje de programaci�
 \pagenumbering{arabic}
 \chapter{El cálculo lambda y sus extensiones}\label{ch:prelim}
 \section{El cálculo lambda}
-El cálculo lambda fue inventado por Alonzo Church en la década de los 80 con el propósito de capturar la noción abstracta de la aplicabilidad de una función, sin embargo, conviene precisar en qué sentido. Una función puede entenderse de dos maneras: de forma extensional, como el conjunto de pares entrada–salida que la determina, o de forma intensional, como la regla o el proceso de cómputo que, dado un argumento, prescribe cómo obtener el resultado \citep{geuvers2014}. Es esta segunda lectura, la de la función como algoritmo, la que el lambda cálculo formaliza \citep{barendregt1984, geuvers2014}. En su origen, Church concibió el sistema como parte de una fundamentación de la lógica y las matemáticas; dicha formulación resultó ser inconsistente, tal y como evidenciaron Kleene y Rosser, por lo que Church aisló su núcleo puramente computacional, libre de constantes lógicas, dando lugar al cálculo lambda tal y como se conoce hoy \citep{barendregt1984}, siendo ampliamente adoptado como un sistema formal de lógica matemática.
+El cálculo lambda fue inventado por Alonzo Church en la década de los 30 con el propósito de capturar la noción abstracta de la aplicabilidad de una función, sin embargo, conviene precisar en qué sentido. Una función puede entenderse de dos maneras: de forma extensional, como el conjunto de pares entrada–salida que la determina, o de forma intensional, como la regla o el proceso de cómputo que, dado un argumento, prescribe cómo obtener el resultado \citep{geuvers2014}. Es esta segunda lectura, la de la función como algoritmo, la que el lambda cálculo formaliza \citep{barendregt1984, geuvers2014}. En su origen, Church concibió el sistema como parte de una fundamentación de la lógica y las matemáticas; dicha formulación resultó ser inconsistente, tal y como evidenciaron Kleene y Rosser, por lo que Church aisló su núcleo puramente computacional, libre de constantes lógicas, dando lugar al cálculo lambda tal y como se conoce hoy \citep{barendregt1984}, siendo ampliamente adoptado como un sistema formal de lógica matemática.
 \newline
 \newline
-Este sistema ocupa, además, un lugar central en el diseño de lenguajes de programación. De forma análoga, la manera en la que se programa en el mismo es muy similar a cómo se programa en un lenguaje funcional hoy en día. De hecho, lenguajes como Haskell, Agda, la familia de lenguajes basados en ML, y Lisp, están ampliamente inspirados en un conjunto del cálculo lambda y, pueden entenderse, en buena medida, como extensiones dotadas de azúcar sintáctica, sistemas de tipos y otras primitivas \citep{pierce2002}.
+Este sistema ocupa, además, un lugar central en el diseño de lenguajes de programación. De forma análoga, la manera en la que se programa en el mismo es muy similar a cómo se programa en un lenguaje funcional hoy en día. De hecho, lenguajes como Haskell, Agda, la familia de lenguajes basados en ML, y Lisp, están ampliamente inspirados en un conjunto del cálculo lambda y pueden entenderse en buena medida como extensiones dotadas de azúcar sintáctica, sistemas de tipos y otras primitivas \citep{pierce2002}.
 \newline
 \newline
 El cálculo lambda es un lenguaje muy potente y, a su vez, sumamente simple. Un término puede estar compuesto, o bien, formarse, de tres elementos: variables, aplicación y abstracción lambda. De forma inductiva, fijado un conjunto infinito numerable de variables $V$, el conjunto $\Lambda$ de los términos lambda se define como el conjunto de términos bien formados bajo las siguientes reglas \citep{barendregt1984, pierce2002}:
@@ -918,7 +918,7 @@ Tomando como ejemplo el contexto, el mismo puede definirse como un mapeo de vari
   \Gamma := \quad \emptyset \\
   \mid \quad & (x, \tau) :: \Gamma &
 \end{align}
-La noción de contexto puede traducirse en Maude, como hemos mencionado, creando un sort para este y las ecuaciones que le corresponden. Guiándonos, pues, de la gramática, el contexto puede bien estar vacío, o extendido. Estas operaciones, pueden ser perfectamente codificadas en la siguiente algebra:
+La noción de contexto puede traducirse en Maude, como hemos mencionado, creando un sort para este y las ecuaciones que le corresponden. Guiándonos, pues, de la gramática, el contexto puede bien estar vacío, o extendido. Estas operaciones, pueden ser perfectamente codificadas como muestra la siguiente algebra inicial:
 \begin{lstlisting}
 fmod LAMBDA-SYNTAX is
   sort Ctx .
@@ -952,14 +952,13 @@ endfm
 
 Obsérvese que su interpretación no es muy distinta a lo que la regla \textit{(2.27)} formaliza: podemos inferir que $Sigma(V, A, B)$ en la ecuación, es un tipo si se cumple que $A$ es un tipo en $\Gamma$ y, en el mismo contexto extendido, $V$ es de tipo $A$, $B$ es también un tipo bien formado.
 
-La ejecución de este prototipo se convierte en la búsqueda de derivaciones y, el comando \texttt{search}, permite preguntar al sistema si existe una derivación con un consecuente dado, recuperando el término y la sustitución que la justifican \citep{duran2019, clavel2007}.
-
+La ejecución de este prototipo se convierte en la reducción del término a su forma canónica, y \texttt{reduce} evalúa el término hasta obtener el tipo inferido o bien, el tipo al que el término pueda habitar.
 \newline
 \newline
-\indent En definitiva, Maude provee una forma sumamente natural de implementar reglas de inferencia y la semantica de un lenguaje de manera ecuacional y visual los pasos en los que se computa cada expresión que se suministre en pasos de reducción.
+\indent En definitiva, Maude provee una forma sumamente natural de implementar reglas de inferencia y la semántica de un lenguaje de manera ecuacional y visual los pasos en los que se computa cada expresión que se suministre en pasos de reducción.
 
 \chapter{Un lenguaje dependientemente tipado en Maude}\label{ch:lang}
-El lenguaje que se propone en el presente trabajo, parte de un subconjunto del lambda cálculo simplemente tipado, según lo descrito por \citet{loh2010} en su publicación sobre un lambda cálculo dependientemente tipado, donde nuestra implementación, pese a que difiere ligeramente de la suya, definirá las bases para el prototipo de lenguaje que se estará formalizando. Asimismo, se ha elegido Maude como lenguaje base, por su simpleza para formalizar reglas de inferencia, como se ha podido demostrar. La sintáxis abstracta para términos y tipos, se define como sigue.
+El lenguaje que se propone en el presente trabajo, parte de un subconjunto del lambda cálculo simplemente tipado, según lo descrito por \citet{loh2010} en su publicación sobre un lambda cálculo dependientemente tipado, donde nuestra implementación, pese a que difiere ligeramente de la misma, definirá las bases para el prototipo de lenguaje que se estará formalizando. Asimismo, se ha elegido Maude como lenguaje base, por su simpleza para formalizar reglas de inferencia, como se ha podido demostrar. La sintáxis abstracta para términos y tipos, se define como sigue.
 
 \section{Decisiones de dise\~no y alcance}\label{sec:alcance}
 El prototipo que se describe en este capítulo y en \cref{ch:quot} se restringe en ciertos puntos respecto de la teoría presentada en \cref{ch:prelim}. Se enuncian aquí de forma conjunta, indicando en cada caso el motivo de la decisión y la consecuencia que estas puedan traer en el resultado final.
@@ -979,7 +978,7 @@ No se declara una ecuaci\'on independiente para \emph{Q-Comp}: su contenido oper
 realiza dentro de la normalizaci\'on de \texttt{qelim}, que contrae el eliminador cuando su
 tercer argumento es una clase can\'onica.
 
-\section{Sintaxis}\label{sec:sintaxis}
+\section{Sintáxis}\label{sec:sintaxis}
 \begin{align}
 e, \rho, k := \quad & \alpha & \tag{1}\\
   \mid \quad & e :: \rho & \tag{2}\\
@@ -989,7 +988,7 @@ e, \rho, k := \quad & \alpha & \tag{1}\\
   \mid \quad & e \; e' \tag{6}&
 \end{align}
 
-Nótese, como anteriormente se ha cubierto, los términos y los tipos comparten el mismo nivel semántico y no existe distinción entre ambos, por tanto, pudiese un término ocurrir en un tipo. Con respecto a $(2)$, por motivos prácticos, nuestra implementación no manejará un nodo de anotación explícita, por lo que, en Maude, será totalmente seguro omitirlo. El algebra inicial del que parte el prototipo del lenguaje, se compone de las ecuaciones:
+Nótese, como anteriormente se ha cubierto, los términos y los tipos comparten el mismo nivel semántico y no existe distinción entre ambos, por tanto, pudiese un término ocurrir en un tipo. Con respecto a $(2)$, por motivos prácticos, nuestra implementación no manejará un nodo de anotación explícita, por lo que, en Maude, será totalmente seguro omitirlo. El algebra inicial del que parte el prototipo del lenguaje, se compone del siguiente arbol de sintáxis abstracta:
 \begin{lstlisting}
 fmod LAMBDA-QTT is
   ...
