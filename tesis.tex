@@ -4,7 +4,8 @@
 \pagenumbering{roman}
 
 \section*{Resumen}
-Este trabajo presenta el diseño e implementación de un lenguaje de programación con tipos dependientes, extendido con tipos cociente. Los tipos dependientes permiten expresar propiedades de los programas directamente en sus tipos, mientras que los tipos cociente permiten identificar elementos de un tipo que deberían considerarse iguales según una relacion de equivalencia dada, garantizando automáticamente que las funciones definidas sobre ellos sean coherentes con dicha relación. La formalización de tipos cociente sobre sistemas de tipos dependientes mendiante lenguajes basados en la reescritura, como Maude, ha recibido poca atención a lo largo de los años, y con el presente trabajo se pretende cubrir esta brecha. Adicional a ello, se pretende demostrar que Maude es totalmente viable para la formalización, exploración y estudio de la teoría de tipos bajo el lente de la reescritura de términos, como lo son probadores de teoremas como Agda, Coq y Lean. El lenguaje se construye sobre un núcleo formal basado en el cálculo lambda dependientemente tipado, al que se añaden los tipos cociente como extensión principal. Aprovechando la lógica de reescritura ecuacional de Maude, las reglas de tipado del sistema puede verse como una tripla $\mathcal{R} = (\Sigma, E, R)$ que se trasladan de forma directa a ecuaciones, y el cómputo sobre las clases del cociente se realiza por reducción de términos. El trabajo incluye la definición formal del sistema de tipos, su semántica operacional, justificación de cada decisión de diseño tomada, junto con su implementación completa en Maude.
+
+Este trabajo presenta el diseño e implementación de un lenguaje de programación con tipos dependientes, extendido con tipos cociente. Los tipos dependientes permiten expresar propiedades de los programas directamente en sus tipos, mientras que los tipos cociente permiten identificar elementos de un tipo que deberían considerarse iguales según una relacion de equivalencia dada, garantizando automáticamente que las funciones definidas sobre ellos sean coherentes con dicha relación. La formalización de tipos cociente sobre sistemas de tipos dependientes mendiante lenguajes basados en la reescritura, como Maude, ha recibido poca atención a lo largo de los años, y con el presente trabajo se pretende cubrir esta brecha. Adicional a ello, se pretende demostrar que Maude es totalmente viable para la formalización, exploración y estudio de la teoría de tipos bajo el lente de la reescritura de términos, como lo son probadores de teoremas como Agda, Coq y Lean. El lenguaje se construye sobre un subconjunto del cálculo lambda dependientemente tipado, al que se añaden los tipos cociente como extensión principal. Aprovechando la lógica de reescritura ecuacional de Maude, las reglas de tipado del sistema pueden verse como una tripla $\mathcal{R} = (\Sigma, E, R)$ que se trasladan de forma directa a ecuaciones, y el cómputo sobre las clases del cociente se realiza por reducción de términos. El trabajo incluye la definición formal del sistema de tipos, su semántica operacional, justificación de cada decisión de diseño tomada, junto con su implementación completa en Maude.
 \input{chapters/Introduction}
 \tableofcontents
 
@@ -266,7 +267,7 @@ es decir, $R$ es miembro de sí mismo exactamente cuando no lo es.
 \indent La formulación original de Russell, desarrollada junto a Whitehead en \textit{Principia Mathematica}, era la teoría ramificada de tipos, que sumaba a la estratificación por tipos una segunda por órdenes para neutralizar también las paradojas semánticas, al precio de requerir el discutido axioma de reducibilidad. Ramsey observó más tarde que las paradojas estrictamente lógicas o conjuntistas quedan resueltas ya con la jerarquía simple de tipos, sin necesidad de los órdenes ni del axioma de reducibilidad. Es esta teoría simple de tipos la que, años después, Church retomaría como base de su lambda cálculo tipado, y la que enlaza directamente con el objeto de este trabajo.
 \newline
 \newline
-\indent En términos más generales, los tipos son ubicuos en computación, y numerosos lenguajes tienen su propio sistema de tipos, unos mas avanzados que otros y, otros más simples. Tan simples que, la manipulación de tipos es casi perceptible o inexitstente. Lenguajes con esta capacidad de omitir tipos son conocidos como lenguajes dinámicamente tipados, donde en casos, es completamente opcional tipar expresiones y en caso contrario, el compilador hace lo mejor que puede para inferir un tipo adecuado para una expresión. Haskell por ejemplo, es un lenguaje de alto nivel, ampliamente utilizado por grupos de investigación y académicos, su sistema de tipos esta inicialmente basado en el cálculo lambda simplemente tipado, también llamado \textit{System F}, que abordaremos en capítulos posteriores a este. Sin embargo, hoy en día su sistema de tipos ha madurado lo suficiente como para dejar de considerarle un lenguaje con un sistema de tipos simple. C++ es un claro ejemplo de un sistema de tipos, quizá, mucho más complejo, pero sumamente rico, que facilita posteriormente, una distincion semántica y rechaza programas que son imposibles de evaluar correctamente. El lenguaje en el que estarémos trabajando en el presente trabajo, Maude, es de alto nivel pero fuertemente tipado. Aunque precisamente no utiliza tipos internamente, si no Sorts, la manipulación de términos y el enunciar si un término es de tipo (o sort) $A$ es, en principio, lo mismo.  OCaml en principio, fue de los lenguajes que llego a explorar más a fondo la teoria de tipos y la expresividad de los mismos como funcionalidades del lenguaje, siendo de los primeros en implementar tipos polimórficos, es decir, tipos que pueden tomar la forma de otros tipos. Finalmente, un sistema de tipos permite al lenguaje alcanzar capacidades de expresividad bastante amplias y, a su vez, evitar que programas erronoes se ejecuten.
+ARREGLAR \indent En términos más generales, los tipos son ubicuos en computación, y numerosos lenguajes tienen su propio sistema de tipos, unos mas avanzados que otros y, otros más simples. Tan simples que, la manipulación de tipos es casi perceptible o inexitstente. Lenguajes con esta capacidad de omitir tipos son conocidos como lenguajes dinámicamente tipados, donde en casos, es completamente opcional tipar expresiones y en caso contrario, el compilador hace lo mejor que puede para inferir un tipo adecuado para una expresión. Haskell por ejemplo, es un lenguaje de alto nivel, ampliamente utilizado por grupos de investigación y académicos, su sistema de tipos esta inicialmente basado en el cálculo lambda simplemente tipado, también llamado \textit{System F}, que abordaremos en capítulos posteriores a este. Sin embargo, hoy en día su sistema de tipos ha madurado lo suficiente como para dejar de considerarle un lenguaje con un sistema de tipos simple. C++ es un claro ejemplo de un sistema de tipos, quizá, mucho más complejo, pero sumamente rico, que facilita posteriormente, una distincion semántica y rechaza programas que son imposibles de evaluar correctamente. El lenguaje en el que estarémos trabajando en el presente trabajo, Maude, es de alto nivel pero fuertemente tipado. Aunque precisamente no utiliza tipos internamente, si no Sorts, la manipulación de términos y el enunciar si un término es de tipo (o sort) $A$ es, en principio, lo mismo.  OCaml en principio, fue de los lenguajes que llego a explorar más a fondo la teoria de tipos y la expresividad de los mismos como funcionalidades del lenguaje, siendo de los primeros en implementar tipos polimórficos, es decir, tipos que pueden tomar la forma de otros tipos. Finalmente, un sistema de tipos permite al lenguaje alcanzar capacidades de expresividad bastante amplias y, a su vez, evitar que programas erronoes se ejecuten.
 \newline
 \newline
 \indent Dentro de los problemas que intenta resolver la teoria de tipos, no se encuentra solo encontrar un tipo para un término concreto, sino también, determinar (si lo hay) un término para un tipo y si un término esta bien tipado (o es un tipo legal) dentro de un contexto \citep{geuvers2014}. Listamos pues, algunos de los problemas que se abordan en la teoria de tipos:
@@ -964,14 +965,13 @@ El lenguaje que se propone en el presente trabajo, parte de un subconjunto del l
 El prototipo que se describe en este capítulo y en \cref{ch:quot} se restringe en ciertos puntos respecto de la teoría presentada en \cref{ch:prelim}. Se enuncian aquí de forma conjunta, indicando en cada caso el motivo de la decisión y la consecuencia que estas puedan traer en el resultado final.
 
 \subsection{Sustitución que evita capturas.}
-La operación \texttt{subst} no renombra las variables ligadas con variables frescas. Los términos que se manipulan en los casos de estudio son cerrados, por lo que la captura no se produce. Extenderla a términos abiertos requeriría una operación auxiliar de renombrado
-con variables frescas que, por simpleza del prototipo, no se implementará.
+La operación \texttt{subst} implementada adopta el enfoque $naive$, es decir, se reemplazan las variables respectivamente sin verificar que la variable a reemplazar esté ligada por un cuantificador. Adicional a ello, los términos que se manipulan en los casos de estudio son cerrados, por lo que la captura no se produce. También, la sustitución no renombra las variables ligadas con variables frescas. Extenderla a términos abiertos requeriría una operación auxiliar de renombrado con variables frescas que, por simpleza del prototipo, no se implementará.
 
 \subsection{Anotación explícita de términos.}
-La gramatica de \cref{sec:sintaxis} contempla el constructor de anotación $e :: \rho$, pero el prototipo no lo incorpora como nodo independiente. La anotación es explícita y cada ecuación de Maude especifica el tipo que se espera de un término en concreto.
+La gramática de \cref{sec:sintaxis} contempla el constructor de anotación $e :: \rho$, pero el prototipo no lo incorpora como nodo independiente. La anotación es explícita y cada ecuación de Maude especifica el tipo que se espera de un término en concreto.
 
 \subsection{Universo único.}
-A distinción de lo propuesto por \cite{nuoli} y nuestra teoría, en su trabajo propone que toda relación $\sim$ habite en $Prop$, esto es, por la teoría de tipos de Martin Lof, en donde los cocientes se asumen como consecuencia de la teoría de tipos extensiones y además existe una distinción entre $Type$ y $Prop$. Nuestro sistema de tipos se limita a habitar en un solo universo $\star$ que, a su vez, habita en un $Sort$ de Maude. Esta decisión no compromete en su totalidad las reglas de formación, introducción, eliminación y cómputo.
+ARREGLAR A distinción de lo propuesto por \cite{nuoli} y nuestra teoría, en su trabajo propone que toda relación $\sim$ habite en $Prop$, esto es, por la teoría de tipos de Martin Lof, en donde los cocientes se asumen como consecuencia de la teoría de tipos extensiones y además existe una distinción entre $Type$ y $Prop$. Nuestro sistema de tipos se limita a habitar en un solo universo $\star$ que, a su vez, habita en un $Sort$ de Maude. Esta decisión no compromete en su totalidad las reglas de formación, introducción, eliminación y cómputo.
 
 \subsection{Regla de cómputo del cociente.}
 No se declara una ecuaci\'on independiente para \emph{Q-Comp}: su contenido operacional se
@@ -988,7 +988,7 @@ e, \rho, k := \quad & \alpha & \tag{1}\\
   \mid \quad & e \; e' \tag{6}&
 \end{align}
 
-Nótese, como anteriormente se ha cubierto, los términos y los tipos comparten el mismo nivel semántico y no existe distinción entre ambos, por tanto, pudiese un término ocurrir en un tipo. Con respecto a $(2)$, por motivos prácticos, nuestra implementación no manejará un nodo de anotación explícita, por lo que, en Maude, será totalmente seguro omitirlo. El algebra inicial del que parte el prototipo del lenguaje, se compone del siguiente arbol de sintáxis abstracta:
+Nótese, como anteriormente se ha cubierto, los términos y los tipos comparten el mismo nivel semántico y no existe distinción entre ambos, por tanto, pudiese un término ocurrir en un tipo. Con respecto a $(2)$, por motivos prácticos, nuestra implementación no manejará un nodo de anotación explícita, por lo que, en Maude, será totalmente seguro omitirlo. El algebra inicial del que parte el prototipo del lenguaje, se compone del siguiente árbol de sintáxis abstracta:
 \begin{lstlisting}
 fmod LAMBDA-QTT is
   ...
@@ -996,13 +996,13 @@ fmod LAMBDA-QTT is
   sort Term .
   subsort Var < Term .
   vars N N' : String .
-  vars T T1 T1' T2 S A B : Term .
-  var V : Var .
+  vars T T1 T1' T2 S A F B R QT Resp Q : Term .
+  vars X X' V V' : Var .
   op var : String -> Var [ctor] .
   op Type : -> Term [ctor] .
-  op Pi : Var Term Term -> Term [ctor] .
-  op lam : Var Term Term -> Term [ctor] .
-  op app : Term Term -> Term [ctor] .
+  op Pi(_:_,_) : Var Term Term -> Term [ctor] .
+  op λ_:_._ : Var Term Term -> Term [ctor prec 40] .
+  op _·_ : Term Term -> Term [ctor prec 15 gather (E e)] .
   ...
 endfm
 \end{lstlisting}
@@ -1030,25 +1030,27 @@ La regla es trivial para $\lambda$ y $\Sigma$ que describirémos posteriormente.
 \newline
 \newline
 \indent A diferencia del enfoque empleado por \cite{stehr}, el cálculo de sustituciones no es explícito, y cada regla es expresada de manera ecuacional. Dado que los términos del prototipo son cerrados y no hay variable que pueda ser capturada por un binder, una aproximación \textit{naive} es suficiente para los casos de uso. Luego, la implementación en Maude define las reglas de cómputo para la sustitución en el cálculo dependientemente tipado, se define una regla por cada constructor del cálculo, definiendo la condición de igualdad o desigualdad sobre los nombres de las variables, expresadas en las ecuaciones:
+
+ARREGLAR no aparece simbolo lambda, especificar el nombre de la operacion de substitucion correcta
 \begin{lstlisting}
 fmod LAMBDA-QTT is
   ...
-  op subst : Term Var Term -> Term .
+  op _[_ / _]: Term Var Term -> Term .
 
-  eq subst(var(N), var(N), S) = S .
-  ceq subst(var(N), var(N'), S) = var(N) if N =/= N' .
-  eq subst(app(T1, T2), V, S) = app(subst(T1, V, S), subst(T2, V, S)) .
-  eq subst(Type, V, S) = Type .
-  ceq subst(lam(var(N), A, T), var(N), S) = lam(var(N), subst(A, var(N), S), T)
+  eq X[X / S] = S .
+  ceq X[X' / S] = X if X =/= X' .
+  eq (T1 · T2)[X / S] = (T1[X / S]) · (T2[X / S]) .
+  eq Type[X / S] = Type .
+  ceq (λ X : A . T)[X / S] = λ X : A[X / S] . T
     if true = true .
-  ceq subst(lam(var(N), A, T), var(N'), S) =
-    lam(var(N), subst(A, var(N'), S), subst(T, var(N'), S))
-    if N =/= N' .
-  ceq subst(Pi(var(N), A, B), var(N), S) = Pi(var(N), subst(A, var(N), S), B)
+  ceq (λ X : A . T)[X' / S] =
+    λ X : A[X' / S] . T[X' / S]
+    if X =/= X' .
+  ceq Pi(X : A, B)[X / S] = Pi(X : A[X / S], B)
     if true = true .
-  ceq subst(Pi(var(N), A, B), var(N'), S) =
-    Pi(var(N), subst(A, var(N'), S), subst(B, var(N'), S))
-    if N =/= N' .
+  ceq Pi(X : A, B)[X' / S] =
+    Pi(X : A[X' / S], B[X' / S])
+    if X =/= X' .
   ...
 endfm
 \end{lstlisting}
@@ -1376,12 +1378,15 @@ listan las reglas de formación, introducción, eliminación y computación, y a
 cada una de ellas se le hace corresponder la ecuación Maude que la realiza en el prototipo.
 \newline
 \newline
-\indent Antes de detallar las reglas, conviene precisar de qué forma se amplía la sintaxis del lenguaje. La gramática presentada en el capítulo anterior se extiende con tres nuevos constructores, que se corresponden con la formación del cociente, la formación de una clase de equivalencia y la eliminación por \textit{lifting}, respectivamente:
+\indent Conviene precisar, antes de entrar en las reglas, en qué sentido una ecuación de Maude computa una regla de tipado, pues de esa correspondencia depende buena parte de lo que el prototipo permite afirmar. Una regla de inferencia define de forma inductiva una relación de derivabilidad. La conclusión $\Gamma \vdash t : A$, por ejemplo, se considera derivable cuando lo son sus premisas. Su traslado a la lógica de reescritura adopta un punto de vista computacional. La función \texttt{infer}, en lugar de comprobar una derivación ya construida, la produce por reducción sobre el álgebra de términos, y las condiciones de \textit{matching} que acompañan a cada \texttt{ceq}, introducidas mediante el operador \texttt{:=}, desempeñan el papel de las premisas, de tal modo que la ecuación se dispara únicamente cuando cada una de ellas encaja con la forma normal del término que le corresponde. La derivabilidad del juicio se manifiesta entonces como la buena definición del resultado de \texttt{infer}, por tanto, un término bien tipado reduce al tipo que se le infiere, mientras que uno mal tipado no queda cubierto por ecuación alguna, y así, \texttt{infer} permanece sin reducir el kind $[\mathsf{Term}]$. Esta es la lectura que adopta en nuestro sistema la equivalencia \textit{Cómputo = Deducción} enunciada en \cref{ch:maude}, pues derivar el tipo de un término y normalizar la aplicación de \texttt{infer} sobre él constituyen el mismo cómputo.
+\newline
+\newline
+La gramática presentada en el capítulo anterior se extiende con tres nuevos constructores, que se corresponden con la formación del cociente, la formación de una clase de equivalencia y la eliminación por \textit{lifting}, respectivamente:
 
 \begin{align}
 e, \rho, k := \quad & \dots & \tag{$\ast$}\\
-  \mid \quad & \mathrm{qtype}(A, R) & \tag{7}\\
-  \mid \quad & \mathrm{qclass}(t, \mathrm{qtype}(A, R)) & \tag{8}\\
+  \mid \quad & (A / R) & \tag{7}\\
+  \mid \quad & [t : A / R] & \tag{8}\\
   \mid \quad & \mathrm{qelim}(f, \mathit{resp}, q) & \tag{9}
 \end{align}
 
@@ -1390,70 +1395,76 @@ relación $R$; $(8)$ construye la clase de equivalencia $[t]$ de
 un representante $t : A$, anotada con el tipo cociente al que pertenece; y $(9)$ eleva una función $f$ definida sobre representantes a una función definida sobre el cociente, exigiendo un testigo $\mathit{resp}$ de que $f$ respeta la relación. Su correspondencia en Maude, se indica como sigue:
 
 \begin{lstlisting}
-  op qtype : Term Term -> Term [ctor] .
-  op qclass : Term Term -> Term [ctor] .
+  op _/_ : Term Term -> Term [ctor prec 25] .
+  op [_:_] : Term Term -> Term [ctor] .
   op qelim : Term Term Term -> Term [ctor] .
 \end{lstlisting}
 
-\indent La sustitución se propaga sobre cada constructor y recursivamente sobre los tipos presentes en cada uno de ellos. Una vez más, cualquier caso de captura de variables es evitable, pues ningún constructor introduce un binder propio sobre la variable que se sustituye:
+\indent La sustitución se propaga sobre cada constructor y recursivamente sobre los tipos presentes en cada uno de ellos. Una vez más, no se presenta captura de variables porque ningún constructor introduce un binder sobre la variable que se sustituye:
 \begin{lstlisting}
-  eq subst(qtype(A, R), V, S) = qtype(subst(A, V, S), subst(R, V, S)) .
-  eq subst(qclass(A, R), V, S) = qclass(subst(A, V, S), subst(R, V, S)) .
-  eq subst(qelim(F, A, R), V, S) =
-    qelim(subst(F, V, S), subst(A, V, S), subst(R, V, S)) .
+  eq (A / R)[V / S] = (A[V / S]) / (R[V / S]) .
+  eq [A : R][ V / S] = [A[V / S] : R[V / S]] .
+  eq qelim(F, A, R)[V / S] = qelim(F[V / S], A[V / S], R[V / S]) .
 \end{lstlisting}
 
-Es importante mencionar otra distinción con respecto a lo propuesto por \cite{nuoli} y nuestra teoría, y es que en su trabajo propone que toda relación $\sim$ habite en $Prop$, esto es por la teoría de tipos de Martin Lof, en donde los cocientes se encuentran como extensión de la metateoría y existe una distinción entre $Type$ y $Prop$. Nuestro sistema de tipos se limita a habitar en un solo universo $\ast$. Esta decisión no compromete en su totalidad los resultados obtenidos.
 \section{Introducción}
 
 \begin{gather}
   \infer[\text{Q-Intro}]
-  {\Gamma \vdash \mathrm{qclass}(t, \mathrm{qtype}(A, R)) : \mathrm{qtype}(A, R)}
+  {\Gamma \vdash [t : A / R] : A / R}
   {\Gamma \vdash t : A}
 \end{gather}
 
-Según lo fijado por la regla, la ecuación en Maude aserta que el tipo de un representante $[t]$ en el cociente es de tipo $A/\sim$, si en principio es posible confirmar que en el mismo contexto $\Gamma$, $t$ habita en $A$.
+Según lo fijado por la regla, la ecuación en Maude aserta que el tipo de un representante $[t]$ en el cociente es de tipo $A/\sim$, si en principio es posible tener una derivación del hecho de que en el mismo contexto $\Gamma$, $t$ habita en $A$.
 \newline
 \begin{lstlisting}
-  ceq infer(G, qclass(T, qtype(A, R))) = qtype(A, R)
+  ceq infer(G, [T : A / R]) = A / R
     if true := check(G, T, A) .
 \end{lstlisting}
 
 \indent La decisión de anotar el tipo cociente sobre la clase responde al mismo principio que en el capítulo anterior abordamos con las tuplas del tipo $\Sigma$, donde $\mathrm{pair}$ posee su anotación. Sin dicha anotación, la síntesis del tipo de una clase sería ambigua, pues un mismo representante $t : A$ pertenece a tantos cocientes como relaciones puedan definirse sobre $A$. Portando la clase su tipo cociente, la inferencia permanece dirigida por la sintaxis y, por tanto, se mantiene decidible.
 \newline
 \newline
-\indent Puesto a que $A$ y $R$ son dentro de nuestro universo $\star$ términos, es sensato normalizar ambos argumentos. De manera que la ecuación en Maude es congruente:
+\indent Puesto a que $A$ y $R$ son dentro de nuestro universo $\star$, términos, es sensato normalizar ambos argumentos. De manera que la ecuación en Maude es congruente:
 
 \begin{lstlisting}
-  eq norm(qtype(A, R)) = qtype(norm(A), norm(R)) .
+  eq norm(A / R) = norm(A) / norm(R) .
 \end{lstlisting}
 
 \section{Formación}
 \begin{gather}
   \infer[\text{Q-Form}]
   {\Gamma \vdash A/\sim \quad \uparrow \star}
-  {\Gamma \vdash A \uparrow \star, & \Gamma a, b : A \vdash x \sim y \downarrow Pi(a, A, Pi(b, A, Type))}
+  {\Gamma \vdash A \uparrow \star, & \Gamma a, b : A \vdash x \sim y \downarrow Pi(a : A,\, Pi(b : A,\, Type))}
 \end{gather}
 
 La regla de formación sostiene que para inferir que $A/\sim$ es de tipo $\star$, primero $~$ debe atestiguar que la relación de equivalencia entre $a$ y $b$ es transitiva, reflexiva y simétrica y, además, habitar en el tipo $\Pi$. Adicionalmente, $a$ y $b$ habitan $A$. 
 \newline
 \begin{lstlisting}
-  ceq infer(G, qtype(A, R)) = Type
+  ceq infer(G, A / R) = Type
   if Type := norm(infer(G, A))
-  /\ true := check(G, R, Pi(var("a"), A, Pi(var("b"), A, Type))).
+  /\ true := check(G, R, Pi(a : A, Pi(b : A, Type))).
 \end{lstlisting}
+\newline
+\newline
+\indent En esta regla se toma la decisión de emplear un único universo. En el sistema de \cite{nuoli} la relación $\sim$ habita en $Prop$, el universo de las proposiciones, cuya característica es la irrelevancia de pruebas, donde dada una proposición $a : Prop$ y dos testigos cualesquiera $h1 : a,\, h2: a$, ambos $h1$ y $h2$ se consideran indistinguibles para el sistema de tipos \citep{mathlib}. Al disponer nuestro sistema de un solo universo $\star$, la premisa que \texttt{infer} exige de $R$ es únicamente que habite en $\Pi\, a : A.\, \Pi\, b : A.\, \Type$, esto es, que sea una familia de tipos sobre $A$. El sistema admite en ese lugar cualquier familia de esa signatura, y en consecuencia no distingue una relación de equivalencia de una familia arbitraria de tipos, ni verifica que $R$ sea reflexiva, simétrica ni transitiva. Estas propiedades se asumen como hipótesis, como en el modelo de setoides, en el que la relación se transporta como parámetro del contexto y su carácter de equivalencia queda a cargo de quien la suministra. Su comprobación efectiva requeriría, además, la capacidad de construir y transportar pruebas de igualdad empleando el eliminador $J$ del tipo identidad, como se discute más adelante el sistema no posee.
+
 
 \section{Eliminación y Computación}
 \begin{gather}
   \infer[\text{Q-Elim}]
   {\Gamma \vdash qelim(F, Resp, Q) \uparrow B}
-  {\Gamma \vdash Q \uparrow A/\sim & F \uparrow Pi(a, A, B)}
+  {\Gamma \vdash Q \uparrow A/\sim & F \uparrow Pi(a : A, B)}
 \end{gather}
 Tanto la eliminación como la computación, juegan un papel importante en esta extensión a los cocientes, ellos indican a Maude la forma en que deben reducirse las reglas del lenguaje. En esta regla en concreto, inferimos que \textit{qelim} es de tipo $B$, asumiendo que $F$ es una función cualquiera donde su $Resp$ es válida. Nótese que en nuestra implementación de Maude, agregamos como clausula la inferencia de que $Q$ es de tipo $A/\sim$, es decir, $A$ es un testigo bien definido bajo el cociente en $\Gamma$ y es válido aplicar $F$ sobre el.
 \begin{lstlisting}
   ceq infer(G, qelim(F, Resp, Q)) = B
-  if qtype(A,R) := norm(infer(G, Q)) 
-  /\ Pi(V, A, B) := norm(infer(G, F)) .
+  if A / R := norm(infer(G, Q))
+    /\ Pi(V : A , B) := norm(infer(G, F))
+    /\ true := check(G, Resp,
+        Pi(a : A , Pi(b : A ,
+            Pi(p : (R · a) · b ,
+            Id(B, F · a, F · b))))) .
 \end{lstlisting}
 
 La regla de computación describe cómo se comporta \textit{lifting} en una función al aplicarse a una clase canónica. Nótese que $Q-Comp$ y $Q-Elim$ van de la mano, como se ha mencionado, y la razon es que la eliminación en principio describe las reglas para poder aplicar una función a un miembro del cociente y, por otro lado, la regla de cómputo describe, cómo de verdad obtener un valor a partir de ella. Nuestra implementación no tiene una regla concreta de $qcomp$, por lo que realmente basta y es mucho más práctico para nuestro propósito, cubrir directamente $qelim$ tomando en cuenta lo indicado por ambas reglas. Siguiendo pues, lo sugerido por \cite{nuoli}, al aplicar $\hat{f}$ a la clase $[a]$ de un representante $a$, se obtiene $f(a)$:
@@ -1461,7 +1472,7 @@ La regla de computación describe cómo se comporta \textit{lifting} en una func
 
 \begin{gather*}
   \infer[\text{qelim-}\beta]
-  {\mathrm{qelim}(F, A, \mathrm{qclass}(T, QT)) \Downarrow V}
+  {\mathrm{qelim}(F, A, [T : QT]) \Downarrow V}
   {\mathrm{app}(F, T) \Downarrow V}
   \\[1em]
   \infer[\text{qelim-otherwise}]
@@ -1472,11 +1483,12 @@ La regla de computación describe cómo se comporta \textit{lifting} en una func
 En el prototipo de Maude, esta igualdad se realiza directamente como una regla de reescritura orientada de izquierda a derecha. Cuando el tercer argumento del eliminador es una clase can\'onica $\mathrm{qclass}(T, QT)$, el \textit{lifting} se contrae aplicando $F$ al representante $T$:
 
 \begin{lstlisting}
-  eq norm(qelim(F, A, qclass(T, QT))) = norm(app(F, T)) .
-  eq norm(qelim(F, A, R)) = qelim(norm(F), norm(A), norm(R)) [owise] .
+  eq norm(qelim(F, A, R)) = normQe(norm(F), norm(A), norm(R)) .
+  eq normQe(F, A, [T : QT]) = norm(F · T) .
+  eq normQe(F, A, R) = qelim(F, A, R) [owise] .
 \end{lstlisting}
 
-La primera ecuación es la contraparte operacional de \textit{Q-comp} que indica como se reduce $\hat{f}([t])$ a $f(t)$, donde la aplicación $\mathrm{app}(F, T)$ se normaliza a su vez mediante la $\beta$-reducción ya definida para el lenguaje base. La segunda ecuación, marcada con \texttt{owise}, constituye el caso cuando su tercer argumento no es una clase canónica, por ejemplo una variable, en este caso se normalizan los tres componentes y el eliminador permanece sin mutarse, porque no hay información suficiente sobre exactamente qué es ese tercer argumento, siendo imposible reducirlo por Maude.
+ARREGLAR La primera ecuación es la contraparte operacional de \textit{Q-comp} que indica como se reduce $\hat{f}([t])$ a $f(t)$, donde la aplicación $\mathrm{app}(F, T)$ se normaliza a su vez mediante la $\beta$-reducción ya definida para el lenguaje base. La segunda ecuación, marcada con \texttt{owise}, constituye el caso cuando su tercer argumento no es una clase canónica, por ejemplo una variable, en este caso se normalizan los tres componentes y el eliminador permanece sin mutarse, porque no hay información suficiente sobre exactamente qué es ese tercer argumento, siendo imposible reducirlo por Maude.
 \newline
 \newline
 \indent A modo de ilustración, considérese el cociente de $\Nat$ por una relación $R$ cualquiera y la elevación de la función sucesor. Tomando como función $\lambda x : \Nat.\, \mathrm{suc}(x)$ y como elemento la clase del representante $zero$, la síntesis del tipo y la computación proceden como sigue:
@@ -1501,14 +1513,17 @@ Conviene detenerse para discutir el alcance de la igualdad proposicional en nues
 \end{gather}
 
 Dada una prueba $p$ de que dos representates $a$ y $b$ están relacionados, $Q-Ax$ produce una prueba $p$ que enuncia que sus representantes son iguales también dentro del cociente. El sistema puede, por tanto, declarar de manera interna la igualdad proposicional $[a] =_{A/\sim} [b]$, y no asumirla en la metateoría.
+\newline
+\newline
+\indent Amerita ubicar esta regla frente a la manera en que los probadores de teoremas basados en teoría de tipos incorporan este mismo principio. En Lean, la propiedad correspondiente, \texttt{Quot.sound}, se introduce como un axioma en el kernel, esto es, como una constante postulada que afirma la igualdad de las clases de dos representantes relacionados sin que le corresponda regla de cómputo alguna; en Coq, por otro lado, cuando el cociente se añade por vía axiomática, la situación es la misma. En nuestro sistema, $Q\text{-}Ax$ se expresa como una regla de tipado que \texttt{infer} realiza mediante una ecuación condicionada, en lugar de asumirse de forma externa en la teoría. La igualdad $[a] =_{A/\sim} [b]$ queda así producida por el propio sistema de tipos a partir de una prueba de que $a \sim b$, y su estatus es el de un juicio derivable en el cálculo. Esta discrepancia entre postular tal propiedad del cociente como un axioma y especificarla como regla es donde la lógica de reescritura resulta de interés en nuestra aproximación, pues la premisa $\Gamma \vdash p : a \sim b$ se computa, y comprueba por reducción, luego la conclusión se obtiene como forma normal de \texttt{infer} sobre el término $Qax(p)$.
 
-Además, el lenguaje no implementa el eliminador de la identidad $J$, por lo que las pruebas de igualdad pueden enunciarse, pero no pueden emplearse para transportar propiedades de un lado de la igualdad al otro. La igualdad proposicional es, en este sentido, de solo introducción.
+Adicionalmente, como se ha detallado con anterioridad, el lenguaje no implementa el eliminador de la identidad $J$, por lo que las pruebas de igualdad pueden enunciarse, pero no pueden emplearse para transportar propiedades de un lado de la igualdad al otro. La igualdad proposicional es, en este sentido, de solo introducción.
 
-Esta ausencia tiene una consecuencia directa sobre el testigo $Resp$ del eliminador del cociente. Su tipo es
+Esta ausencia tiene una consecuencia sobre el testigo $Resp$ del eliminador del cociente. Su tipo es
 \[
   Resp : (a, b : A) \to a \sim b \to Id(B, f(a), f(b)),
 \]
-esto es, la prueba de que $f$ respeta la relación. Maude verifica que el $Resp$ suministrado tenga efectivamente ese tipo, pero sin $J$ no dispone de los medios para construir tales pruebas para funciones no triviales, pues ello requiere la congruencia que $J$ habilita. En consecuencia, $Resp$ se suministra como hipótesis en el contexto, del mismo modo que la relación $\sim$ se asume como una equivalencia sin que el sistema verifique su reflexividad, simetría y transitividad. Estas asunciones no comprometen la simulación de los cocientes en los casos de uso presentados.
+esto es, la prueba de que $f$ respeta la relación. Maude verifica que el $Resp$ suministrado tenga efectivamente ese tipo, pero sin $J$ no dispone de los medios para construir tales pruebas para funciones no triviales, pues ello requiere la congruencia que $J$ habilita. En consecuencia, $Resp$ se suministra como hipótesis en el contexto, del mismo modo que la relación $\sim$ se asume como una equivalencia sin que el sistema verifique su reflexividad, simetría y transitividad. Estas asunciones no comprometen la simulación de los cocientes en los casos de uso presentados posteriormente.
 \newline
 \indent Con las reglas de formación, introducción, eliminación y computación ya implementadas, el lenguaje dispone de tipos cociente en el sentido intensional de \cite{nuoli}. Los constructores $\mathrm{fst}$, $\mathrm{snd}$ y el tipo $\Sigma$ que se incorporaron en el capítulo anterior cobran ahora utilidad, pues permiten expresar los casos de uso característicos del cociente, como los enteros representados por pares de naturales o los multiconjuntos, ejemplos que se desarrollan en \cref{ch:casos}.
 
@@ -1694,7 +1709,7 @@ En conjunto, el trabajo respalda la tesis de que Maude es una herramienta apta p
 
 \section{Limitaciones}
 
-El prototipo asume una serie de restricciones, adoptadas de forma deliberada para acotar el alcance del trabajo, que conviene enunciar con precisión.
+ARREGLAR El prototipo asume una serie de restricciones, adoptadas de forma deliberada para acotar el alcance del trabajo, que conviene enunciar con precisión.
 
 El sistema habita en un único universo, con la regla $Type : Type$. Esta decisión simplifica la implementación al eliminar la jerarquía de universos, a costa de la consistencia lógica, pues admite la paradoja de Girard. El prototipo es, por tanto, un verificador de tipos y no un asistente de pruebas. Asimismo, su propósito es explorar (o bien, emular en cierto sentido) la mecánica de los cocientes.
 
@@ -1724,193 +1739,212 @@ fmod calc is
   subsort Var < Term .
 
   vars N N' : String .
-  vars T T1 T1' T2 S A F B R QT Resp Q a b : Term .
-  var V : Var .
+  vars T T1 T1' T2 S A F B R QT Resp Q : Term .
+  vars X X' V V' : Var .
+
+  op x : -> Var [ctor] .
+  op y : -> Var [ctor] .
+  op f : -> Var [ctor] .
+  op a : -> Var [ctor] .
+  op b : -> Var [ctor] .
+  op _ : -> Var [ctor] .
+  op p : -> Var [ctor] .
+  op resp : -> Var [ctor] .
+  op ~ : -> Var [ctor] .
 
   op Nat : -> Term [ctor] .
   op zero : -> Term [ctor] .
   op suc : Term -> Term [ctor] .
   op natrec : Term Term Term Term -> Term [ctor] .
-  op Sigma : Term Term Term -> Term [ctor] .
+  op Sigma : Var Term Term -> Term [ctor] .
   op pair : Term Term Term -> Term [ctor] .
   op fst : Term -> Term [ctor] .
   op snd : Term -> Term [ctor] .
 
   op var : String -> Var [ctor] .
   op Type : -> Term [ctor] .
-  op Pi : Var Term Term -> Term [ctor] .
-  op lam : Var Term Term -> Term [ctor] .
-  op app : Term Term -> Term [ctor] .
+  op Pi(_:_,_) : Var Term Term -> Term [ctor] .
+  op λ_:_._ : Var Term Term -> Term [ctor prec 40] .
+  op _·_ : Term Term -> Term [ctor prec 15 gather (E e)] .
 
-  op refl : Term -> Term [ctor]
-  op Id : Term Term Term -> Term [ctor]
+  op refl : Term -> Term [ctor] .
+  op Id : Term Term Term -> Term [ctor] .
   op qax : Term Term Term Term -> Term [ctor] .
   
-  op qtype : Term Term -> Term [ctor] .
-  op qclass : Term Term -> Term [ctor] .
+  op _/_ : Term Term -> Term [ctor prec 25] .
+  op [_:_] : Term Term -> Term [ctor] .
   op qelim : Term Term Term -> Term [ctor] .
 
-  op subst : Term Var Term -> Term .
+  op _[_ / _]: Term Var Term -> Term .
 
-  eq subst(var(N), var(N), S) = S .
-  ceq subst(var(N), var(N'), S) = var(N) if N =/= N' .
-  eq subst(app(T1, T2), V, S) = app(subst(T1, V, S), subst(T2, V, S)) .
-  eq subst(Type, V, S) = Type .
-  ceq subst(lam(var(N), A, T), var(N), S) = lam(var(N), subst(A, var(N), S), T)
+  eq X[X / S] = S .
+  ceq X[X' / S] = X if X =/= X' .
+  eq (T1 · T2)[X / S] = (T1[X / S]) · (T2[X / S]) .
+  eq Type[X / S] = Type .
+  ceq (λ X : A . T)[X / S] = λ X : A[X / S] . T
     if true = true .
-  ceq subst(lam(var(N), A, T), var(N'), S) =
-    lam(var(N), subst(A, var(N'), S), subst(T, var(N'), S))
-    if N =/= N' .
-  ceq subst(Pi(var(N), A, B), var(N), S) = Pi(var(N), subst(A, var(N), S), B)
+  ceq (λ X : A . T)[X' / S] =
+    λ X : A[X' / S] . T[X' / S]
+    if X =/= X' .
+  ceq Pi(X : A, B)[X / S] = Pi(X : A[X / S], B)
     if true = true .
-  ceq subst(Pi(var(N), A, B), var(N'), S) =
-    Pi(var(N), subst(A, var(N'), S), subst(B, var(N'), S))
-    if N =/= N' .
-  eq subst(Nat, V, S) = Nat .
-  eq subst(zero, V, S) = zero .
-  eq subst(suc(T), V, S) = suc(subst(T, V, S)) .
-  eq subst(natrec(T1, T2, A, B), V, S) =
-      natrec(subst(T1, V, S), subst(T2, V, S), subst(A, V, S), subst(B, V, S)) .
-  ceq subst(Sigma(var(N), A, B), var(N), S) = Sigma(var(N), subst(A, var(N), S), B)
+  ceq Pi(X : A, B)[X' / S] =
+    Pi(X : A[X' / S], B[X' / S])
+    if X =/= X' .
+  eq Nat[X / S] = Nat .
+  eq zero[X / S] = zero .
+  eq suc(T)[X / S] = suc(T[X / S]) .
+  eq natrec(T1, T2, A, B)[X / S] =
+      natrec(T1[X / S], T2[X / S], A[X / S], B[X / S]) .
+  ceq Sigma(X, A, B)[X / S] = Sigma(X, A[X / S], B)
     if true = true .
-  ceq subst(Sigma(var(N), A, B), var(N'), S) =
-    Sigma(var(N), subst(A, var(N'), S), subst(B, var(N'), S))
-    if N =/= N' .
-  eq subst(pair(T1, T2, A), V, S) = pair(subst(T1, V, S), subst(T2, V, S), subst(A, V, S)) .
-  eq subst(fst(T), V, S) = fst(subst(T, V, S)) .
-  eq subst(snd(T), V, S) = snd(subst(T, V, S)) .
-  eq subst(qtype(A, R), V, S) = qtype(subst(A, V, S), subst(R, V, S)) .
-  eq subst(qclass(A, R), V, S) = qclass(subst(A, V, S), subst(R, V, S)) .
-  eq subst(qelim(F, A, R), V, S) = qelim(subst(F, V, S), subst(A, V, S), subst(R, V, S)) .
+  ceq Sigma(X, A, B)[X' / S] =
+    Sigma(X, A[X' / S], B[X' / S])
+    if X =/= X' .
+  eq pair(T1, T2, A)[V / S] = pair(T1[V / S], T2[V / S], A[V / S]) .
+  eq fst(T)[V / S] = fst(T[V / S]) .
+  eq snd(T)[V / S] = snd(T[V / S]) .
+  eq (A / R)[V / S] = (A[V / S]) / (R[V / S]) .
+  eq [A : R][ V / S] = [A[V / S] : R[V / S]] .
+  eq qelim(F, A, R)[V / S] = qelim(F[V / S], A[V / S], R[V / S]) .
 
-  eq subst(Id(A, a, b), V, S) = Id(subst(A, V, S), subst(a, V, S), subst(b, V, S)) .
-  eq subst(refl(a), V, S) = refl(subst(a, V, S)) .
-  eq subst(qax(a, b, A, T), V, S) = qax(subst(a, V, S), subst(b, V, S), subst(A, V, S), subst(T, V, S)) .
+  eq Id(A, a, b)[V / S] = Id(A[V / S], a[V / S], b[V / S]) .
+  eq refl(a)[V / S] = refl(a[V / S]) .
+  eq qax(a, b, A, T)[V / S] = qax(a[V / S], b[V / S], A[V / S], T[V / S]) .
 
   op norm : Term -> Term .
   op normApp : Term Term -> Term .
+  op normFst : Term -> Term .
+  op normSnd : Term -> Term .
+  op normNr  : Term Term Term Term -> Term .
+  op normQe  : Term Term Term -> Term .
 
-  eq norm(var(N)) = var(N) .
+  eq norm(X) = X .
   eq norm(Type) = Type .
 
-  eq norm(Pi(V, A, B)) = Pi(V, norm(A), norm(B)) .
-  eq norm(lam(V, A, T)) = lam(V, norm(A), norm(T)) .
+  eq norm(Pi(X : A, B)) = Pi(X : norm(A), norm(B)) .
+  eq norm((λ X : A . T)) = (λ X : norm(A) . norm(T)) .
 
   eq norm(Id(A, a, b)) = Id(norm(A), norm(a), norm(b)) .
   eq norm(refl(a)) = refl(norm(a)) .
   eq norm(qax(a, b, A, T)) = qax(norm(a), norm(b), norm(A), norm(T)) .
 
-  eq norm(app(T1, T2)) = normApp(norm(T1), norm(T2)) .
+  eq norm(T1 · T2) = normApp(norm(T1), norm(T2)) .
 
-  eq normApp(lam(V, A, T), S) = norm(subst(T, V, S)) .
+  eq normApp((λ X : A . T), S) = norm(T[X / S]) .
 
-  eq normApp(T1, T2) = app(T1, T2) [owise] .
+  eq normApp(T1, T2) = (T1 · T2) [owise] .
 
   eq norm(Nat) = Nat .
   eq norm(zero) = zero .
 
   eq norm(suc(T)) = suc(norm(T)) .
 
-  eq norm(natrec(A, T1, T2, zero)) = norm(T1) .
+  eq norm(natrec(A, T1, T2, T)) = normNr(norm(A), norm(T1), norm(T2), norm(T)) .
+  eq normNr(A, T1, T2, zero) = T1 .
+  eq normNr(A, T1, T2, suc(T)) = norm((T2 · T) · normNr(A, T1, T2, T)) .
+  eq normNr(A, T1, T2, T) = natrec(A, T1, T2, T) [owise] .
 
-  eq norm(natrec(A, T1, T2, suc(T))) =
-    norm(app(app(T2, T), natrec(A, T1, T2, T))) .
-
-  eq norm(natrec(A, T1, T2, T)) =
-    natrec(norm(A), norm(T1), norm(T2), norm(T)) [owise] .
-
-  eq norm(Sigma(V, A, B)) = Sigma(V, norm(A), norm(B)) .
-
+  eq norm(Sigma(X, A, B)) = Sigma(X, norm(A), norm(B)) .
   eq norm(pair(T1, T2, A)) = pair(norm(T1), norm(T2), norm(A)) .
+  eq norm(fst(T)) = normFst(norm(T)) .
+  eq normFst(pair(T1, T2, A)) = T1 .
+  eq normFst(T) = fst(T) [owise] .
+  eq norm(snd(T)) = normSnd(norm(T)) .
+  eq normSnd(pair(T1, T2, A)) = T2 .
+  eq normSnd(T) = snd(T) [owise] .
 
-  eq norm(fst(pair(T1, T2, A))) = norm(T1) .
-
-  eq norm(fst(T)) = fst(norm(T)) [owise] .
-
-  eq norm(snd(pair(T1, T2, A))) = norm(T2) .
-
-  eq norm(snd(T)) = snd(norm(T)) [owise] .
-
-  eq norm(qtype(A, R)) = qtype(norm(A), norm(R)) .
-  eq norm(qclass(A, R)) = qclass(norm(A), norm(R)) .
-  eq norm(qelim(F, A, qclass(T, QT))) = norm(app(F, T)) .
-  eq norm(qelim(F, A, R)) = qelim(norm(F), norm(A), norm(R)) [owise] .
+  eq norm(A / R) = norm(A) / norm(R) .
+  eq norm([A : R]) = [norm(A) : norm(R)] .
+  eq norm(qelim(F, A, R)) = normQe(norm(F), norm(A), norm(R)) .
+  eq normQe(F, A, [T : QT]) = norm(F · T) .
+  eq normQe(F, A, R) = qelim(F, A, R) [owise] .
 
   op tyEq : Term Term -> Bool .
   eq tyEq(A, B) = norm(A) == norm(B) .
 
   sort Ctx .
   op mt : -> Ctx [ctor] .
-  op _`;_`:_ : Ctx Var Term -> Ctx [ctor] .
+  op _;_:_ : Ctx Var Term -> Ctx [ctor] .
   var G : Ctx .
 
   op lookup : Var Ctx -> [Term] .
-  eq lookup(var(N), G ; var(N) : A) = A .
-  ceq lookup(var(N), G ; var(N') : A) = lookup(var(N), G) if N =/= N' .
+  eq lookup(X, G ; X : A) = A .
+  ceq lookup(X, G ; X' : A) = lookup(X, G) if X =/= X' .
 
   op infer : Ctx Term -> [Term] .
   op check : Ctx Term Term -> [Bool] .
 
   eq infer(G, Type) = Type .
 
-  ceq infer(G, Id(A, a, b)) = Type
-  if Type := norm(infer(G, A))
-  /\ A := infer(G, a)
-  /\ A := infer(G, b) .
+  ceq infer(G, Id(A, T1, T2)) = Type
+    if Type := norm(infer(G, A))
+    /\ A := infer(G, T1)
+    /\ A := infer(G, T2) .
 
-  ceq infer(G, refl(a)) = Id(A, a, a) if A := infer(G, a) .
+  ceq infer(G, refl(T)) = Id(A, T, T) if A := infer(G, T) .
 
-  ceq infer(G, qax(a, b, qtype(A, R), T)) =
-    Id(qtype(A, R), qclass(a, qtype(A, R)), qclass(b, qtype(A, R)))
-    if true := check(G, T, app(app(R, a), b)) .
+  ceq infer(G, qax(T1, T2, A / R, T)) =
+    Id(A / R, [T1 : A / R], [T2 : A / R])
+    if true := check(G, T, (R · T1) · T2) .
 
-  eq infer(G, var(N)) = lookup(var(N), G) .
+  eq infer(G, X) = lookup(X, G) .
 
-  ceq infer(G, Pi(V, A, B)) = Type
+  ceq infer(G, Pi(V : A, B)) = Type
     if Type := norm(infer(G, A))
     /\ Type := norm(infer(G ; V : A, B)) .
 
-  ceq infer(G, lam(V, A, T)) = Pi(V, A, B)
+  ceq infer(G, (λ X : A . T)) = Pi(X : A, B)
     if Type := norm(infer(G, A))
-    /\ B := infer(G ; V : A, T) .
+    /\ B := infer(G ; X : A, T) .
 
-  ceq infer(G, app(T1, T2)) = norm(subst(B, V, T2))
-    if Pi(V, A, B) := norm(infer(G, T1))
+  ceq infer(G, T1 · T2) = norm(B[X / T2])
+    if Pi(X : A, B) := norm(infer(G, T1))
     /\ true := check(G, T2, A) .
 
   eq infer(G, Nat) = Type .
 
   eq infer(G, zero) = Nat .
 
-  ceq infer(G, qtype(A, R)) = Type
+  ceq infer(G, A / R) = Type
   if Type := norm(infer(G, A))
-  /\ true := check(G, R, Pi(var("a"), A, Pi(var("b"), A, Type))).
+  /\ true := check(G, R, Pi(a : A, Pi(b : A, Type))).
 
-  ceq infer(G, qclass(T, qtype(A, R))) = qtype(A, R)
+  ceq infer(G, [T : A / R]) = A / R
     if true := check(G, T, A) .
 
   ceq infer(G, qelim(F, Resp, Q)) = B
-  if qtype(A,R) := norm(infer(G, Q)) 
-  /\ Pi(V, A, B) := norm(infer(G, F)) .
+  if A / R := norm(infer(G, Q))
+    /\ Pi(V : A , B) := norm(infer(G, F))
+    /\ true := check(G, Resp,
+        Pi(a : A , Pi(b : A ,
+            Pi(p : (R · a) · b ,
+            Id(B, F · a, F · b))))) .
 
   ceq infer(G, suc(T)) = Nat if true := check(G, T, Nat) .
 
-  ceq infer(G, natrec(A, T1, T2, T)) = norm(app(A, T))
-    if true := check(G, T, Nat) .
+  ceq infer(G, natrec(A, T1, T2, T)) = norm(A · T)
+    if true := check(G, T, Nat)
+    /\ true := check(G, A, Pi(var("n") : Nat, Type))
+    /\ true := check(G, T1, norm(A · zero))
+    /\ true := check(G, T2,
+            Pi(var("k") : Nat,
+            Pi(var("r") : (A · var("k")),
+                A · suc(var("k"))))) .
 
-  ceq infer(G, Sigma(V, A, B)) = Type
+  ceq infer(G, Sigma(X, A, B)) = Type
     if Type := norm(infer(G, A))
-    /\ Type := norm(infer(G ; V : A, B)) .
+    /\ Type := norm(infer(G ; X : A, B)) .
 
-  ceq infer(G, pair(T1, T2, Sigma(V, A, B))) = Sigma(V, A, B)
+  ceq infer(G, pair(T1, T2, Sigma(X, A, B))) = Sigma(X, A, B)
     if true := check(G, T1, A)
-    /\ true := check(G, T2, norm(subst(B, V, T1))) .
+    /\ true := check(G, T2, norm(B[X / T1])) .
 
   ceq infer(G, fst(T)) = A
-    if Sigma(V, A, B) := norm(infer(G, T)) .
+    if Sigma(X, A, B) := norm(infer(G, T)) .
 
-  ceq infer(G, snd(T)) = norm(subst(B, V, fst(T)))
-   if Sigma(V, A, B) := norm(infer(G, T)) .
+  ceq infer(G, snd(T)) = norm(B[X / fst(T)])
+   if Sigma(X, A, B) := norm(infer(G, T)) .
 
   eq check(G, T, A) = tyEq(infer(G, T), A) .
 endfm
