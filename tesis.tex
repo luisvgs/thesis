@@ -600,7 +600,7 @@ Donde $\textit{Vec}\,A\, n : \star$ habita en $\Box$.
 \newline
 \indent Dado que a los tipos pudiesen contener términos, una noción de igualdad definicional es necesaria en la teoría, por ejemplo, conviene considerar los términos $0 : \mathbb{N}$ y $0 + 0 : \mathbb{N}$ como definicionalmente iguales y, por tanto, no habría distinción entre \textit{Vec(0)} y \textit{Vec 0 + 0}. Si \textit{M : Vec(0)} y \textit{N: Vec 0 + 0}, nos lleva a un juicio de la forma $M = N : \sigma$ que se lee \textit{M y N son términos definicionalmente iguales en el tipo sigma}, y, además, que $\sigma = \tau : A$, que se lee \textit{sigma y tau son tipos definicionalmente iguales en A}.
 
-\begin{definition}[Igualdad definicional] Decimos que dos términos son definicionalmente iguales cuando reducen, luego de cero o más pasos de reducción, a un término en común \cite{mimram2020}. La igualdad a la que hacemos referencia en este caso, no es igualdad proposicional, denotada con $\equiv$, si no, a la igualdad que es inherente del lenguaje base $=$ que corresponde a la equivalencia de términos bajo $\beta$-reducción. 
+\begin{definition}[Igualdad definicional] Decimos que dos términos son definicionalmente iguales cuando reducen, luego de cero o más pasos de reducción, a un término en común \citep{mimram2020}. La igualdad a la que hacemos referencia en este caso, no es igualdad proposicional, denotada con $\equiv$, si no, a la igualdad que es inherente del lenguaje base $=$ que corresponde a la equivalencia de términos bajo $\beta$-reducción. 
 \begin{lstlisting}
   op _+_ : Nat Nat -> Nat .
   eq 0 + N = N .
@@ -652,13 +652,13 @@ La existencia de esta prueba es lo que nos permite concluir que $n + 0 \equiv n$
 \end{corollary}
 
 \subsection{Tipos sigma}
-Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el próximo constructor o tipo al que dedicarémos un breve acercamiento, que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma. Representado en el lambda cálculo simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, más bien, asegurar la decibiliad del prototipo, este tipo estará acompañado de su adscripción.
+Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el próximo constructor o tipo al que dedicarémos un breve acercamiento, que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma. Representado en el lambda cálculo simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, más bien, asegurar la decibiliad del prototipo, este tipo estará acompañado de su anotación.
 
-El conjunto de pseudo-términos $\mathcal{T}$, se extiende, por tanto, con un nuevo miembro representando los tipos sigma:
+El conjunto de pseudo-términos $\mathcal{T}$, se extiende, por tanto, con un nuevo miembro representando al tipo sigma:
 
-    \begin{align*}
-      \mathcal{T} = ... \mid \Pi \mathcal{V}: \mathcal{T}.\, \mathcal{T} \,|\, \langle \mathcal{T}, \mathcal{T} \rangle\, |\, \textit{fst}\,\mathcal{T}\,|\, \textit{snd}\, \mathcal{T}
-    \end{align*}
+\begin{align*}
+  \mathcal{T} = ... \mid \Pi \mathcal{V}: \mathcal{T}.\, \mathcal{T} \,|\, \langle \mathcal{T}, \mathcal{T} \rangle\, |\, \textit{fst}\,\mathcal{T}\,|\, \textit{snd}\, \mathcal{T}
+\end{align*}
 
     Donde \textit{fst} y \textit{snd} son \textit{proyecciones} que extraen el primer y segundo componente de la tupa $\langle \mathcal{T}, \mathcal{T} \rangle$. Sus reglas de formación y eliminación, plantea \cite{barthe-coquand}, se definen como sigue:
     
@@ -699,10 +699,15 @@ Los tipos sigma serán utiles para probar propiedades del lenguaje en la prácti
   Por tanto, la clase de equivalencia de un elemento $a \in A$ se denota $[a]$, donde $[a] = \{ x \in A \mid a \sim x \}$. El conjunto de clases de equivalencia de $A$ viene denotada como $A/R$, que se lee \textit{el cociente de A por R}. De forma intuitiva, un tipo cociente $A/R$ es un tipo donde su igualdad ha sido redefinida por una relación de equivalencia $\sim$.
 \end{definition}
 
-\indent Es necesario mencionar la utilidad practica de los cocientes y, dejar claro que no son un concepto puramente matemático y realmente pueden ser de utilidad en el desarrollo de programas y el poder razonar sobre los mismos. Tómese como ejemplo el caso de los naturales representados como un par $(a, b)$, donde con su diferencia $a - b$ permite identificar que muchos de ellos pueden representarse como un mismo entero, donde, $(3, 1), (4, 2) y (5, 3)$ representaria el numero $2$ y ser, de alguna forma, indistiguibles para el programa. La condicion que los agrupa, $a + b = b + c$ es en este caso, la relación de equivalencia, formar el cociente dada esta relación es lo que nos permite que colapsen estos elementos en un solo valor, $[t]$, conocido como \textit{representante}, que es indiscernible por el sistema de tipos.
+\indent Es necesario mencionar la utilidad practica de los cocientes y, dejar claro que no son un concepto puramente matemático y realmente pueden ser de utilidad en el desarrollo de programas y que a parte de ello permiten razonar sobre las propiedades y relaciones de los términos en el mismo. Tómese como ejemplo el caso de los naturales representados como un par $(a, b)$, donde con su diferencia $a - b$ permite identificar que muchos de ellos pueden representarse como un mismo entero, donde, $(3, 1), (4, 2) y (5, 3)$ representaría el numero $2$ y ser, de alguna forma, indistiguibles para el programa. La condición que los agrupa, $a + b = b + c$ es en este caso la relación de equivalencia, y formar el cociente dada esta relación es lo que nos permite que colapsen estos elementos en un solo valor, $[t]$, conocido como \textit{representante}, y como consecuencia los elementos que agrupa resultan indiscernibles para el sistema de tipos.
  \newline 
  \newline 
-\indent Los multiconjuntos o $Set$ siguen el mismo patrón. Recuérdese estas como listas en las que el orden y la repetición de los elementos que la conforman carecen de importancia alguna. Partimos, pues, del tipo de las listas y cocientamos por la relación que identifica dos de ellas cuando una es permutación de la otra. Así $[1, 2, 2]$ y $[2, 1, 2]$ se vuelven el mismo objeto dentro del cociente.
+ \indent Los multiconjuntos o $Set$ siguen el mismo patrón. Recuérdese estas como listas en las que el orden y la repetición de los elementos que la conforman carecen de importancia alguna. Partimos, pues, del tipo de las listas y cocientamos por la relación que identifica dos de ellas cuando una es permutación de la otra. Por ejemplo, el siguiente programa presenta dos listas $l_1$ y $l_2$, donde una es permutación de la otra. Para el programa ambos son términos completamente distintos
+\begin{align}
+& l1 = [1, 2, 2] \notag \\
+& l2 = [2, 1, 2] \notag \\
+\end{align}
+ Así $[1, 2, 2]$ y $[2, 1, 2]$ se vuelven el mismo objeto dentro del cociente.
 \newline 
 \newline 
 \indent En definitiva, desde el lado de la programación, disponer de cocientes amplía el repertorio de tipos de datos algebraicos y facilita razonar sobre tipos dependientes, nociones de igualdad y sobre la semántica de programas concurrentes, como sugieren \cite{nuoli} y \cite{hoffman}.
@@ -899,20 +904,16 @@ fmod LAMBDA-SYNTAX is
   subsort Var < Term .
 
   op var : String -> Var [ctor] .
-  op lam : Var Term -> Term [ctor] .
-  op app : Term Term -> Term [ctor] .
+  op λ_:_._ : Var Term Term -> Term [ctor prec 40] .
+  op _·_ : Term Term -> Term [ctor prec 15 gather (E e)] .
 endfm
 \end{lstlisting}
 
-Aquí $\mathsf{Var}$ es subsort de $\mathsf{Term}$, lo que captura sintácticamente el hecho de que toda variable es un término. Tanto la aplicación como la lambda abstracción, son constructores que, proporcionando los argumentos que exige su signatura será posible producir un sort. Aún así, Maude posee capacidades de expresividad más avanzadas, pues es posible sacar provecho de los operadores mixfix, permitiéndonos redefinir, por ejemplo, la aplicación como sigue:
-
-\begin{lstlisting}
-  op _@_: Term Term -> Term [ctor] .
-\end{lstlisting}
-El underscore es un placeholder para los argumentos de la expresión. Esto último, son operadores mixfix que nos permitirán posteriormente definir la sintaxis y gramatica operacional que el núcleo del lenguaje manejará. Luego, la $\beta$-reducción puede expresarse después como una regla de reescritura en un módulo de sistema que extienda al anterior. Para evitar la captura de variables se necesitaría una operación auxiliar de sustitución, definida por ecuaciones, que renombre las variables ligadas con variables frescas cuando sea necesario. Sin embargo, omitirémos esta funcionalidad por propósitos prácticos a lo largo de esta tesis para implementar el lenguaje dependientemente tipado y, posteriormente, su extensión con tipos cociente.
+Aquí $\mathsf{Var}$ es subsort de $\mathsf{Term}$, lo que captura sintácticamente el hecho de que toda variable es un término. Tanto la aplicación como la lambda abstracción, son constructores que, proporcionando los argumentos que exige su signatura será posible producir un sort. Nótese los argumentos que acompañan a $ctor$ en los casos de lambda abstracción y aplicación; \textit{gather (E e)}, nos permite definir qué tipo de precedencia admitir en los constructores que preceden a la signatura del sort. Concretamente, el argumento izquierdo admite precedencia igual a la del propio operador $E$, y el derecho exige que sea estrictamente menor, $e$, en este caso, es lo que permite que $f \cdot g \cdot a$ parsee de manera correcta $f \cdot g(a)$, y luego $f(g(a))$. 
+El símbolo de guión bajo es un espacio reservado para los argumentos de la expresión. Esto último, son operadores mixfix que nos permitirán posteriormente definir la sintaxis y gramática operacional que el núcleo del lenguaje manejará. Luego, la $\beta$-reducción puede expresarse después como una regla de reescritura en un módulo de sistema que extienda al anterior. Para evitar la captura de variables se necesitaría una operación auxiliar de sustitución, definida por ecuaciones, que renombre las variables ligadas con variables frescas cuando sea necesario. Sin embargo, omitirémos esta funcionalidad por propósitos prácticos a lo largo de esta tesis para implementar el lenguaje dependientemente tipado y, posteriormente, su extensión con tipos cociente.
 \newline
 \newline
-La fuerza de esta aproximación se aprecia mejor con un ejemplo menos trivial. Los términos de un sistema de tipos a la Church incluyen, junto a las variables y aplicaciones, anotaciones de tipo en cada uno de sus binders, y las reglas de tipado se expresan en forma de juicios: $\Gamma \vdash M : A$. En Maude, basta con introducir un sort para los contextos, otro para los juicios de tipado, y reglas de reescritura que codifiquen cada regla de inferencia.
+Los términos de un sistema de tipos a la Church incluyen, junto a las variables y aplicaciones, anotaciones de tipo en cada uno de sus binders, y las reglas de tipado se expresan en forma de juicios: $\Gamma \vdash M : A$. En Maude, basta con introducir un sort para los contextos, otro para los juicios de tipado, y reglas de reescritura que codifiquen cada regla de inferencia.
 
 Tomando como ejemplo el contexto, el mismo puede definirse como un mapeo de variables a tipos, y tipos a tipos de variable $\mathsf{x \to \tau}$, $\mathsf{Nat \to \mathcal{U}}$. El contexto por tanto, almacena información sobre los tipos bien formados en nuestro programa. De no existir un tipo o término para un tipo en $\Gamma$, decimos que es un término o tipo malformado.
 \begin{align}
@@ -945,7 +946,7 @@ Que puede leerse como: \textit{si en el contexto $\Gamma$ el t\'ermino $A$ es un
 fmod LAMBDA-SYNTAX is
   ...
   op infer : Ctx Term -> [Term] .
-  ceq infer(G, Sigma(V, A, B)) = Type
+  ceq infer(G, Sigma(V : A, B)) = Type
     if Type := norm(infer(G, A))
     /\ Type := norm(infer(G ; V : A, B)) .
 endfm
@@ -959,19 +960,19 @@ La ejecución de este prototipo se convierte en la reducción del término a su 
 \indent En definitiva, Maude provee una forma sumamente natural de implementar reglas de inferencia y la semántica de un lenguaje de manera ecuacional y visual los pasos en los que se computa cada expresión que se suministre en pasos de reducción.
 
 \chapter{Un lenguaje dependientemente tipado en Maude}\label{ch:lang}
-El lenguaje que se propone en el presente trabajo, parte de un subconjunto del lambda cálculo simplemente tipado, según lo descrito por \citet{loh2010} en su publicación sobre un lambda cálculo dependientemente tipado, donde nuestra implementación, pese a que difiere ligeramente de la misma, definirá las bases para el prototipo de lenguaje que se estará formalizando. Asimismo, se ha elegido Maude como lenguaje base, por su simpleza para formalizar reglas de inferencia, como se ha podido demostrar. La sintáxis abstracta para términos y tipos, se define como sigue.
+El lenguaje que se propone en el presente trabajo, parte de un subconjunto del lambda cálculo simplemente tipado, según lo descrito por \citet{loh2010} en su publicación sobre un lambda cálculo dependientemente tipado, donde nuestra implementación, pese a que difiere ligeramente de la misma, definirá las bases para el prototipo de lenguaje que se estará formalizando. Asimismo, se ha elegido Maude como lenguaje base, por su simpleza para formalizar reglas de inferencia, como se ha podido demostrar.
 
 \section{Decisiones de dise\~no y alcance}\label{sec:alcance}
 El prototipo que se describe en este capítulo y en \cref{ch:quot} se restringe en ciertos puntos respecto de la teoría presentada en \cref{ch:prelim}. Se enuncian aquí de forma conjunta, indicando en cada caso el motivo de la decisión y la consecuencia que estas puedan traer en el resultado final.
 
 \subsection{Sustitución que evita capturas.}
-La operación \texttt{subst} implementada adopta el enfoque $naive$, es decir, se reemplazan las variables respectivamente sin verificar que la variable a reemplazar esté ligada por un cuantificador. Adicional a ello, los términos que se manipulan en los casos de estudio son cerrados, por lo que la captura no se produce. También, la sustitución no renombra las variables ligadas con variables frescas. Extenderla a términos abiertos requeriría una operación auxiliar de renombrado con variables frescas que, por simpleza del prototipo, no se implementará.
+La operación \texttt{subst} implementada adopta el enfoque $naive$, es decir, se reemplazan las variables respectivamente sin verificar que la variable a reemplazar esté ligada por un cuantificador. La razón de esto, es que los términos que se manipulan en los casos de estudio son cerrados, por lo que la captura no se produce. También, la sustitución no renombra las variables ligadas con variables frescas. Extenderla a términos abiertos requeriría una operación auxiliar de renombrado con variables frescas que, por simpleza del prototipo, no se implementará.
 
 \subsection{Anotación explícita de términos.}
 La gramática de \cref{sec:sintaxis} contempla el constructor de anotación $e :: \rho$, pero el prototipo no lo incorpora como nodo independiente. La anotación es explícita y cada ecuación de Maude especifica el tipo que se espera de un término en concreto.
 
 \subsection{Universo único.}
-ARREGLAR A distinción de lo propuesto por \cite{nuoli} y nuestra teoría, en su trabajo propone que toda relación $\sim$ habite en $Prop$, esto es, por la teoría de tipos de Martin Lof, en donde los cocientes se asumen como consecuencia de la teoría de tipos extensiones y además existe una distinción entre $Type$ y $Prop$. Nuestro sistema de tipos se limita a habitar en un solo universo $\star$ que, a su vez, habita en un $Sort$ de Maude. Esta decisión no compromete en su totalidad las reglas de formación, introducción, eliminación y cómputo.
+A diferencia de lo propuesto por \cite{nuoli}, cuyo trabajo se sitúa en la teoría de tipos de Martin-Löf, donde los cocientes se incorporan como una extensión de la teoría y se distingue entre los universos $Type$ y $Prop$, nuestro sistema se limita a un único universo $\star$, que a su vez habita en un $Sort$ de Maude. En su formulación, toda relación $\sim$ habita en $Prop$, el universo de las proposiciones; en la nuestra, al no existir tal distinción, $\sim$ habita en $\star$. Esta decisión simplifica las reglas de formación, introducción, eliminación y cómputo, y sus consecuencias sobre el tratamiento de la relación se discuten en la regla de formación del cociente.
 
 \subsection{Regla de cómputo del cociente.}
 No se declara una ecuaci\'on independiente para \emph{Q-Comp}: su contenido operacional se
@@ -988,7 +989,7 @@ e, \rho, k := \quad & \alpha & \tag{1}\\
   \mid \quad & e \; e' \tag{6}&
 \end{align}
 
-Nótese, como anteriormente se ha cubierto, los términos y los tipos comparten el mismo nivel semántico y no existe distinción entre ambos, por tanto, pudiese un término ocurrir en un tipo. Con respecto a $(2)$, por motivos prácticos, nuestra implementación no manejará un nodo de anotación explícita, por lo que, en Maude, será totalmente seguro omitirlo. El algebra inicial del que parte el prototipo del lenguaje, se compone del siguiente árbol de sintáxis abstracta:
+Nótese, como anteriormente se ha cubierto, los términos y los tipos comparten el mismo nivel semántico y no existe distinción entre ambos, por tanto, pudiese un término ocurrir en un tipo. El algebra inicial del que parte el prototipo del lenguaje, se compone del siguiente árbol de sintáxis abstracta:
 \begin{lstlisting}
 fmod LAMBDA-QTT is
   ...
@@ -1031,7 +1032,6 @@ La regla es trivial para $\lambda$ y $\Sigma$ que describirémos posteriormente.
 \newline
 \indent A diferencia del enfoque empleado por \cite{stehr}, el cálculo de sustituciones no es explícito, y cada regla es expresada de manera ecuacional. Dado que los términos del prototipo son cerrados y no hay variable que pueda ser capturada por un binder, una aproximación \textit{naive} es suficiente para los casos de uso. Luego, la implementación en Maude define las reglas de cómputo para la sustitución en el cálculo dependientemente tipado, se define una regla por cada constructor del cálculo, definiendo la condición de igualdad o desigualdad sobre los nombres de las variables, expresadas en las ecuaciones:
 
-ARREGLAR no aparece simbolo lambda, especificar el nombre de la operacion de substitucion correcta
 \begin{lstlisting}
 fmod LAMBDA-QTT is
   ...
@@ -1060,10 +1060,10 @@ Se define, a continuación, la semántica operacional \textit{big step} del proc
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}l@{}}
   $\infer[\text{Var}]
-  {\mathrm{var}(x) \Downarrow \mathrm{var}(x)}
+  {X \Downarrow X}
   {}$
   &
-  \verb|eq norm(var(N)) = var(N) .|
+  \verb|eq norm(X) = X .|
 \end{tabular}
 \end{center}
 
@@ -1077,159 +1077,158 @@ Se define, a continuación, la semántica operacional \textit{big step} del proc
 \end{tabular}
 \end{center}
 
-
-
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}m{0.5\textwidth}@{}}
   $\infer[\Pi]
-  {\text{Pi(V, A, B)}}
+  {\mathrm{Pi}(X : A,\, B) \Downarrow \mathrm{Pi}(X : A',\, B')}
   {A \Downarrow A' \quad B \Downarrow B'}$
   &
-    \verb|eq norm(Pi(V, A, B)) = Pi(V, norm(A), norm(B)) .|
+    \verb|eq norm(Pi(X : A, B)) = Pi(X : norm(A), norm(B)) .|
 \end{tabular}
 \end{center}
-
 
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
   $\infer[\lambda]
-  {\text{lam(V, A, T) $\Downarrow$ lam(V, A', T')}}
+  {\lambda X : A.\, T \Downarrow \lambda X : A'.\, T'}
   {A \Downarrow A' \quad T \Downarrow T'}$
   &
-    \texttt{eq norm(lam(V, A, T)) = lam(V, norm(A), norm(T)).}
+    \texttt{eq norm($\lambda$ X : A . T) = $\lambda$ X : norm(A) . norm(T) .}
 \end{tabular}
 \end{center}
 
 \begin{gather*}
-\end{gather*}
-\begin{gather*}
-  \infer[App]
-  {\text{normApp(V, $T_1$, $T_2$)}}
+  \infer[\text{App}]
+  {T_1 \cdot T_2 \Downarrow \mathrm{normApp}(T_1', T_2')}
   {T_1 \Downarrow T_1' \quad T_2 \Downarrow T_2'}
   \quad
   \infer[\beta]
-  {\mathrm{normApp}(\mathrm{lam}(V, A, T), S) \Downarrow T'}
-  {\mathrm{subst}(T, V, S) \Downarrow T'}
+  {\mathrm{normApp}(\lambda X : A.\, T,\, S) \Downarrow T'}
+  {T[X := S] \Downarrow T'}
 \end{gather*}
 
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
-  $\infer[App-otherwise]
-  {\text{normApp($T_1$, $T_2$) \Downarrow app($T_1$, $T_2$)}}
+  $\infer[\text{App-otherwise}]
+  {\mathrm{normApp}(T_1, T_2) \Downarrow T_1 \cdot T_2}
   {}$
   &
-    \texttt{eq norm(app(T1, T2)) = normApp(norm(T1), norm(T2)).}
+    \verb|eq normApp(T1, T2) = (T1 · T2) [owise] .|
 \end{tabular}
 \end{center}
 
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}l@{}}
-  $\infer[Nat]
-  {\text{Nat} \Downarrow \text{Nat}}
+  $\infer[\text{Nat}]
+  {\mathrm{Nat} \Downarrow \mathrm{Nat}}
   {}$
   &
-    \verb|eq norm(Nat) = Nat.|
+    \verb|eq norm(Nat) = Nat .|
 \end{tabular}
 \end{center}
 
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}l@{}}
-  $\infer[zero]
-  {\text{zero} \Downarrow \text{zero}}
+  $\infer[\text{zero}]
+  {\mathrm{zero} \Downarrow \mathrm{zero}}
   {}$
   &
-    \verb|eq norm(zero) = zero.|
+    \verb|eq norm(zero) = zero .|
 \end{tabular}
 \end{center}
+
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}l@{}}
-  $\infer[suc]
-  {\text{suc(T) $\Downarrow$ suc(T')}}
+  $\infer[\text{suc}]
+  {\mathrm{suc}(T) \Downarrow \mathrm{suc}(T')}
   {T \Downarrow T'}$
   &
-    \verb|eq norm(suc(T)) = suc(norm(T)).|
+    \verb|eq norm(suc(T)) = suc(norm(T)) .|
 \end{tabular}
 \end{center}
 
 \begin{gather*}
-  \infer[\text{natrec-zero}]
-  {\mathrm{natrec}(A, T_1, T_2, \mathrm{zero}) \Downarrow T'}
-  {T_1 \Downarrow T'}
-  \\[1em]
-  \infer[\text{natrec-suc}]
-  {\mathrm{natrec}(A, T_1, T_2, \mathrm{suc}(T)) \Downarrow T'}
-  {\mathrm{app}(\mathrm{app}(T_2, T), \mathrm{natrec}(A, T_1, T_2, T)) \Downarrow T'}
-  \\[1em]
-  \infer[\text{natrec-otherwise}]
-  {\mathrm{natrec}(A, T_1, T_2, T) \Downarrow \mathrm{natrec}(A', T_1', T_2', T')}
+  \infer[\text{natrec}]
+  {\mathrm{natrec}(A, T_1, T_2, T) \Downarrow \mathrm{normNr}(A', T_1', T_2', T')}
   {A \Downarrow A' \quad T_1 \Downarrow T_1' \quad T_2 \Downarrow T_2' \quad T \Downarrow T'}
+  \\[1em]
+  \infer[\text{normNr-zero}]
+  {\mathrm{normNr}(A, T_1, T_2, \mathrm{zero}) \Downarrow T_1}
+  {}
+  \\[1em]
+  \infer[\text{normNr-suc}]
+  {\mathrm{normNr}(A, T_1, T_2, \mathrm{suc}(T)) \Downarrow V}
+  {(T_2 \cdot T) \cdot \mathrm{normNr}(A, T_1, T_2, T) \Downarrow V}
+  \\[1em]
+  \infer[\text{normNr-otherwise}]
+  {\mathrm{normNr}(A, T_1, T_2, T) \Downarrow \mathrm{natrec}(A, T_1, T_2, T)}
+  {}
 \end{gather*}
-
 
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
   $\infer[\Sigma]
-  {\text{Sigma(V, A, B) $\Downarrow$ Sigma(V, A', B')}}
-  {A$\Downarrow$A' $\quad$ B $\Downarrow$ B'}$
+  {\mathrm{Sigma}(X, A, B) \Downarrow \mathrm{Sigma}(X, A', B')}
+  {A \Downarrow A' \quad B \Downarrow B'}$
   &
-    \texttt{eq norm(Sigma(V, A, B)) = Sigma(V, norm(A), norm(B)).}
-\end{tabular}
-\end{center}
-
-
-\begin{center}
-\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
-  $\infer[Pair]
-  {\mathm{pair}(T_1, T_2, A) \Downarrow \mathrm{pair}(T_1', T_2', A')}
-  {$T_1$ $\Downarrow$ $T_1'$ $\quad$ $T_2$ $\Downarrow$ $T_2'$ $\quad$ $A$ $\Downarrow$ A'}$
-  &
-    \texttt{eq norm(pair(T1, T2, A)) = pair(norm(T1), norm(T2), norm(A)).}
+    \verb|eq norm(Sigma(X, A, B)) = Sigma(X, norm(A), norm(B)) .|
 \end{tabular}
 \end{center}
 
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
-  $\infer[fst]
-  {\text{fst(pair($T_1$, $T_2$, A)) $\Downarrow$ $T_1'$}}
-  {$T_1$ $\Downarrow$ $T_1'$}$
+  $\infer[\text{Pair}]
+  {\mathrm{pair}(T_1, T_2, A) \Downarrow \mathrm{pair}(T_1', T_2', A')}
+  {T_1 \Downarrow T_1' \quad T_2 \Downarrow T_2' \quad A \Downarrow A'}$
   &
-    \texttt{eq norm(fst(pair(T1, T2, A))) = norm(T1).}
+    \verb|eq norm(pair(T1, T2, A)) = pair(norm(T1), norm(T2), norm(A)) .|
 \end{tabular}
 \end{center}
 
+\begin{gather*}
+  \infer[\text{fst}]
+  {\mathrm{fst}(T) \Downarrow \mathrm{normFst}(T')}
+  {T \Downarrow T'}
+  \quad
+  \infer[\text{normFst}]
+  {\mathrm{normFst}(\mathrm{pair}(T_1, T_2, A)) \Downarrow T_1}
+  {}
+  \quad
+  \infer[\text{normFst-otherwise}]
+  {\mathrm{normFst}(T) \Downarrow \mathrm{fst}(T)}
+  {}
+\end{gather*}
+
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
-  $\infer[fst-otherwise]
-  {\text{fst($T_1$) $\Downarrow$ fst($T_1'$)}}
-  {$T_1$ $\Downarrow$ $T_1'$}$
   &
-    \texttt{eq norm(fst(T)) = fst(norm(T)) [owise].}
+    \verb|eq norm(fst(T)) = normFst(norm(T)) .|
 \end{tabular}
 \end{center}
 
+\begin{gather*}
+  \infer[\text{snd}]
+  {\mathrm{snd}(T) \Downarrow \mathrm{normSnd}(T')}
+  {T \Downarrow T'}
+  \quad
+  \infer[\text{normSnd}]
+  {\mathrm{normSnd}(\mathrm{pair}(T_1, T_2, A)) \Downarrow T_2}
+  {}
+  \quad
+  \infer[\text{normSnd-otherwise}]
+  {\mathrm{normSnd}(T) \Downarrow \mathrm{snd}(T)}
+  {}
+\end{gather*}
+
 \begin{center}
 \begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
-  $\infer[snd]
-  {\text{snd(pair($T_1$, $T_2$, A)) $\Downarrow$ $T_2'$}}
-  {$T_2$ $\Downarrow$ $T_2'$}$
   &
-    \texttt{eq norm(fst(pair(T1, T2, A))) = norm(T2).}
-\end{tabular}
-\end{center}
-
-
-\begin{center}
-\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
-  $\infer[snd-otherwise]
-  {\text{snd($T$) $\Downarrow$ snd($T'$)}}
-  {$T$ $\Downarrow$ $T'$}$
-  &
-    \texttt{eq norm(snd(T)) = snd(norm(T)) [owise].}
+    \verb|eq norm(snd(T)) = normSnd(norm(T)) .|
 \end{tabular}
 \end{center}
 
 \section{Verificación de tipos}
-La verficación de tipos que se implementa es bidireccional; se proponen las ecuaciones $check$ ($\downarrow$) e $infer$ ($\uparrow$) para acertar que un término es de un tipo o respectivamente, sintetizar su tipo dado un contexto $\Gamma$ cuando no hay suficiente información para acertar su estructura en un principio. Para propósitos prácticos, cada término en el lenguaje que se formaliza tiene una adscripción, es decir, está anotado con su signatura o el tipo en el que habita, y cualquier término no tipado será rechazado por el typechecker.
+La verficación de tipos que se implementa es bidireccional; se proponen las ecuaciones $check$ ($\downarrow$) e $infer$ ($\uparrow$) para acertar que un término es de un tipo o respectivamente, sintetizar su tipo dado un contexto $\Gamma$ cuando no hay suficiente información para acertar su estructura en un principio. Para propósitos prácticos, cada término en el lenguaje que se formaliza tiene una anotación, es decir, está anotado con su signatura o el tipo en el que habita, y cualquier término no tipado será rechazado por el typechecker.
 \begin{align}
   & \quad \texttt{op check : Ctx Term Term -> [Bool] .} \\
   & \quad \texttt{op infer : Ctx Term -> [Term] .} \\
