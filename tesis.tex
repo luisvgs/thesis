@@ -143,7 +143,7 @@ En el presente apartado describimos con detenimiento la propiedad de confluencia
 La confluencia, conocida también como teorema de Church-Rosser, es una propiedad de los sistemas de reescritura que caracteriza cuándo dos términos, derivados de un término inicial, por reducción en uno o más pasos, convergen a un mismo resultado. Su relevancia radica en que el resultado del cómputo queda determinado con independencia del orden en que se ejecuten los pasos de reducción \citep{barendregt1984}.
 
 \begin{theorem}[Church-Rosser]
-  Sea $M$ un término del $\lambda$-cálculo. Si $M\to_\beta^{\ast}N_1$ y $M\to_\beta^{\ast}N_2$, entonces existe un término $N_3$ tal que $N_1\to_\beta^{\ast}N_3$ y $N_2\to_\beta^{\ast}N_3$ \citep[p.~62]{barendregt1984}.
+  Sea $M$ un término del $\lambda$-cálculo. Si $M\to_\beta^{\ast}N_1$ y $M\to_\beta^{\ast}N_2$, entonces existe un término $N_3$ tal que $N_1\to_\beta^{\ast}N_3$ y $N_2\to_\beta^{\ast}N_3$ \citep[p.~23]{barendregt1984}.
 \end{theorem}
 \medskip
 
@@ -193,7 +193,7 @@ N_1 \arrow[dr, twoheadrightarrow, dashed, "\ast"'] & & N_2 \arrow[dl, twoheadrig
   en un único paso.
 \end{example}
 
-De aquí emerge un problema que tendrá mención a lo largo del trabajo: la terminación. La terminación determina si el cómputo de un término concluye o no. En el $\lambda$-cálculo, una secuencia de reducciones puede no detenerse, entrando en un ciclo infinito de pasos que impide alcanzar forma normal alguna, como ilustra el siguiente ejemplo.
+De aquí emerge el problema de la terminación. Esta determina si el cómputo de un término concluye o no. En el $\lambda$-cálculo, una secuencia de reducciones puede no detenerse, entrando en un ciclo infinito de pasos que impide alcanzar forma normal alguna, como ilustra el siguiente ejemplo.
 
 \begin{example}
   El ejemplo canónico de término sin forma normal es el combinador $\Omega \equiv
@@ -265,13 +265,10 @@ es decir, $R$ es miembro de sí mismo exactamente cuando no lo es.
 \indent Para evitarlas, Russell propuso organizar los objetos en una jerarquía estratificada. En el nivel más bajo están los individuos; en el siguiente, los predicados (o clases) de individuos; después los predicados de predicados, y así sucesivamente. Esta distinción es la que la teoría de tipos internaliza: a cada objeto se le asigna un tipo, y una función proposicional solo puede aplicarse a argumentos del tipo inmediatamente inferior. Bajo esta restricción, la fórmula $x \in x$ ni siquiera llega a estar bien  y es rechazada, ya que la pertenencia exige que su argumento sea de un tipo menor que el del conjunto. El conjunto $R$ no puede construirse, y la paradoja desaparece por construcción. De este modo, conjuntos grandes y pequeños residen en niveles distintos de la teoría.
 \newline
 \newline
-\indent La formulación original de Russell, desarrollada junto a Whitehead en \textit{Principia Mathematica}, era la teoría ramificada de tipos, que sumaba a la estratificación por tipos una segunda por órdenes para neutralizar también las paradojas semánticas, al precio de requerir el discutido axioma de reducibilidad. Ramsey observó más tarde que las paradojas estrictamente lógicas o conjuntistas quedan resueltas ya con la jerarquía simple de tipos, sin necesidad de los órdenes ni del axioma de reducibilidad. Es esta teoría simple de tipos la que, años después, Church retomaría como base de su lambda cálculo tipado, y la que enlaza directamente con el objeto de este trabajo.
+\indent En términos más generales, los tipos son ubicuos en computación, y numerosos lenguajes tienen su propio sistema de tipos, unos mas avanzados que otros y, otros más simples. Tan simples que, la manipulación de tipos es casi perceptible o inexitstente. Lenguajes con esta capacidad de omitir tipos son conocidos como lenguajes dinámicamente tipados, donde en casos, es completamente opcional tipar expresiones y en caso contrario, el compilador hace lo mejor que puede para inferir un tipo adecuado para una expresión. Haskell por ejemplo, es un lenguaje de alto nivel, ampliamente utilizado por grupos de investigación y académicos, su sistema de tipos esta inicialmente basado en el cálculo lambda simplemente tipado, también llamado \textit{System F}, que abordaremos en capítulos posteriores a este. Sin embargo, hoy en día su sistema de tipos ha madurado lo suficiente como para dejar de considerarle un lenguaje con un sistema de tipos simple. C++ es un claro ejemplo de un sistema de tipos, quizá, mucho más complejo, pero sumamente rico, que facilita posteriormente, una distincion semántica y rechaza programas que son imposibles de evaluar correctamente. El lenguaje en el que estarémos trabajando en el presente trabajo, Maude, es de alto nivel pero fuertemente tipado. Aunque precisamente no utiliza tipos internamente, sino Sorts, la manipulación de términos y el enunciar si un término es de tipo (o sort) $A$ es, en principio, lo mismo.  OCaml en principio, fue de los lenguajes que llego a explorar más a fondo la teoria de tipos y la expresividad de los mismos como funcionalidades del lenguaje, siendo de los primeros en implementar tipos polimórficos, es decir, tipos que pueden tomar la forma de otros tipos. Finalmente, un sistema de tipos permite al lenguaje alcanzar capacidades de expresividad bastante amplias y, a su vez, evitar que programas erronoes se ejecuten.
 \newline
 \newline
-\indent En términos más generales, los tipos son ubicuos en computación, y numerosos lenguajes tienen su propio sistema de tipos, unos mas avanzados que otros y, otros más simples. Tan simples que, la manipulación de tipos es casi perceptible o inexitstente. Lenguajes con esta capacidad de omitir tipos son conocidos como lenguajes dinámicamente tipados, donde en casos, es completamente opcional tipar expresiones y en caso contrario, el compilador hace lo mejor que puede para inferir un tipo adecuado para una expresión. Haskell por ejemplo, es un lenguaje de alto nivel, ampliamente utilizado por grupos de investigación y académicos, su sistema de tipos esta inicialmente basado en el cálculo lambda simplemente tipado, también llamado \textit{System F}, que abordaremos en capítulos posteriores a este. Sin embargo, hoy en día su sistema de tipos ha madurado lo suficiente como para dejar de considerarle un lenguaje con un sistema de tipos simple. C++ es un claro ejemplo de un sistema de tipos, quizá, mucho más complejo, pero sumamente rico, que facilita posteriormente, una distincion semántica y rechaza programas que son imposibles de evaluar correctamente. El lenguaje en el que estarémos trabajando en el presente trabajo, Maude, es de alto nivel pero fuertemente tipado. Aunque precisamente no utiliza tipos internamente, si no Sorts, la manipulación de términos y el enunciar si un término es de tipo (o sort) $A$ es, en principio, lo mismo.  OCaml en principio, fue de los lenguajes que llego a explorar más a fondo la teoria de tipos y la expresividad de los mismos como funcionalidades del lenguaje, siendo de los primeros en implementar tipos polimórficos, es decir, tipos que pueden tomar la forma de otros tipos. Finalmente, un sistema de tipos permite al lenguaje alcanzar capacidades de expresividad bastante amplias y, a su vez, evitar que programas erronoes se ejecuten.
-\newline
-\newline
-\indent Dentro de los problemas que intenta resolver la teoria de tipos, no se encuentra solo encontrar un tipo para un término concreto, sino también, determinar (si lo hay) un término para un tipo y si un término esta bien tipado (o es un tipo legal) dentro de un contexto \citep{geuvers2014}. Listamos pues, algunos de los problemas que se abordan en la teoria de tipos:
+\indent Dentro de los problemas que intenta resolver la teoria de tipos, no se encuentra solo encontrar un tipo para un término concreto, sino también, determinar (si lo hay) un término para un tipo y si un término está bien tipado (o es un tipo legal) dentro de un contexto \citep{geuvers2014}. Listamos pues, algunos de los problemas que se abordan en la teoria de tipos:
 \newline
 \newline
 1) Tipabilidad: este problema formula la pregunta: ¿existe un tipo bien tipado para el término en concreto en el contexto?
@@ -280,7 +277,7 @@ es decir, $R$ es miembro de sí mismo exactamente cuando no lo es.
   \Gamma \vdash a : ?
 \]
 
-No siempre existe un tipo bien definido para un término. Las derivaciones o juicios de tipado sirven justamente para determinar logicamente cual tipo es el adecuado o, correctamente, inferir el tipo del término. No encontrar dicho tipo, por supuesto, ocasionaría un error de tipado.
+No siempre existe un tipo bien definido para un término. Las derivaciones o juicios de tipado sirven justamente para determinar logicamente cuál tipo es el adecuado o, correctamente, inferir el tipo del término. No encontrar dicho tipo, por supuesto, ocasionaría un error de tipado.
 \newline
 \newline
 2) Type-checking: determina si el tipo de un término en un contexto $\Gamma$ cualquiera, es correcto o bien tipado.
@@ -292,7 +289,7 @@ No siempre existe un tipo bien definido para un término. Las derivaciones o jui
 Sea $\Gamma = \{b : B, U : *\}$, si $A$ no es un tipo bien formado en $\Gamma$, el sistema de tipos lo rechaza. Esto es claro, pues, no hay una regla que permita derivar que $a : A$ esta bien formado en $\Gamma$.
 \newline
 \newline
-3) Habitabilidad: el problema de la habilitabilidad (también llamado term finding), formula la pregunta: ¿existe un término, dado un tipo bien definido y un contexto concreto?
+3) Habitabilidad: el problema de la habilitabilidad, también llamado \textit{term finding}, formula la pregunta: ¿existe un término, dado un tipo bien definido y un contexto concreto?
 
 \[
   \Gamma \overset{?}{\vdash} ? : A
@@ -357,7 +354,7 @@ Las reglas que le siguen, hacen alusión a la extensión de contextos y variable
 }
 \end{align}
 
-Donde la regla asume que no hay otra variable $x$ en $\Gamma$, en otras palabras, que $x$ es una variable fresca.
+Así, dado el juicio resultante donde se cumple que $x : A$ en $\Gamma$, primero ha debido de ser cierto que $x : A$ es un término bien tipado en el contexto $ctx$ y, anterior a ello, que $\Gamma$ es un contexto bien definido y $A$ habita $Type$ en el mismo. Nótese que la regla asume que no hay otra variable $x$ en $\Gamma$, en otras palabras, que $x$ es una variable fresca. 
 
 Adicionalmente, independientemente del sistema de tipos que se describa, las mismas reglas estructurales se adoptan, como bien describe \citealp{hoffman2009}.
 
@@ -439,7 +436,7 @@ $\lambda\mathrm{P}\omega = \lambda\mathrm{C}$ & $(\star,\star)$ & $(\square,\sta
 \end{align}
 \end{example}
 
-$\lambda2$ es conocido en la literatura como \textit{System F}. Es el lambda cálculo de segundo orden, o polimórfico. Fue descubierto por Girard y Reynolds en 1972 en el cual se introduce el cuantificador universal en el cálculo y poder cuantificar sobre tipos. A parte de ello, a partir de aquí algunas implementaciones extienden el sistema introduciendo kinds en la teoría predicativa del lenguaje. Un gran número de lenguajes de programación funcional, como Haskell, están inspirados en este sistema. Además, en $\lambda2$ se presenta la noción de variables de tipos, con las cuales es posible cuantificar sobre un rango de tipos, permitiendo así, la suficiente expresividad al lambda cálculo para definir, por instancia, la función identidad polimórfica.
+$\lambda2$ es conocido en la literatura como \textit{System F}. Es el lambda cálculo de segundo orden, o polimórfico. Fue descubierto por Girard y Reynolds en 1972 en el cual se introduce el cuantificador universal en el cálculo y poder cuantificar sobre tipos. A parte de ello, a partir de aquí algunas implementaciones extienden el sistema introduciendo kinds en la teoría impredicativa del lenguaje. Un gran número de lenguajes de programación funcional, como Haskell, están inspirados en este sistema. Además, en $\lambda2$ se presenta la noción de variables de tipos, con las cuales es posible cuantificar sobre un rango de tipos, permitiendo así, la suficiente expresividad al lambda cálculo para definir, por instancia, la función identidad polimórfica.
 
 \begin{example}
 \begin{align*}
@@ -488,14 +485,14 @@ $\lambda P$ representa los tipos que dependen de términos. Los tipos dependient
 Combinando todos los vértices obtenémos $\lambda C$ o \textit{Calculus of Constructions} donde el lambda cálculo alcanza un nivel expresivo bastante avanzado y los sistemas del cubo cohabitan en uno solo. Lenguajes como Coq y Agda, están basados en $\lambda C$. Este es un sistema de tipos puro bajo el paradigma de proposiciones como tipos, con tipos dependientes, jerarquias de universos de tipos y un tipo Prop que distingue de $\star$.
 
 \subsection{Tipado à la Curry y à la Church}
-En el lenguaje que se formaliza en el presente trabajo, cada variable lleva consigo su tipo. Pese a que garantiza decibilidad en cada expresión que se construya, esta decisión no es arbitraria. Describe \cite{reynolds2000} que existen dos formas en las que es posible entender qué significa que una expresión tenga un tipo. En la semántica intrínseca solo los términos, a los que Reynols se refiere como frases, guardan un sentido si satisfacen un juicio de tipado y, por otro lado, una expresion  carece de sentido si no satisface ningun juicio, pero de satisfacer varios, poseerá tantos significados como juicios.
+En el lenguaje que se formaliza en el presente trabajo, cada variable lleva consigo su tipo. Pese a que garantiza decibilidad en cada expresión que se construya, esta decisión no es arbitraria. Describe \cite{reynolds2000} que existen dos formas en las que es posible entender qué significa que una expresión tenga un tipo. En la semántica intrínseca solo los términos, a los que Reynolds se refiere como frases, guardan un sentido si satisfacen un juicio de tipado y, por otro lado, una expresion carece de sentido si no satisface ningun juicio, pero de satisfacer varios, poseerá tantos significados como juicios.
 
-El tipado à la Church, que es la forma que adoptarémos, deja en evidencia de forma explícita el tipo al que pertenece una variable ligada, por otro lado, el tipado à la Curry omite las anotaciones y el chequeo para determinar su tipo es delegado a otro proceso de búsqueda o inferencia. La ventaja que se manifiesta en el tipado à la Church es que la verificación del tipo en Maude viene dada por pattern matching y, de manera ecuacional, restringimos que cada término bien formado admita un único tipo o pertenezca a un tipo en concreto.
+El tipado \textit{à la Church}, que es la forma que adoptarémos, deja en evidencia de forma explícita el tipo al que pertenece una variable ligada, por otro lado, el tipado à la Curry omite las anotaciones y el chequeo para determinar su tipo es delegado a otro proceso de búsqueda o inferencia. La ventaja que se manifiesta en el tipado à la Church es que la verificación del tipo en Maude viene dada por pattern matching y, de manera ecuacional, restringimos que cada término bien formado admita un único tipo o pertenezca a un tipo en concreto.
 
 Considérese como ejemplo la expresión $\lambda x : int . x $ su significado intrínseco es la función identidad sobre los enteros. La identidad sobre los booleanos, por otro lado, que se denota como $\lambda x : bool . x$ es una función distinta y, por tanto, un término distinto. Es decir, el tipo determina el significado del término. Por el contrario $\lambda x . x$, su significado extrínseco es la función identidad sobre el universo de valores que pudiesen aparecer en un cómputo, por tanto, los tipos $bool \to bool$, $int \to int$ se le atribuyen de forma externa, como predicados que dicho significado satisface.
 
 
-\subsection{Lambda Cálculo Simplemente Tipado}
+\subsection{Lambda cálculo simplemente tipado}
 Añadir tipos al lambda cálculo resuelve el problema de la terminación que en \cref{sec:confluencia} estudiamos, permitiendo la creación y evaluación de términos en el cálculo mucho más restrictivo, esto es, anotando cada término con un tipo previamente definido que nos brindará un poco más de información sobre el dominio o tipo de valor que esperamos retornar. Este sistema es también denotado como $\lambda\to$ y en definitiva, tiene como objeto evitar anomalías que permitan la construcción de programas no terminantes o no lógicamente plausibles \citep{geuvers2014}.
 
 La forma canónica de implementar tipos en $\lambda$ es, en principio, definir un conjunto infinito de variables $\mathbb{V} = \{\alpha, \beta, \gamma\}$ y un conjunto $\mathbb{T}$ de tipos: $\tau, \tau \to \tau$. Los miembros de este conjunto estan definidos como:
@@ -516,7 +513,7 @@ La gramática para el lambda calculo simplemente tipado, se extiende, como se mu
 
   \begin{enumerate}
     \item Aplicación: para cubrir el caso donde $M \cdot N$, es menester conocer la signatura de $M$. Sea $M$ y $N$ términos en $\Lambda$, donde $M$ es de tipo $\sigma  \to \tau$ y $N$ de tipo $\sigma$, es claro observar que $N$ posee el mismo tipo que el del dominio de $M$ por tanto, es acertado confirmar que el tipo de la aplicación es de tipo $M \cdot N : \tau $.
-    \item abstracción: cuando $\lambda x : \tau . M$ donde $M : \gamma$, podemos acertar que es una abstraccion con codominio en $\gamma$ y dominio en $\tau$.
+    \item abstracción: cuando $\lambda x : \tau . M$ donde $M : \gamma$, podemos confirmar que es una abstraccion con codominio en $\gamma$ y dominio en $\tau$.
           \end{enumerate}
 
     \section{Tipos dependientes}
@@ -534,7 +531,7 @@ La gramática para el lambda calculo simplemente tipado, se extiende, como se mu
 
     \begin{enumerate}
             \item Se utiliza la misma convención para extraer el conjunto de variables libres en un pseudo-término $FV(M)$. Adicional a ello, se escribirá $A \to B$ para todo tipo de función en el que $x$ no aparezca libre en $B$. Y se usará $\Pi x: A . B(x)$, en caso contrario.
-            \item Los sistemas de tipos puros, describen un $\lambda$ cálculo a la Church, es decir, las abstracciones lambda llevan consigo el dominio  de las variables ligadas y, como consecuencia de ello, la computabilidad en un sistema de tipos puro es decidible.
+            \item Los sistemas de tipos puros, describen un $\lambda$ cálculo \textit{à la Church}, es decir, las abstracciones lambda llevan consigo el dominio  de las variables ligadas y, como consecuencia de ello, la computabilidad en un sistema de tipos puro es decidible.
             \item Los sistemas de tipos puros proveen los cimientos de los tipos dependientes, de hecho, es en el constructor del tipo $\Pi$ donde se evidencia, por primera vez, la dependiencia en esta teoría, capturando la noción del producto cartesiano generalizado.
     \end{enumerate}
 
@@ -615,13 +612,13 @@ Finalmente, la regla de cómputo es la $\beta$-reducción, que describe cómo in
   eq 0 + N = N .
   eq s(N) + M = s(N + M) .
 \end{lstlisting}
-En este tipo de igualdad el lenguaje no puede descirnir de dos términos, pues son exactamente iguales por definición. Por ejemplo, es posible acertar que \textit{0 + N} y \textit{N} son definicionalmente iguales dada la definición inductiva de la suma que en Maude, podemos proponer que \textit{0 + N} reduce a \textit{N} en un  solo paso, por tanto, es posible usar \textit{0 + N} y \textit{N}  de forma intercambiable a lo largo del programa.
+En este tipo de igualdad el lenguaje no puede descirnir de dos términos, pues son exactamente iguales por definición. Por ejemplo, es posible afirmar que \textit{0 + N} y \textit{N} son definicionalmente iguales dada la definición inductiva de la suma que en Maude, podemos proponer que \textit{0 + N} reduce a \textit{N} en un  solo paso, por tanto, es posible usar \textit{0 + N} y \textit{N}  de forma intercambiable a lo largo del programa.
 \newline
 \newline
-\indent Sin embargo, esto no siempre es el caso: en contraste \textit{n + 0}, que no es definicionalmente igual a \textit{n} porque \textit{no existe} una ecuación en nuestra definición de la suma que inmediatamente pueda acertar que, en este caso, \textit{0 + n} sí reduce a \textit{n}. Pero sí que podemos demostrar proposicionalmente, mediante una prueba más elaborada por inducción en $n$, de que esta igualdad sí se cumple y, finalmente, concluir que \textit{n + 0} $\equiv$ \textit{n}.
+\indent Sin embargo, esto no siempre es el caso: en contraste \textit{N + 0}, que no es definicionalmente igual a \textit{N} porque \textit{no existe} una ecuación en nuestra definición de la suma que inmediatamente pueda verificar que, en este caso, \textit{0 + N} sí reduce a \textit{N}. Pero sí que podemos demostrar proposicionalmente, mediante una prueba más elaborada por inducción en $N$, de que esta igualdad sí se cumple y, finalmente, concluir que \textit{N + 0} $\equiv$ \textit{N}.
 \end{definition}
 
-\begin{definition}[Igualdad proposicional] Decimos que dos términos son proposicionalmente iguales cuando existe un término $p$ que habita $\text{Id}_{A}(a, b)$, por tanto, existe una prueba tal que $p : Id(a, b)$ es un testigo de esta igualdad en $A$. A diferencia de la igualdad definicional, que se obtiene en términos de $\beta$-reducción y es una igualdad inherente del lenguaje, la igualdad proposicional debe ser demostrada explícitamente mediante la construcción de un testigo, esto es, un término $p$ que es prueba de dicha igualdad. El constructor canónico del tipo identidad es $\text{refl}_a : \text{Id}_A(a, a)$, que atestigua que todo término es trivialmente igual a sí mismo. Para demostrar igualdades no triviales, se requiere construir un término del tipo correspondiente, tipicamente, por inducción.
+\begin{definition}[Igualdad proposicional] Decimos que dos términos son proposicionalmente iguales cuando existe un término $p$ que habita $\text{Id}_{A}(a, b)$, es decir, existe una prueba $p : Id(a, b)$ como testigo de esta igualdad en $A$. A diferencia de la igualdad definicional, que se obtiene en términos de $\beta$-reducción y es una igualdad inherente del lenguaje, la igualdad proposicional debe ser demostrada explícitamente mediante la construcción de un testigo, esto es, un término $p$ que es prueba de dicha igualdad. El constructor canónico del tipo identidad es $\text{refl}_a : \text{Id}_A(a, a)$, que atestigua que todo término es trivialmente igual a sí mismo. Para demostrar igualdades no triviales, se requiere construir un término del tipo correspondiente, tipicamente, por inducción.
 \newline
 \begin{example}
 Considerando el mismo ejemplo de la suma sobre naturales, definida por recursion sobre el primer argumento, la proposicion $0 + n \equiv n$ es una igualdad definicional, pues el término $0 + n$
@@ -734,15 +731,15 @@ La evaluación \textit{TyEq(t1, t2) = false}, correctamente, dado que ambas form
 & l1 \sim l2 = \forall x . (x, count(x, l1)) = (x, count(x, l2)) \notag \\
 \end{align}
 
-Una vez definido el cociente, obtendríamos $[l1]$ y $[l2]$ que dentro del mismo \textit{List Nat / R} designan al mismo elemento $const(1, cons(1, cons(2, nil)))$:
+Una vez definido el cociente, obtendríamos $[l1]$ y $[l2]$ que dentro de \textit{List Nat / R} designan al mismo elemento $const(1, cons(1, cons(2, nil)))$:
 \begin{align}
   qax(l1, l2, [List Nat / R], p) : Id(List Nat / R, [l1], [l2]) .
 \end{align}
 
-$qax$ denota, por tanto, que pese a la diferencia sintáctica de ambos términos, hay una igualdad proposicional entre ellos y existe una prueba $p$ de ello, esto es, el tipo $Id$ de igualdad entre $[l1]$ y $[l2]$ dentro del cociente.
+$qax$ denota que pese a la diferencia sintáctica de ambos términos, hay una igualdad proposicional entre ellos y existe una prueba $p$ de ello, esto es, el tipo $Id$ de igualdad entre $[l1]$ y $[l2]$ dentro del cociente.
 \newline 
 \newline 
-\indent En definitiva, desde el lado de la programación, disponer de cocientes amplía el repertorio de tipos de datos algebraicos y facilita razonar sobre tipos dependientes, nociones de igualdad y sobre la semántica de programas concurrentes, como sugieren \cite{nuoli} y \cite{hoffman}.
+\indent En definitiva, desde el lado de la programación, disponer de cocientes amplía el repertorio de tipos de datos algebraicos y facilita razonar sobre tipos dependientes, nociones de igualdad y sobre la semántica de programas concurrentes, como sugieren \cite{nuoli} y \cite{hofmann1995}.
 \newline
 \newline
 Según lo estudiado por \cite{nuoli}, las reglas de formación de los tipos cociente se definen como sigue:
@@ -768,7 +765,7 @@ La regla $Q-Ax$, indica que dada una prueba $p$ de equivalencia de $a \sim b$, y
   {\Gamma \vdash a, b: A \, \, \Gamma \vdash p : a \sim b}
 \end{gather}
 
-Además de ello, se propone una regla de eliminación que permite aplicar una función $f$ en $A/\sim$, a la que nos referirémos como \textit{lifting}, si y solo si, la misma respeta la relación de equivalencia \citep{hoffman}.
+Además de ello, se propone una regla de eliminación que permite aplicar una función $f$ en $A/\sim$, a la que nos referirémos como \textit{lifting}, si y solo si, la misma respeta la relación de equivalencia \citep{hofmann1995}.
 \begin{gather}
   \dfrac{
     \begin{gathered}
@@ -808,7 +805,7 @@ En un principio, Martin Löf propuso dos variantes de la teoría de tipos que se
 \indent En la teoria de tipos intensional, como se mencionó, no existe la noción de tipos cociente dada su naturaleza de redefinir la igualdad definicional, sin embargo, los setoides se han implementado para capturar el mismo comportamiento.
 \newline
 \newline
-\indent Los setoides, sugieren \cite{nuoli} y \cite{hoffman} definidos como $(A, \sim)$, están compuestos por:
+\indent Los setoides, sugieren \cite{nuoli} y \cite{hofmann1995} definidos como $(A, \sim)$, están compuestos por:
   \begin{enumerate}
     \item Un tipo $A : Type$.
     \item Una relacion binaria $\sim : A \to A \to Prop$.
@@ -822,10 +819,10 @@ Sin embargo, en la práctica el modelo de los setoides no resulta del todo viabl
 correspondiente, y estas pruebas de coherencia han de construirse y transportarse manualmente en cada composición, lo que vuelve el desarrollo inmanejable y tedioso.
 \newline
 \newline
-\indent La alternativa que ha resultado viable, consiste en dejar intacta la sintaxis y buscar interpretaciones donde los tipos sean algo más que conjuntos. En esa línea aparecieron durante los años noventa varios modelos, entre ellos los modelos de setoides de Hofmann y de Altenkirch, y el modelo de grupoides de Hofmann y Streicher \citep{hoffman}. Leer los tipos como grupoides abrió una puerta que otros siguieron hacia estructuras de dimensión cada vez mayor, y en esa misma dirección se sitúa la teoría homotópica de tipos propuesta por Voevodsky, donde los tipos se piensan como espacios, los términos como puntos en dichos espacios y los tipos de identidad como caminos entre ellos. Bajo esa lectura la igualdad deja de ser un predicado auxiliar y pasa a ser un tipo con estructura propia en cada nivel. Estos últimos detalles, los abordaremos de forma superficial en la teoría de tipos de Martin Lof para complementar la teoría de tipos extensional y dar una breve introducción a las ideas de la teoría homotópica de tipos.
+\indent La alternativa que ha resultado viable, consiste en dejar intacta la sintaxis y buscar interpretaciones donde los tipos sean algo más que conjuntos. En esa línea aparecieron durante los años noventa varios modelos, entre ellos los modelos de setoides de Hofmann y de Altenkirch, y el modelo de grupoides de Hofmann y Streicher \citep{hofmann1995}. Leer los tipos como grupoides abrió una puerta que otros siguieron hacia estructuras de dimensión cada vez mayor, y en esa misma dirección se sitúa la teoría homotópica de tipos propuesta por Voevodsky, donde los tipos se piensan como espacios, los términos como puntos en dichos espacios y los tipos de identidad como caminos entre ellos. Bajo esa lectura la igualdad pasa a ser un tipo con estructura propia en cada nivel.
 
 \section{NuPRL y la teoría de tipos extensional}
-La noción de tipo cociente, tiene sus origenes en NuPRL, el cual es un sistema de verificación, desarollo de pruebas y formalización de matemáticas que extiende la teoría de tipos de Martin-Lof. Su sistema de tipos y como es tratada la igualdad difiere en gran parte de la mayoría de otras teorías empleadas por herramientas similares. En Coq, que está basado originalmente en el Cálculo de Construcciones, existe una sola relación de igualdad para todos los tipos, y no hay una noción de igualdad específica para un tipo en concreto \citep{nogin}.
+La noción de tipos cociente, tiene sus origenes en NuPRL, el cual es un sistema de verificación, desarollo de pruebas y formalización de matemáticas que extiende la teoría de tipos de Martin-Lof. Su sistema de tipos y como es tratada la igualdad difiere en gran parte de la mayoría de otras teorías empleadas por herramientas similares. En Coq, que está basado originalmente en el Cálculo de Construcciones, existe una sola relación de igualdad para todos los tipos, y no hay una noción de igualdad específica para un tipo en concreto \citep{nogin}.
 
 Por otro lado, en NuPRL cada tipo integra su propia relación de equivalencia, y su sistema de tipos garantiza que cualquier término bien tipado respete esa equivalencia. Asimismo, la formalización de tipos cociente en NuPRL se ve limitada porque no permite tomar plena ventaja de la extensionalidad, dado que los cocientes en su sistema asumen que el predicado de igualdad es, de hecho, intensional \citep{nuprl}.
 \section{Tipos cociente en Lean}
@@ -849,7 +846,7 @@ $Sound$ sostiene que si dos elementos son equivalentes dada una relación de equ
 
 En el sistema de tipos de Lean, es suficiente con demostrar que dos elementos del tipo subyacente están relacionados por la relación de equivalencia para demostrar que son iguales en el cociente. Sin embargo, esta es igualdad proposicional y no definicional, los representantes se vuelven equivalentes con el axioma $Quotient.sound$, pero siguen siendo diferentes por definición.  \citep{leanReference}.
 
-En definitiva, Lean provee un sistema de tipos sumamente sofisticado y robusto para formalizar y permitir el razonar sobre programas. El tipo $Quotient$ que implementa de forma interna (hay otra palabra para esto, pero no me acuerdo), constituido en principio por Setoids, provee una referencia de suma importancia para entender los fundamentos y antecedentes de este tipo de abstracción en lenguajes actuales.
+En definitiva, Lean provee un sistema de tipos sumamente sofisticado y robusto para formalizar y permitir el razonar sobre programas. El tipo $Quotient$ que implementa de forma interna, constituido en principio por Setoids, provee una referencia de suma importancia para entender los fundamentos y antecedentes de este tipo de abstracción en lenguajes actuales.
 
 \section{Formalización de sistemas de tipos en lógica de reescritura}
 
@@ -889,7 +886,7 @@ de modo que un programa Maude no es otra cosa que una teoría de reescritura, y 
 La primera diferencia notable respecto del $\lambda$-cálculo es que Maude obliga a tipar los términos desde la propia signatura. Cada constante y cada operación declara explícitamente los sorts de sus argumentos y de su resultado, donde por \textit{sort} entendemos lo que en la teoría de tipos llamaríamos un tipo base. La idea de organizar el universo de discurso en sorts proviene de la lógica many-sorted, una variante de la lógica de primer orden en la que el dominio se descompone en una colección indexada de subdominios y cada símbolo de función o predicado especifica el sort de cada uno de sus argumentos \citep{sep-logic-many-sorted}. Esta restricción sintáctica es muy poco distinguible, pero realmente nos permite determinar, por ejemplo, los términos aritméticos de los términos booleanos sin necesidad de codificarlos en un dominio común, y descarta en principio expresiones sin sentido como sumar un valor de verdad a un número natural.
 \newline
 \newline
-Maude va, sin embargo, un paso m\'as all\'a de la l\'ogica many-sorted habitual y adopta la l\'ogica ecuacional \textit{order-sorted}. En esta variante, los sorts forman un conjunto parcialmente ordenado $(S, \leq)$ en el que la relaci\'on $s \leq s'$ se interpreta como inclusi\'on de subsort. La idea es la siguiente: si declaramos que $\mathsf{NzNat} \leq \mathsf{Nat}$, todo n\'umero natural no nulo es tambi\'en, autom\'aticamente, un n\'umero natural, sin necesidad de coerciones expl\'icitas. Las operaciones pueden adem\'as estar sobrecargadas a lo largo de la jerarqu\'ia de subsorts, de manera que una misma suma puede declararse a la vez sobre $\mathsf{Nat}$ y sobre $\mathsf{NzNat}$, y el sistema seleccionar\'a en cada caso el sort m\'as preciso para el resultado.
+Maude va, sin embargo, un paso m\'as all\'a de la l\'ogica many-sorted habitual y adopta la l\'ogica ecuacional \textit{order-sorted}. En esta variante, los sorts forman un conjunto parcialmente ordenado $(S, \leq)$ en el que la relaci\'on $s \leq s'$ se interpreta como inclusi\'on de subsort. Por ejemplo, si declarásemos que $\mathsf{NzNat} \leq \mathsf{Nat}$, todo número natural no nulo es también, automáticamente, un número natural, sin necesidad de coerciones explícitas. Las operaciones pueden también estar sobrecargadas a lo largo de la jerarquía de subsorts, de manera que una misma suma puede declararse a su vez sobre $\mathsf{Nat}$ y sobre $\mathsf{NzNat}$, y el sistema seleccionaría en cada caso el sort más preciso para el resultado.
 
 \section{Módulos funcionales}
 La unidad básica de especificación en Maude es el módulo. Un módulo funcional, declarado entre las palabras clave \texttt{fmod} y \texttt{endfm}, agrupa una signatura de sorts y operaciones junto con un conjunto de ecuaciones que se interpretan como reglas de reescritura de izquierda a derecha. Es la unidad análoga, en este lenguaje, a lo que en programación funcional sería un módulo con sus tipos algebraicos y sus funciones puras. Considerese el siguiente ejemplo, en el que especificamos los números naturales en notación de Peano:
@@ -945,7 +942,7 @@ Aquí $\mathsf{Var}$ es subsort de $\mathsf{Term}$, lo que captura sintácticame
 El símbolo de guión bajo es un espacio reservado para los argumentos de la expresión. Esto último, son operadores mixfix que nos permitirán posteriormente definir la sintaxis y gramática operacional que el núcleo del lenguaje manejará. Luego, la $\beta$-reducción puede expresarse después como una regla de reescritura en un módulo de sistema que extienda al anterior. Para evitar la captura de variables se necesitaría una operación auxiliar de sustitución, definida por ecuaciones, que renombre las variables ligadas con variables frescas cuando sea necesario. Sin embargo, omitirémos esta funcionalidad por propósitos prácticos a lo largo de esta tesis para implementar el lenguaje dependientemente tipado y, posteriormente, su extensión con tipos cociente.
 \newline
 \newline
-Los términos de un sistema de tipos a la Church incluyen, junto a las variables y aplicaciones, anotaciones de tipo en cada uno de sus binders, y las reglas de tipado se expresan en forma de juicios: $\Gamma \vdash M : A$. En Maude, basta con introducir un sort para los contextos, otro para los juicios de tipado, y reglas de reescritura que codifiquen cada regla de inferencia.
+Los términos de un sistema de tipos \textit{à la Church} incluyen, junto a las variables y aplicaciones, anotaciones de tipo en cada uno de sus binders, y las reglas de tipado se expresan en forma de juicios: $\Gamma \vdash M : A$. En Maude, basta con introducir un sort para los contextos, otro para los juicios de tipado, y reglas de reescritura que codifiquen cada regla de inferencia.
 
 Tomando como ejemplo el contexto, el mismo puede definirse como un mapeo de variables a tipos, y tipos a tipos de variable $\mathsf{x \to \tau}$, $\mathsf{Nat \to \mathcal{U}}$. El contexto por tanto, almacena información sobre los tipos bien formados en nuestro programa. De no existir un tipo o término para un tipo en $\Gamma$, decimos que es un término o tipo malformado.
 \begin{align}
@@ -962,7 +959,7 @@ fmod LAMBDA-SYNTAX is
 endfm
 \end{lstlisting}
 
-Donde la notación \textit{\_;\_:\_}, es un constructor para un sort de tipo \textit{mt; var x : $\tau$}, que representa el contexto vacío, extendido con \textit{x : $\tau$}.
+Donde la notación \textit{\_;\_:\_}, es un constructor para un sort de tipo \textit{mt; var x : $\tau$}, que representa el contexto extendido con \textit{x : $\tau$}.
 \newline
 \newline
 \indent Tomando como ejemplo la regla de formación del tipo sigma
@@ -1260,7 +1257,7 @@ Se define, a continuación, la semántica operacional \textit{big step} del proc
 \end{center}
 
 \section{Verificación de tipos}
-La verficación de tipos que se implementa es bidireccional; se proponen las ecuaciones $check$ ($\downarrow$) e $infer$ ($\uparrow$) para acertar que un término es de un tipo o respectivamente, sintetizar su tipo dado un contexto $\Gamma$ cuando no hay suficiente información para acertar su estructura en un principio. Para propósitos prácticos, cada término en el lenguaje que se formaliza tiene una anotación, es decir, está anotado con su signatura o el tipo en el que habita, y cualquier término no tipado será rechazado por el typechecker.
+La verficación de tipos que se implementa es bidireccional; se proponen las ecuaciones $check$ ($\downarrow$) e $infer$ ($\uparrow$) para verificar que un término es de un tipo o respectivamente, sintetizar su tipo dado un contexto $\Gamma$ cuando no hay suficiente información para ratificar su estructura en un principio. Para propósitos prácticos, cada término en el lenguaje que se formaliza tiene una anotación, es decir, está anotado con su signatura o el tipo en el que habita, y cualquier término no tipado será rechazado por el typechecker.
 \begin{align}
   & \quad \texttt{op check : Ctx Term Term -> [Bool] .} \\
   & \quad \texttt{op infer : Ctx Term -> [Term] .} \\
@@ -1446,7 +1443,7 @@ un representante $t : A$, anotada con el tipo cociente al que pertenece; y $(9)$
   {\Gamma \vdash t : A}
 \end{gather}
 
-Según lo fijado por la regla, la ecuación en Maude aserta que el tipo de un representante $[t]$ en el cociente es de tipo $A/\sim$, si en principio es posible tener una derivación del hecho de que en el mismo contexto $\Gamma$, $t$ habita en $A$.
+Según lo fijado por la regla, la ecuación en Maude comprueba que el tipo de un representante $[t]$ en el cociente es de tipo $A/\sim$, si en principio es posible tener una derivación del hecho de que en el mismo contexto $\Gamma$, $t$ habita en $A$.
 \newline
 \begin{lstlisting}
   ceq infer(G, [T : A / R]) = A / R
