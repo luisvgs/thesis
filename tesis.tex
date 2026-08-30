@@ -1,6 +1,7 @@
 \input{include/Preambulo}
 \begin{document}
 \input{include/Portada}
+\input{include/Epigrafe}
 \pagenumbering{roman}
 
 \section*{Resumen}
@@ -338,6 +339,26 @@ Que puede leerse como: \textit{si, dado que en el contexto $\Gamma$, $A$ es un t
 &\Gamma \vdash M \equiv N : \sigma && M\; y\; N\; \text{son términos definicionalmente iguales, de tipo}\; \sigma,\;\text{en}\; \Gamma
 \end{align*}
 
+La primera regla, hace referencia a la formación de contextos. La misma simplemente dice que \textit{existe} un contexto, sin ningunas suposiciones previas:
+\begin{align}
+\infer{\vdash \Gamma ctx}{% 
+    & \deduce{}{}
+  }
+\end{align}
+
+Las reglas que le siguen, hacen alusión a la extensión de contextos y variables. Con ello, es posible construir el siguiente árbol de derivaciones, como sigue:
+\begin{align}
+\infer{\Gamma, x : A \vdash x : A}{
+  \infer{\Gamma, x : A\ \mathsf{ctxt}}{
+    \Gamma\ \mathsf{ctxt}
+    \qquad
+    \Gamma \vdash A : \mathsf{Type}
+  }
+}
+\end{align}
+
+Donde la regla asume que no hay otra variable $x$ en $\Gamma$, en otras palabras, que $x$ es una variable fresca.
+
 Adicionalmente, independientemente del sistema de tipos que se describa, las mismas reglas estructurales se adoptan, como bien describe \citealp{hoffman2009}.
 
 \begin{gather}
@@ -348,6 +369,7 @@ Adicionalmente, independientemente del sistema de tipos que se describa, las mis
   \infer[\text{Var}]{\Gamma \vdash x : \sigma}{\vdash \Gamma, x : \sigma}
 \end{gather}
 Sobre estos juicios, la igualdad definicional se comporta como una relación de equivalencia, esto es, es reflexiva, simétrica y transitiva, tanto para tipos como para términos, y es además una congruencia respecto de los constructores del lenguaje. A ella se añade la regla de conversión, que permite tratar un término de tipo $\sigma$ como un término de tipo $\tau$ siempre que $\sigma \equiv \tau$. No se detallan aquí el resto de reglas correspondientes, sin embargo, su formulación completa puede consultarse en \citealp{hoffman2009}. En el prototipo que se describe en el \cref{ch:lang}, esta igualdad se decide por normalización de ambos lados y comparación de sus formas normales, según se detalla en la ecuación \texttt{tyEq}, en lugar de axiomatizarse mediante tales reglas.
+
 
 \newline
 A lo largo de los años numerosos esfuerzos se han realizado para desarrollar distintas extensiones de la teoría de tipos y poder dar suficiente poder expresivo al lambda cálculo. Estos sistemas de tipos fueron explorados por H. Barendregt en el Cubo Lambda \citep{cube1991}, para investigar las diferentes dimensiones en las que puede extenderse el sistema formal. En su paper describe como cada dimensión del cubo representa una dependencia entre términos y tipos, y sus posibles combinaciones.
@@ -551,7 +573,43 @@ Donde $\textit{Vec}\,A\, n : \star$ habita en $\Box$.
 \newline
 \indent Dado que a los tipos pudiesen contener términos, una noción de igualdad definicional es necesaria en la teoría, por ejemplo, conviene considerar los términos $0 : \mathbb{N}$ y $0 + 0 : \mathbb{N}$ como definicionalmente iguales y, por tanto, no habría distinción entre \textit{Vec(0)} y \textit{Vec 0 + 0}. Si \textit{M : Vec(0)} y \textit{N: Vec 0 + 0}, nos lleva a un juicio de la forma $M = N : \sigma$ que se lee \textit{M y N son términos definicionalmente iguales en el tipo sigma}, y, además, que $\sigma = \tau : A$, que se lee \textit{sigma y tau son tipos definicionalmente iguales en A}.
 
-\begin{definition}[Igualdad definicional] Decimos que dos términos son definicionalmente iguales cuando reducen, luego de cero o más pasos de reducción, a un término en común \citep{mimram2020}. La igualdad a la que hacemos referencia en este caso, no es igualdad proposicional, denotada con $\equiv$, si no, a la igualdad que es inherente del lenguaje base $=$ que corresponde a la equivalencia de términos bajo $\beta$-reducción. 
+\indent Antes de detallar los constructores que conforman el lenguaje, conviene fijar el esquema con el que cada uno de ellos se presenta. Siguiendo a \citet{hoffman2009}, un tipo queda determinado por cuatro clases de reglas.
+\begin{itemize}
+  \item Reglas de formación, que especifican cómo formar el tipo.
+  \item Reglas de introducción, que especifican cómo formar términos del tipo.
+  \item Reglas de eliminación, que especifican cómo usar términos del tipo.
+  \item Reglas de cómputo, que especifican cómo las reglas de eliminación actúan sobre los términos introducidos.
+\end{itemize}
+
+Este mismo esquema se conserva en la extensión con tipos cociente del \cref{ch:quot}, donde a cada regla se le hace corresponder la ecuación de Maude que la realiza.
+
+\subsection{Tipo \Pi}
+\indent Con la intuición anterior, se presentan las reglas del tipo $\Pi$. La regla de formación recoge que $\Pi x : A.\, B$ es un tipo cuando $A$ lo es y $B$ lo es en el contexto extendido con $x : A$, de modo que $B$ puede depender de $x$:
+\begin{gather}
+  \infer[\text{$\Pi$-Form}]
+  {\Gamma \vdash \Pi x : A.\, B : \star}
+  {\Gamma \vdash A : \star & \Gamma, x : A \vdash B : \star}
+\end{gather}
+La introducción es la abstracción lambda, que habita el tipo $\Pi$ construyendo un término $b$ de tipo $B$ bajo la hipótesis $x : A$:
+\begin{gather}
+  \infer[\text{$\Pi$-Intro}]
+  {\Gamma \vdash \lambda x : A.\, b : \Pi x : A.\, B}
+  {\Gamma, x : A \vdash b : B}
+\end{gather}
+La eliminación es la aplicación. Al aplicar un término de tipo $\Pi x : A.\, B$ a un argumento $a : A$, el tipo del resultado es $B$ con $a$ sustituido por $x$, lo que refleja aquí la dependencia del codominio respecto al dominio:
+\begin{gather}
+  \infer[\text{$\Pi$-Elim}]
+  {\Gamma \vdash f\ a : B[x := a]}
+  {\Gamma \vdash f : \Pi x : A.\, B & \Gamma \vdash a : A}
+\end{gather}
+Finalmente, la regla de cómputo es la $\beta$-reducción, que describe cómo interactúan introducción y eliminación, donde aplicar una abstracción a un argumento reduce a la sustitución de dicho argumento en el cuerpo:
+\begin{gather}
+  \infer[\text{$\Pi$-Comp}]
+  {\Gamma \vdash (\lambda x : A.\, b)\ a \equiv b[x := a] : B[x := a]}
+  {\Gamma, x : A \vdash b : B & \Gamma \vdash a : A}
+\end{gather}
+
+\begin{definition}[Igualdad definicional] Decimos que dos términos son definicionalmente iguales cuando reducen, luego de cero o más pasos de reducción, a un término en común \citep{mimram2020}. La igualdad a la que hacemos referencia en este caso, no es igualdad proposicional, denotada con $=$, sino, a la igualdad que es inherente del lenguaje base $\equiv$ que corresponde a la equivalencia de términos bajo $\beta$-reducción. 
 \begin{lstlisting}
   op _+_ : Nat Nat -> Nat .
   eq 0 + N = N .
@@ -602,8 +660,8 @@ La existencia de esta prueba es lo que nos permite concluir que $n + 0 \equiv n$
     Dos términos que son definicionalmente iguales, también lo son proposicionalmente. Lo contrario no tiene por qué cumplirse.
 \end{corollary}
 
-\subsection{Tipos sigma}
-Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el próximo constructor o tipo al que dedicarémos un breve acercamiento, que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma. Representado en el lambda cálculo simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, más bien, asegurar la decibiliad del prototipo, este tipo estará acompañado de su anotación.
+\subsection{Tipo \Sigma}
+Los sistemas de tipos puros, en principio, no proveen constructores más allá del tipo $\Pi$, por tanto, el próximo constructor o tipo al que dedicarémos un breve acercamiento, que también formará parte de la teoria y lenguaje que se formalizará en un capitulo posterior, es el tipo sigma, denotado con $\Sigma$. Representado en el lambda cálculo simplemente tipado como $A \times B$, es el tipo de una tupla en el que el primer y segundo componente son de tipo $A$ y $B$ respecivamente, sin embargo, en los tipos dependientes, el segundo componente $B$ pudiese tener una ocurrencia $x$ de tipo $A$, luego, su tipo, tiene la signatura: $\Sigma x : A . B$, o bien $\langle M, N \rangle_{\Sigma x : A}$, donde $M$ habita en $A$ y $N$ en $B(N)$. Para facilitar o, más bien, asegurar la decibiliad del prototipo, este tipo estará acompañado de su anotación.
 
 El conjunto de pseudo-términos $\mathcal{T}$, se extiende, por tanto, con un nuevo miembro representando al tipo sigma:
 
@@ -632,8 +690,20 @@ El conjunto de pseudo-términos $\mathcal{T}$, se extiende, por tanto, con un nu
   {\Gamma \vdash M : \Sigma x : A . \,B}
 \end{gather}
 
+\indent Seguidamente se describen las reglas de cómputo, que fijan el comportamiento de las proyecciones sobre una tupla concreta. Al proyectar sobre $\langle M, N \rangle$, la primera componente reduce a $M$ y la segunda a $N$:
+\begin{gather}
+  \infer[\text{$\Sigma$-comp-fst}]
+  {\Gamma \vdash \mathrm{fst}\, \langle M, N \rangle_{\Sigma x : A.\, B} \equiv M : A}
+  {\Gamma \vdash M : A & \Gamma \vdash N : B[x := M]}
+  \\[2ex]
+  \infer[\text{$\Sigma$-comp-snd}]
+  {\Gamma \vdash \mathrm{snd}\, \langle M, N \rangle_{\Sigma x : A.\, B} \equiv N : B[x := M]}
+  {\Gamma \vdash M : A & \Gamma \vdash N : B[x := M]}
+\end{gather}
+Estas dos igualdades son las que, en el prototipo, realizan las funciones auxiliares $\mathrm{normFst}$ y $\mathrm{normSnd}$ al reducir la proyección sobre un par, según se detalla en el \cref{ch:lang}.
 
-Los tipos sigma serán utiles para probar propiedades del lenguaje en la práctica y, con suerte, comprobar que la formalización de la teoria de tipos estudiada en este trabajo cumple con su función.
+
+Los tipos sigma serán utiles para probar propiedades del lenguaje en la práctica y, posteriormente, comprobar que la formalización de la teoria de tipos estudiada en este trabajo cumple con su función.
     
     \section{Tipos cociente}
     Los cociente son un término ubicuo en matemáticas, sin embargo, desde la teoría de conjuntos están presentes y se extiende dicho concepto con naturalidad a la teoría de tipos. En los conjuntos, es posible definir el cociente de un conjunto $\mathbb{S}$ en clases de equivalencia, obteniendo el cociente del conjunto, donde cada elemento que lo conforma es considerado igual, o equivalente, dada una relacion de equivalencia $\sim$. Así mismo, es posible definir el cociente de un tipo, donde dada una relación de equivalencia, los elementos son iguales dentro del cociente pero, fuera de ellos, aún es posible distinguir uno de otro. Los tipo cociente nos permiten redefinir, entonces, la igualdad proposicional en un sistema de tipos.
@@ -653,12 +723,23 @@ Los tipos sigma serán utiles para probar propiedades del lenguaje en la prácti
 \indent Es necesario mencionar la utilidad práctica de los cocientes y, dejar claro que no son un concepto puramente matemático y realmente pueden ser de utilidad en el desarrollo de programas y que a parte de ello permiten razonar sobre las propiedades y relaciones de los términos en el mismo. Tómese como ejemplo el caso de los naturales representados como un par $(a, b)$, donde con su diferencia $a - b$ permite identificar que muchos de ellos pueden representarse como un mismo entero, donde, (3, 1), (4, 2) y (5, 3) representaría el numero $2$ y ser, de alguna forma, indistiguibles para el programa. La condición que los agrupa, $a + b = b + c$ es en este caso la relación de equivalencia, y formar el cociente dada esta relación es lo que nos permite que colapsen estos elementos en un solo valor, $[t]$, conocido como \textit{representante}, y como consecuencia los elementos que agrupa resultan indiscernibles para el sistema de tipos.
  \newline 
  \newline 
- \indent Los multiconjuntos o $Set$ siguen el mismo patrón. Recuérdese estos como listas en las que el orden y la repetición de los elementos que la conforman carecen de importancia alguna. Partimos, pues, del tipo de las listas y cocientamos por la relación que identifica dos de ellas cuando una es permutación de la otra. Por ejemplo, el siguiente programa presenta dos listas $l_1$ y $l_2$, donde una es permutación de la otra. Para el programa ambos son términos completamente distintos
+ \indent Los multiconjuntos o $Set$ siguen el mismo patrón. Recuérdese estos como listas en las que el orden y la repetición de los elementos que la conforman carecen de importancia alguna. Partimos, pues, del tipo de las listas y cocientamos por la relación que identifica dos de ellas cuando una es permutación de la otra. Por ejemplo, dadas dos listas $l_1$ y $l_2$, donde una es permutación de la otra y ambos términos son completamente distintos: 
 \begin{align}
-& l1 = [1, 2, 2] \notag \\
-& l2 = [2, 1, 2] \notag \\
+& l1 = cons(1, cons(2, cons(1, nil))) \notag \\
+& l2 = cons(2, cons(1, const(1, nil))) \notag \\
 \end{align}
- Así $[1, 2, 2]$ y $[2, 1, 2]$ se vuelven el mismo objeto dentro del cociente.
+
+La evaluación \textit{TyEq(t1, t2) = false}, correctamente, dado que ambas formas normales no coinciden. Sin embargo, de cocientar sobre el tipo lista de naturales \textit{List Nat / R} conseguiríamos relacionar ambas cuando una es permutación de la otra, como es el caso. Por tanto, la relación solo es cierta de cumplirse:
+\begin{align}
+& l1 \sim l2 = \forall x . (x, count(x, l1)) = (x, count(x, l2)) \notag \\
+\end{align}
+
+Una vez definido el cociente, obtendríamos $[l1]$ y $[l2]$ que dentro del mismo \textit{List Nat / R} designan al mismo elemento $const(1, cons(1, cons(2, nil)))$:
+\begin{align}
+  qax(l1, l2, [List Nat / R], p) : Id(List Nat / R, [l1], [l2]) .
+\end{align}
+
+$qax$ denota, por tanto, que pese a la diferencia sintáctica de ambos términos, hay una igualdad proposicional entre ellos y existe una prueba $p$ de ello, esto es, el tipo $Id$ de igualdad entre $[l1]$ y $[l2]$ dentro del cociente.
 \newline 
 \newline 
 \indent En definitiva, desde el lado de la programación, disponer de cocientes amplía el repertorio de tipos de datos algebraicos y facilita razonar sobre tipos dependientes, nociones de igualdad y sobre la semántica de programas concurrentes, como sugieren \cite{nuoli} y \cite{hoffman}.
