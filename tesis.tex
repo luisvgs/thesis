@@ -872,6 +872,31 @@ cmb (G,(X : A) |- X : A) : Derivable if
 La correspondencia entre las reglas de inferencia y la lógica de reescritura es mucho más clara en esta aproximación. La pertenencia es definida mediante $cmb$ que condiciona si un término pertenece, o no, al sort $Derivable$ y a partir de allí formar un juicio. Además, las sustituciones en el cálculo mencionado evitan la captura de variables implementando las operaciones \textit{shift} y \textit{lift} acorde a la representación de De Brujin, que puede ser consultada con más detalle en \cite{pierce2002}.
 Argumentan \cite{stehr}, también, las razones por las cuales esta especificación es mucho más natural que la de lenguajes de programación funcionales, y es que la semántica operacional de las ecuaciones del cálculo de sustituciones tratado en su trabajo puede visualizarse fácilmente como reglas de reescritura. En definitiva, el prototipo presentado por \cite{stehr} puede ser usado como lenguaje de programación y como asistente de pruebas, demostrando la eficacia de Maude para explorar familias de teorías de tipos avanzadas como lo son las variantes del cálculo de construcciones y razonar sobre los tipos dependientes.
 
+Junto con lo anterior, existe un precedente que relaciona la teoría de tipos con la reescritura directamente. \cite{blanqui} estudia el sistema formal \textit{Type System Modulo}, donde la relación de conversión es generada particularmente por una relación $\to_\mathcal{R}$. A partir de este marco, define los \textit{Reduction Type System}, en los que la conversión es inducida por una relación de reducción. Posteriormente en su investigación, examina el caso de los \textit{Algebraic Type Systems}, un clase particular de \textit{RTS} cuya relación de reducción está definida en términos de \textit{$\beta$-reducción} y reglas de reescritura. Sugiere Blanqui que la introducción de la reescritura adopta relevancia en un sistema de tipos dependiente, puesto que permite tipar términos que no pueden ser tratados únicamente mediante la convertibilidad propia del cálculo y, en consecuencia, amplía las proposiciones que pueden formalizarse. Formalmente, esta limitación se refleja en la regla de conversión:
+\begin{gather}
+  \infer[\text{Conv}]
+  {\Gamma \vdash t : T'}
+  {\Gamma \vdash t : T, & T \equiv_\beta T'}
+\end{gather}
+Donde se establece que, si dado un término $t : T$, donde $T$ es \textit{$\beta$-convertible} a $T'$, entonces es posible afirmar que $t: T'$. Nótese que la regla de conversión es aplicada en términos de igualdad definicional. Blanqui propone el ejemplo de dos listas indexadas por su longitud $list((n + n') + n'')$ y $list(n' + (n' + n''))$, donde se puede comprobar que ambas son definicionalmente iguales por asociatividad de la suma, aunque ambos términos no son \textit{$beta$-convertibles}, por tanto no es posible concluir que $list((n +  n') + n'')$ es inmediatamente reemplazable por $list(n + (n' + n''))$. Como solución a esta limitante, Blanqui incorpora una relación de reescritura $\to_\mathcal{R}$, generada por un conjunto de reglas arbitrarias $\mathcal{R}$ definidas por el usuario:
+\begin{gather}
+  \infer[\text{Conv}]
+  {\Gamma \vdash t : T'}
+  {
+    \Gamma \vdash t : T
+    &
+    T \leftrightarrow_{\beta\mathcal{R}}^{*} T'
+    &
+    \Gamma \vdash T' : \star
+  }
+\end{gather}
+
+De esta forma, igualdades que anteriormente debían tratarse como pruebas explícitas pueden incorporarse al mecanismo de conversión del sistema. Sin embargo, permitir reglas de reescritura arbitrarias dentro de la conversión introduce un inconveniente, y es que es necesario garantizar que la reducción no destruye las propiedades metateóricas necesarias para que el sistema de tipos sea utilizable, entre ellas, la consistencia y decibilidad de la verificación de tipos.
+
+Blanqui además señala que la reescritura permite modelar tipos cociente orientando las ecuaciones que caracterizan la relación de equivalencia como reglas de reescritura. De manera que $p(s(x)) = x$ y $s(p(x)) = x$ pueden replantearse como $p(s(x)) \to x$ y $s(p(x)) \to x$ respectivamente. Cuando el sistema resultante es confluente y fuertemente normalizante, cada clase de equivalencia admite una forma normal única, en este caso $x$, que actúa como representante canónico.
+
+En este marco, la principal contribución de Blanqui consiste en establecer condiciones generales que garantizan la normalización fuerte del \textit{Calculus of Constructions} extendido con reescritura a nivel de tipos. En particular, para el \textit{Calculus of Algebraic Constructions}, dichas condiciones aseguran que la reducción combinada $\to_{\beta} \cup \to_{\mathcal{R}}$ preserva el tipado y es fuertemente normalizante. Asimismo, Blanqui demuestra que este marco comprende un subsistema significativo del \textit{Calculus of Inductive Constructions} y a \textit{Natural Deduction Modulo}, incorporando reescritura de primer y orden superior dentro de la relación de conversión
+
 \chapter{Maude y la lógica de reescritura}\label{ch:maude}
 La reescritura de términos constituye, a la luz de los capítulos anteriores, una generalización natural de la $\beta$-reducción del $\lambda$-cálculo. Donde antes orientábamos un redex de la forma $(\lambda x.\, M)\, N$ hacia $M[x := N]$, ahora disponemos de un conjunto arbitrario de ecuaciones $l = r$, leídas como reglas $l \to r$, y las aplicamos a un término siempre que en él aparezca una instancia del lado izquierdo. El proceso de cómputo se reduce, entonces, a buscar redexes y a contraerlos, exactamente igual que antes, pero en un marco mucho más flexible que permite especificar tipos de datos, funciones y, como veremos, sistemas concurrentes enteros.
 \newline
@@ -923,7 +948,7 @@ Junto a los módulos funcionales, Maude provee módulos de sistema, declarados e
 La semántica operacional resultante combina ambos niveles. Ante un término, Maude normaliza primero con las ecuaciones y aplica después una regla al resultado. Para explorar el espacio de estados alcanzables desde un término inicial, Maude provee los comandos \texttt{rewrite}, que sigue una traza de reescrituras, y \texttt{search}, que explora todos los estados alcanzables en anchura buscando uno que satisfaga un patrón dado \citep{duran2019}. Sin embargo, dado que el lenguaje estará implementado dentro de un modulo funcional, \texttt{reduce} será de especial utilidad porque nos permitirá reducir las ecuaciones a su forma normal y, de este modo, cada expresión se evalúa en un único resultado final, que en Maude, se le denimonan como formas canónicas. Por definición, los resultados de las operaciones en esta álgebra son exactamente los que da el intérprete de Maude; y este es, en definitiva, el modelo computacional más preciso que se puede obtener \citep{clavel2007}.
 
 \section{Formalización de lenguajes y sistemas de tipos}
-Para hacer visible este traslado en el caso más elemental, consideremos un fragmento del lambda cálculo sin tipos. Especificamos los términos con tres constructores que reflejan directamente la definición inductiva propuesta en capítulos anteriores:
+Para hacer visible este traslado en el caso más elemental, considerémos un fragmento del lambda cálculo sin tipos. Especificamos los términos con tres constructores que reflejan directamente la definición inductiva propuesta en capítulos anteriores:
 
 \begin{lstlisting}
 fmod LAMBDA-SYNTAX is
@@ -991,19 +1016,19 @@ La ejecución de este prototipo se convierte en la reducción del término a su 
 \chapter{Un lenguaje dependientemente tipado en Maude}\label{ch:lang}
 El lenguaje que se propone en el presente trabajo, parte de un subconjunto del lambda cálculo simplemente tipado, según lo descrito por \citet{loh2010} en su publicación sobre un lambda cálculo dependientemente tipado, donde nuestra implementación, pese a que difiere ligeramente de la misma, definirá las bases para el prototipo de lenguaje que se estará formalizando. Asimismo, se ha elegido Maude como lenguaje base, por su simpleza para formalizar reglas de inferencia, como se ha podido demostrar.
 
-\section{Decisiones de dise\~no y alcance}\label{sec:alcance}
+\section{Decisiones de diseóo y alcance}\label{sec:alcance}
 El prototipo que se describe en este capítulo y en \cref{ch:quot} se restringe en ciertos puntos respecto de la teoría presentada en \cref{ch:prelim}. Se enuncian aquí de forma conjunta, indicando en cada caso el motivo de la decisión y la consecuencia que estas puedan traer en el resultado final.
 
-\subsection{Sustitución que evita capturas.}
+\subsection{Sustitución que evita capturas}
 La operación \texttt{subst} implementada adopta el enfoque $naive$, es decir, se reemplazan las variables respectivamente sin verificar que la variable a reemplazar esté ligada por un cuantificador. La razón de esto, es que los términos que se manipulan en los casos de estudio son cerrados, por lo que la captura no se produce. También, la sustitución no renombra las variables ligadas con variables frescas. Extenderla a términos abiertos requeriría una operación auxiliar de renombrado con variables frescas que, por simpleza del prototipo, no se implementará.
 
-\subsection{Anotación explícita de términos.}
+\subsection{Anotación explícita de términos}
 La gramática de \cref{sec:sintaxis} contempla el constructor de anotación $e :: \rho$, pero el prototipo no lo incorpora como nodo independiente. La anotación es explícita y cada ecuación de Maude especifica el tipo que se espera de un término en concreto.
 
-\subsection{Universo único.}
+\subsection{Universo único}
 A diferencia de lo propuesto por \cite{nuoli}, cuyo trabajo se sitúa en la teoría de tipos de Martin-Löf, donde los cocientes se incorporan como una extensión de la teoría y se distingue entre los universos $Type$ y $Prop$, nuestro sistema se limita a un único universo $\star$, que a su vez habita en un $Sort$ de Maude. En su formulación, toda relación $\sim$ habita en $Prop$, el universo de las proposiciones; en la nuestra, al no existir tal distinción, $\sim$ habita en $\star$. Esta decisión simplifica las reglas de formación, introducción, eliminación y cómputo, y sus consecuencias sobre el tratamiento de la relación se discuten en la regla de formación del cociente.
 
-\subsection{Regla de cómputo del cociente.}
+\subsection{Regla de cómputo del cociente}
 No se declara una ecuaci\'on independiente para \emph{Q-Comp}: su contenido operacional se
 realiza dentro de la normalizaci\'on de \texttt{qelim}, que contrae el eliminador cuando su
 tercer argumento es una clase can\'onica.
