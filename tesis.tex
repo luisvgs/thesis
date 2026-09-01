@@ -6,7 +6,7 @@
 
 \section*{Resumen}
 
-Este trabajo presenta el diseño e implementación de un lenguaje de programación con tipos dependientes, extendido con tipos cociente. Los tipos dependientes permiten expresar propiedades de los programas directamente en sus tipos, mientras que los tipos cociente permiten identificar elementos de un tipo que deberían considerarse iguales según una relacion de equivalencia dada, garantizando automáticamente que las funciones definidas sobre ellos sean coherentes con dicha relación. La formalización de tipos cociente sobre sistemas de tipos dependientes mendiante lenguajes basados en la reescritura, como Maude, ha recibido poca atención a lo largo de los años, y con el presente trabajo se pretende cubrir esta brecha. Adicional a ello, se pretende demostrar que Maude es totalmente factible para la formalización, exploración y estudio de la teoría de tipos bajo el lente de la reescritura de términos. El lenguaje se construye sobre un cálculo lambda dependientemente tipado, al que se añaden los tipos cociente como extensión principal. Aprovechando la lógica de reescritura ecuacional de Maude, las reglas de tipado del sistema pueden verse como una tripla $\mathcal{R} = (\Sigma, E, R)$ que se trasladan de forma directa a ecuaciones, y el cómputo sobre las clases del cociente se realiza por reducción de términos. El trabajo incluye la definición formal del sistema de tipos, su semántica operacional, justificación de cada decisión de diseño tomada, junto con su implementación completa en Maude.
+Este trabajo presenta el diseño e implementación de un prototipo de lenguaje de programación con tipos dependientes, extendido con tipos cociente. Los tipos dependientes permiten expresar propiedades de los programas directamente en sus tipos, mientras que los tipos cociente permiten identificar elementos de un tipo que deberían considerarse iguales según una relación de equivalencia dada, garantizando automáticamente que las funciones definidas sobre ellos sean coherentes con dicha relación. La formalización de tipos cociente sobre sistemas de tipos dependientes mendiante lenguajes basados en la reescritura, como Maude, ha recibido poca atención a lo largo de los años, y con el presente trabajo se pretende cubrir esta brecha. Adicional a ello, se pretende demostrar que Maude es totalmente factible para la formalización, exploración y estudio de la teoría de tipos bajo el lente de la reescritura de términos. Como contribuciones principales, se formaliza la sintaxis, semántica y un algoritmo de verificación de tipos bidireccional de manera ecuacional, tratando las reglas de tipado del sistema como una tripla $\mathcal{R} = (\Sigma, E, \mathcal{R})$. Asimismo, el cómputo sobre las clases del cociente se realiza por reducción de términos aplicando una regla de cómputo,que preserva la canonicidad del cálculo. El trabajo se valida con éxito mediante la formalización de los números enteros $\mathbb{Z}$ como pares de naturales cocientados y los multiconjuntos bajo relación de permutación, demostrando así, la consistencia del sistema ante elecciones de representantes equivalentes. El trabajo incluye la definición formal del sistema de tipos, su semántica operacional, justificación de cada decisión de diseño tomada, junto con su implementación completa en Maude.
 \tableofcontents
 \input{chapters/Introduction}
 
@@ -56,8 +56,7 @@ Por tanto, una expresión de la forma $(\lambda x.\, M)\, N$ puede ser reescrita
 
 \begin{example}
   La $\beta$-reducción puede encadenarse, reduciendo paso a paso hasta que no queden
-  más redexes. considérese el combinador $K \equiv \lambda x.\, \lambda y.\, x$ aplicado a
-  dos argumentos:
+  más redexes. considérese el combinador $K \equiv \lambda x.\, \lambda y.\, x$ aplicado a dos argumentos:
   \begin{align}
     (\lambda x.\, \lambda y.\, x)\, a\, b
       & \to_\beta (\lambda y.\, x)[x := a]\, b \notag \\
@@ -242,7 +241,7 @@ Esto puede interpretarse, desde el lente de teoría de tipos, como $3 + 1$ es un
 \bigcup_{i \in I} \{ (x, i) : x \in A_i \}
 \end{align}
 
-Esta operacion resulta en el tipo de dato algebraico $\tau_1 + \tau_2$, donde el valor concreto del tipo puede bien ser la proyeccion del lado izquiero o el derecho.
+Esta operacion resulta en el tipo de dato algebraico $\tau_1 + \tau_2$, donde el valor concreto del tipo puede bien ser la proyección del lado izquierdo o el derecho.
 \newline
 \newline
 \indent La noción de tipos se atribuye a Bertrand Russell, quien desarrolló la teoría de tipos en respuesta a las contradicciones que, a comienzos del siglo XX, aquejaban a los fundamentos de la matemática. El contexto es el del programa logicista y la teoría de conjuntos naciente. Hacia finales del siglo XIX, Georg Cantor había desarrollado la teoría de conjuntos como un marco general en el que toda la matemática podía, en principio, expresarse, y Gottlob Frege perseguía un objetivo todavía más ambicioso en sus \textit{Grundgesetze der Arithmetik}: reducir la aritmética a la lógica pura. Ambos proyectos descansaban, de forma más o menos explícita, sobre el principio de comprensión irrestricta, según el cual toda propiedad bien definida determina un conjunto, el de todos los objetos que la satisfacen \citep{sep-type-theory}.
@@ -517,7 +516,7 @@ La gramática para el lambda calculo simplemente tipado, se extiende, como se mu
           \end{enumerate}
 
     \section{Tipos dependientes}
-    Los tipos dependientes son, en principio, tipos que dependen de términos. El ejemplo canónico es el vector el cual su longitud depende de un valor $n$ de tipo $\mathbb{N}$. Puesto a que un tipo arbitrario puede aparecer dentro de un tipo, la igualdad entre tipos requiere determinar si dos programas producen (reducen a) el mismo resultado, por tanto, la igualdad empieza a no ser decidible. Los tipos dependientes conforman parte del trabajo de Per Martin-Löf y su teoría de tipos intuisionista \citep{martinlof75} que tiene como objeto extender la interpretación de proposiciones como tipos en la lógica de predicados, como estarémos estudiando en este capítulo. Antes de adentrarnos en la teoría de tipos dependientes, es necesario dedicar de forma breve una introducción a los sistemas de tipos puros, framework de donde parte esta formalización lógica. Un PTS es un framework para especificar y formalizar el lambda cálculo y extender su teoría. Fue propuesto inicialmente por Berardi y Terlow como una generalizacion del cubo lambda de \cite{cube1991}. A diferencia del lambda cálculo tradicional, un PTS dispone de pseudo-términos que heredan, en gran parte, sintáxis del $\lambda$ cálculo simplemente tipado que hasta ahora conocemos.
+    Los tipos dependientes son, en principio, tipos que dependen de términos. El ejemplo canónico es el vector el cual su longitud depende de un valor $n$ de tipo $\mathbb{N}$. Puesto a que un tipo arbitrario puede aparecer dentro de un tipo, la igualdad entre tipos requiere determinar si dos programas producen (reducen a) el mismo resultado, por tanto, la igualdad empieza a no ser decidible. Los tipos dependientes conforman parte del trabajo de Per Martin-Löf sobre la teoría de tipos intuicionista, que tiene como objeto en gran parte extender la interpretación de proposiciones como tipos en la lógica de predicados \citep{martinlof75}, como estarémos estudiando en este capítulo. Antes de adentrarnos en la teoría de tipos dependientes, es necesario dedicar de forma breve una introducción a los sistemas de tipos puros, framework de donde parte esta formalización lógica. Un PTS es un framework para especificar y formalizar el lambda cálculo y extender su teoría. Fue propuesto inicialmente por Berardi y Terlow como una generalizacion del cubo lambda de \cite{cube1991}. A diferencia del lambda cálculo tradicional, un PTS dispone de pseudo-términos que heredan, en gran parte, sintáxis del $\lambda$ cálculo simplemente tipado que hasta ahora conocemos.
     
 
     El conjunto de pseudo-términos, se define como sigue:
@@ -808,7 +807,7 @@ En un principio, Martin Löf propuso dos variantes de la teoría de tipos que se
 \indent Los setoides, sugieren \cite{nuoli} y \cite{hofmann1995} definidos como $(A, \sim)$, están compuestos por:
   \begin{enumerate}
     \item Un tipo $A : Type$.
-    \item Una relacion binaria $\sim : A \to A \to Prop$.
+    \item Una relación binaria $\sim : A \to A \to Prop$.
     \item Una prueba $p$ de que una función $f$ respeta la equivalencia (es decir, que es reflexiva, transitiva y simetrica).
   \end{enumerate}
 
@@ -872,7 +871,7 @@ cmb (G,(X : A) |- X : A) : Derivable if
 La correspondencia entre las reglas de inferencia y la lógica de reescritura es mucho más clara en esta aproximación. La pertenencia es definida mediante $cmb$ que condiciona si un término pertenece, o no, al sort $Derivable$ y a partir de allí formar un juicio. Además, las sustituciones en el cálculo mencionado evitan la captura de variables implementando las operaciones \textit{shift} y \textit{lift} acorde a la representación de De Brujin, que puede ser consultada con más detalle en \cite{pierce2002}.
 Argumentan \cite{stehr}, también, las razones por las cuales esta especificación es mucho más natural que la de lenguajes de programación funcionales, y es que la semántica operacional de las ecuaciones del cálculo de sustituciones tratado en su trabajo puede visualizarse fácilmente como reglas de reescritura. En definitiva, el prototipo presentado por \cite{stehr} puede ser usado como lenguaje de programación y como asistente de pruebas, demostrando la eficacia de Maude para explorar familias de teorías de tipos avanzadas como lo son las variantes del cálculo de construcciones y razonar sobre los tipos dependientes.
 
-Junto con lo anterior, existe un precedente que relaciona la teoría de tipos con la reescritura directamente. \cite{blanqui} estudia el sistema formal \textit{Type System Modulo}, donde la relación de conversión es generada particularmente por una relación $\to_\mathcal{R}$. A partir de este marco, define los \textit{Reduction Type System}, en los que la conversión es inducida por una relación de reducción. Posteriormente en su investigación, examina el caso de los \textit{Algebraic Type Systems}, un clase particular de \textit{RTS} cuya relación de reducción está definida en términos de \textit{$\beta$-reducción} y reglas de reescritura. Sugiere Blanqui que la introducción de la reescritura adopta relevancia en un sistema de tipos dependiente, puesto que permite tipar términos que no pueden ser tratados únicamente mediante la convertibilidad propia del cálculo y, en consecuencia, amplía las proposiciones que pueden formalizarse. Formalmente, esta limitación se refleja en la regla de conversión:
+Junto con lo anterior existe un precedente que relaciona la teoría de tipos con la reescritura directamente. Esta conexión radica en que \cite{blanqui} estudia el sistema formal \textit{Type System Modulo}, donde la relación de conversión es generada particularmente por una relación $\to_\mathcal{R}$. A partir de este marco, define los \textit{Reduction Type System}, en los que la conversión es inducida por una relación de reducción. Posteriormente en su investigación, examina el caso de los \textit{Algebraic Type Systems}, un clase particular de \textit{RTS} cuya relación de reducción está definida en términos de \textit{$\beta$-reducción} y reglas de reescritura. Sugiere Blanqui que la introducción de la reescritura adopta relevancia en un sistema de tipos dependiente, puesto que permite tipar términos que no pueden ser tratados únicamente mediante la convertibilidad propia del cálculo y, en consecuencia, amplía las proposiciones que pueden formalizarse. Formalmente, esta limitación se refleja en la regla de conversión:
 \begin{gather}
   \infer[\text{Conv}]
   {\Gamma \vdash t : T'}
@@ -896,6 +895,8 @@ De esta forma, igualdades que anteriormente debían tratarse como pruebas explí
 Blanqui además señala que la reescritura permite modelar tipos cociente orientando las ecuaciones que caracterizan la relación de equivalencia como reglas de reescritura. De manera que $p(s(x)) = x$ y $s(p(x)) = x$ pueden replantearse como $p(s(x)) \to x$ y $s(p(x)) \to x$ respectivamente. Cuando el sistema resultante es confluente y fuertemente normalizante, cada clase de equivalencia admite una forma normal única, en este caso $x$, que actúa como representante canónico.
 
 En este marco, la principal contribución de Blanqui consiste en establecer condiciones generales que garantizan la normalización fuerte del \textit{Calculus of Constructions} extendido con reescritura a nivel de tipos. En particular, para el \textit{Calculus of Algebraic Constructions}, dichas condiciones aseguran que la reducción combinada $\to_{\beta} \cup \to_{\mathcal{R}}$ preserva el tipado y es fuertemente normalizante. Asimismo, Blanqui demuestra que este marco comprende un subsistema significativo del \textit{Calculus of Inductive Constructions} y a \textit{Natural Deduction Modulo}, incorporando reescritura de primer y orden superior dentro de la relación de conversión
+
+La conexión entre este marco y el presente trabajo radica en que el prototipo desarrollado constituye una implementación práctica del $\lambda\Pi$-cálculo módulo reescritura \citep{blanqui}. Específicamente, la regla de computación del cociente se modela orientando la reducción del eliminador hacia el representante como una regla de reescritura de la forma $(f, A, [t]) \to_{\mathcal{R}} f(t)$. Al implementar esta reducción en el normalizador, la conversión de nuestro sistema se determina incorporando esta regla ecuacional durante la verificación bidireccional de tipos, garantizando de forma integrada la decidibilidad del chequeo de tipos y la preservación de los mismos, de acuerdo a los criterios sugeridos por \cite{blanqui2020}.
 
 \chapter{Maude y la lógica de reescritura}\label{ch:maude}
 La reescritura de términos constituye, a la luz de los capítulos anteriores, una generalización natural de la $\beta$-reducción del $\lambda$-cálculo. Donde antes orientábamos un redex de la forma $(\lambda x.\, M)\, N$ hacia $M[x := N]$, ahora disponemos de un conjunto arbitrario de ecuaciones $l = r$, leídas como reglas $l \to r$, y las aplicamos a un término siempre que en él aparezca una instancia del lado izquierdo. El proceso de cómputo se reduce, entonces, a buscar redexes y a contraerlos, exactamente igual que antes, pero en un marco mucho más flexible que permite especificar tipos de datos, funciones y, como veremos, sistemas concurrentes enteros.
@@ -942,13 +943,13 @@ El intérprete aplica las ecuaciones como reglas de reescritura hasta alcanzar l
 Para que un módulo funcional tenga buenas propiedades operacionales, las ecuaciones deben ser confluentes y operacionalmente terminantes, las mismas dos nociones que estudiábamos en el capítulo del $\lambda$-cálculo, ahora reformuladas en el contexto de un sistema de reescritura arbitrario. La terminación operacional garantiza que toda secuencia de reescritura concluye en un número finito de pasos, y la confluencia, que el resultado de la evaluación no depende del orden en que se contraen los redexes. Ambas propiedades, indecidibles en general, pueden chequearse automáticamente con las herramientas del \textit{Maude Formal Environment} \citep{duran2019}, entre las que destacan \texttt{MTT} para terminación y \texttt{ChC} para confluencia y suficiente completitud. Bajo estas condiciones, todo término se reduce a una forma normal única, lo que dota al lenguaje de una semántica determinista para sus módulos funcionales.
 
 \section{Módulos de sistema y reescritura no determinista}
-Junto a los módulos funcionales, Maude provee módulos de sistema, declarados entre \texttt{mod} y \texttt{endm}. Un módulo de sistema extiende a uno funcional con un conjunto adicional de reglas de reescritura $l \to r$ que modelan transiciones de un sistema, semánticamente distintas de las ecuaciones \citep{clavel2007}. Las ecuaciones describen \textit{cómo se calcula el estado de un término}, esto es, cómo se simplifica a su forma normal. Las reglas, en cambio, describen \textit{cómo evoluciona el sistema}, qué transiciones puede dar de un estado a otro. La diferencia es que las reglas no se asumen confluentes ni terminantes, sino que codifican el comportamiento intrínsecamente no determinista del sistema. Un mismo término puede reescribirse de maneras distintas y conducir a estados muy diferentes, y eso es justamente lo que se quiere capturar al describir, por ejemplo, las transiciones de un protocolo de comunicación, las jugadas de un juego, o los pasos de una máquina abstracta de evaluación para un lenguaje de programación.
+Junto a los módulos funcionales, Maude provee módulos de sistema, declarados entre \texttt{mod} y \texttt{endm}. Un módulo de sistema extiende a uno funcional con un conjunto adicional de reglas de reescritura $l \to r$ que modelan transiciones de un sistema, semánticamente distintas de las ecuaciones \citep{clavel2007}. Las ecuaciones describen \textit{cómo se calcula el estado de un término}, esto es, cómo se simplifica a su forma normal. Las reglas, en cambio, describen \textit{cómo evoluciona el sistema}, o bien, qué transiciones puede dar de un estado a otro. La diferencia es que las reglas no se asumen confluentes ni terminantes, sino que codifican el comportamiento intrínsecamente no determinista del sistema. Un mismo término puede reescribirse de maneras distintas y conducir a estados muy diferentes, y eso es justamente lo que se quiere capturar al describir, por ejemplo, las transiciones de un protocolo de comunicación, las jugadas de un juego, o los pasos de una máquina abstracta de evaluación para un lenguaje de programación.
 \newline
 \newline
 La semántica operacional resultante combina ambos niveles. Ante un término, Maude normaliza primero con las ecuaciones y aplica después una regla al resultado. Para explorar el espacio de estados alcanzables desde un término inicial, Maude provee los comandos \texttt{rewrite}, que sigue una traza de reescrituras, y \texttt{search}, que explora todos los estados alcanzables en anchura buscando uno que satisfaga un patrón dado \citep{duran2019}. Sin embargo, dado que el lenguaje estará implementado dentro de un modulo funcional, \texttt{reduce} será de especial utilidad porque nos permitirá reducir las ecuaciones a su forma normal y, de este modo, cada expresión se evalúa en un único resultado final, que en Maude, se le denimonan como formas canónicas. Por definición, los resultados de las operaciones en esta álgebra son exactamente los que da el intérprete de Maude; y este es, en definitiva, el modelo computacional más preciso que se puede obtener \citep{clavel2007}.
 
 \section{Formalización de lenguajes y sistemas de tipos}
-Para hacer visible este traslado en el caso más elemental, considerémos un fragmento del lambda cálculo sin tipos. Especificamos los términos con tres constructores que reflejan directamente la definición inductiva propuesta en capítulos anteriores:
+Para hacer visible este paradigma en el caso más elemental, considerémos un fragmento del lambda cálculo sin tipos. Especificamos los términos con tres constructores que reflejan directamente la definición inductiva propuesta en capítulos anteriores:
 
 \begin{lstlisting}
 fmod LAMBDA-SYNTAX is
@@ -1016,7 +1017,7 @@ La ejecución de este prototipo se convierte en la reducción del término a su 
 \chapter{Un lenguaje dependientemente tipado en Maude}\label{ch:lang}
 El lenguaje que se propone en el presente trabajo, parte de un subconjunto del lambda cálculo simplemente tipado, según lo descrito por \citet{loh2010} en su publicación sobre un lambda cálculo dependientemente tipado, donde nuestra implementación, pese a que difiere ligeramente de la misma, definirá las bases para el prototipo de lenguaje que se estará formalizando. Asimismo, se ha elegido Maude como lenguaje base, por su simpleza para formalizar reglas de inferencia, como se ha podido demostrar.
 
-\section{Decisiones de diseóo y alcance}\label{sec:alcance}
+\section{Decisiones de diseño y alcance}\label{sec:alcance}
 El prototipo que se describe en este capítulo y en \cref{ch:quot} se restringe en ciertos puntos respecto de la teoría presentada en \cref{ch:prelim}. Se enuncian aquí de forma conjunta, indicando en cada caso el motivo de la decisión y la consecuencia que estas puedan traer en el resultado final.
 
 \subsection{Sustitución que evita capturas}
@@ -1580,7 +1581,7 @@ esto es, la prueba de que $f$ respeta la relación. Maude verifica que el $Resp$
 \newline
 \indent Con las reglas de formación, introducción, eliminación y computación ya implementadas, el lenguaje dispone de tipos cociente en el sentido intensional de \cite{nuoli}. Los constructores $\mathrm{fst}$, $\mathrm{snd}$ y el tipo $\Sigma$ que se incorporaron en el capítulo anterior cobran ahora utilidad, pues permiten expresar los casos de uso característicos del cociente, como los enteros representados por pares de naturales o los multiconjuntos, ejemplos que se desarrollan en \cref{ch:casos}.
 
-\chapter{Casos de uso y validaci\'on}\label{ch:casos}
+\chapter{Casos de uso y validación}\label{ch:casos}
 
 \section{Los enteros como pares de naturales}
 La representación canónica de la aplicación de los cocientes viene dada por los enteros como pares de naturales $(\mathbb{N} \times \mathbb{N}) / \mathbb{R}$. Es posible demostrar la factibilidad del prototipo mediante los casos de uso que se presentan a continuación.
@@ -1702,8 +1703,7 @@ red norm(fst(pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(var("_"), Nat, Nat)
 red norm(fst(pair(suc(suc(suc(suc(suc(zero))))), suc(suc(zero)), Sigma(var("_"), Nat, Nat)))) .
 \end{lstlisting}
 
-$fst((3, 0)) = 3$, $fst((4, 1)) = 4$ y $fst((5, 2)) = 5$: tres resultados distintos
-para el mismo enetero $+3$. La función $fst$ no respeta la relación de equivalencia y, por tanto, no podría proveer una prueba de respeto válida para \texttt{qelim}. El sistema de tipos cociente previene precisamente este tipo de inconsistencia al exigir dicha prueba.
+Se obtiene $fst((3, 0)) = 3$, $fst((4, 1)) = 4$ y $fst((5, 2)) = 5$, tres resultados distintos para el mismo entero $+3$. La función $fst$ no respeta la relación de equivalencia y, por tanto, no podría proveer una prueba de respeto válida para \texttt{qelim}. El sistema de tipos cociente previene precisamente este tipo de inconsistencia al exigir dicha prueba.
 
 \section{Igualdad proposicional entre representantes}
 
@@ -1747,7 +1747,18 @@ result Term: Id(Nat, suc(zero), suc(zero))
 
 El argumento $(\lambda x : Nat.\ suc(x))\ zero$ se normaliza a $suc(zero)$ antes de que $refl$ actúe, de modo que la identidad se construye sobre el resultado ya reducido. Esto muestra que la igualdad proposicional del sistema es coherente con la reducción del lenguaje base, pues opera sobre la forma normal de los términos y no sobre su forma sintáctica de partida.
 
+\section{Multiconjuntos bajo relación de permutación}
 
+El próximo caso de uso son los multiconjuntos, obtenidos al cocientar las listas por la relación de permutación. Decimos que dos listas son equivalentes cuando una es permutación de la otra. Se toman como representantes $l_1 = [1,2,1]$ y $l_2 = [2,1,1]$, que denotan el mismo multiconjunto $\{1,1,2\}$.
+
+Como listas, $l_1$ y $l_2$ son términos distintos, y el sistema, de manera correcta, los separa por comparación de sus formas normales, de modo que $\texttt{tyEq}(l_1, l_2)$ reduce a $\mathit{false}$. La regla $Q\text{-}Ax$ produce un término de tipo $Id(List / {\sim}, [l_1], [l_2])$, que atestigua la igualdad de sus clases dentro del cociente.
+
+\begin{lstlisting}
+red infer(G, qax(l1, l2, List / R, p)) .
+result Term: Id(List / R, [l1 : List / R], [l2 : List / R])
+\end{lstlisting}
+
+Al igual que en los enteros, una función que respeta la permutación, como la longitud, produce el mismo resultado sobre ambos representantes, mientras que una que no la respeta, como $head$, diverge.
 \chapter{Conclusiones, limitaciones y trabajo futuro}\label{ch:concl}
 
 \section{Conclusiones}
@@ -1756,12 +1767,12 @@ El presente trabajo ha diseñado e implementado en Maude un lenguaje de programa
 
 La aportación central es haber mostrado que la lógica de reescritura constituye un sustrato natural para esta tarea. Cada regla de inferencia del sistema de tipos se traslada de forma directa a una ecuación condicional de Maude, donde las premisas de la regla se corresponden con los fragmentos de la condición y la conclusión con el lado derecho. Esta correspondencia, visible a lo largo de los capítulos 5 y 6, permite que la especificación del lenguaje sea a la vez su implementación ejecutable, sin necesidad de un intérprete externo. La normalización de términos se realiza por reescritura ecuacional, y la verificación bidireccional de tipos reduce el chequeo a la comparación de formas normales.
 
-Los casos de uso del capítulo 7 validan la factibilidad del prototipo. La construcción de los enteros como pares de naturales cocientados muestra que las funciones que respetan la relación de equivalencia, como la negación y el sucesor, producen resultados consistentes con independencia del representante elegido, mientras que una función que no la respeta, como la proyección directa, produce resultados divergentes. Con la incorporación del tipo identidad y de la regla $Q-Ax$, el sistema es capaz además de enunciar internamente que dos representantes relacionados dan la misma clase, obteniendo un testigo de esa igualdad proposicional dentro del cociente.
+Los casos de uso del capítulo 7 validan la factibilidad del prototipo. La construcción de los enteros como pares de naturales cocientados muestra que las funciones que respetan la relación de equivalencia, como la negación y el sucesor, producen resultados consistentes con independencia del representante elegido, mientras que una función que no la respeta, como lo es $head$, produce resultados divergentes. Con la incorporación del tipo identidad y de la regla $Q-Ax$, el sistema es capaz además de enunciar internamente que dos representantes relacionados dan la misma clase, obteniendo un testigo de esa igualdad proposicional dentro del cociente.
 
-En conjunto, el trabajo respalda la tesis de que Maude es una herramienta apta para la formalización y el estudio de la teoría de tipos, en la misma línea que los asistentes de pruebas convencionales, aportando como valor propio la inmediatez con que las reglas de inferencia se expresan y ejecutan en su forma ecuacional.
+Asimismo, la formalización de los multiconjuntos como listas cocientadas bajo la relación de permutación complementa sustancialmente esta validación al introducir tipos inductivos recursivos. Este segundo caso de uso ilustra con precisión el contraste entre la igualdad del tipo base y la del cociente, dado que por un lado, el sistema separa sintácticamente términos distintos por normalización ecuacional, y por otro, la regla $Q-Ax$ permite construir un testigo en el tipo identidad que atestigua su igualdad proposicional dentro de la clase de equivalencia. De este modo, el ejemplo sirve como un valioso marco experimental para constatar de manera práctica los límites del sistema ante la ausencia del eliminador $J$, mostrando cómo la reescritura ecuacional ayuda a diagnosticar y trazar la frontera operativa entre cocientes definicionales y proposicionales en la teoría de tipos intensional.
 
 \section{Limitaciones}
-El sistema habita en un único universo, con la regla $Type : Type$. Esta decisión simplifica la implementación al eliminar la jerarquía de universos, a costa de la consistencia lógica, pues admite la paradoja de Girard. El prototipo es, por tanto, un verificador de tipos y no un asistente de pruebas. Asimismo, su propósito es explorar (o bien, emular en cierto sentido) la mecánica de los cocientes.
+El sistema habita en un único universo, con la regla $Type : Type$. Esta decisión simplifica la implementación al eliminar la jerarquía de universos, a costa de la consistencia lógica, pues admite la paradoja de Girard. El prototipo es, por tanto, un verificador de tipos y no un asistente de pruebas. Asimismo, su propósito es explorar (o bien, simular en cierto sentido) la mecánica de los cocientes.
 
 La sustitución no renombra las variables ligadas con variables frescas, de modo que no evita la captura en el caso general. Los términos manipulados en los casos de uso son cerrados, por lo que la captura no llega a producirse, pero una extensión a términos abiertos requeriría una operación auxiliar de renombrado y una mecánica más compleja de sustitucion explícita. En la misma línea, la igualdad de tipos se decide por comparación sintáctica de formas normales, lo que no contempla la $\alpha$-equivalencia; términos que difieren solo en el nombre de sus variables ligadas se considerarían distintos.
 
@@ -1774,6 +1785,8 @@ Finalmente, aunque el lenguaje incorpora el tipo identidad, la regla de reflexiv
 Una posible extensión, de la que podría beneficiarse la implementación es la codificación del eliminador $J$ del tipo identidad, con su regla de cómputo sobre $refl$. Al ser $J$ el principio del que se derivan las operaciones fundamentales sobre igualdades, su incorporación permite la operación de transporte de propiedades a lo largo de una igualdad, la congruencia de funciones y la simetría y transitividad de la identidad. Con ello, sería posible enunciar que dado dos representates $[a]$ y $[b]$ y un testigo $ p : [a] ~ [b]$ en el cociente, una propiedad $P$ que es cierta para $[a]$ también lo sería para $[b]$.
 
 Adicional a ello, una vez disponible $J$, sería posible construir un $Resp$ que sea válido para funciones concretas, pues justo ahora el sistema no posee los medios para construir y, de esta forma, no asumirlo como hipótesis en el contexto.
+
+Del mismo modo, la incorporación del constructor $\text{Let}$ para definiciones locales dotaría al lenguaje de una mayor expresividad. A diferencia de los sistemas simplemente tipados, en la teoría de tipos dependientes $\text{let } x = t \text{ in } u$ no puede reducirse a una aplicación lambda $(\lambda x : A. u) t$, ya que esta última trata a $x$ como una variable abstracta dentro $u$. Un binder Let formal introduce una definición local en el contexto, permitiendo usar la igualdad definicional $x \equiv t$ durante la verificación de $u$. Asimismo, el uso de anotaciones explícitas en el prototipo podría mitigarse mediante un algoritmo de inferencia bidireccional más elaborado o el uso de unificador de términos, teniendo en cuenta que la reconstrucción total de tipos en sistemas dependientes compromete la decidibilidad del typechecker.
 
 % ============================================================
 % BACK MATTER
@@ -1810,6 +1823,9 @@ fmod calc is
   op pair : Term Term Term -> Term [ctor] .
   op fst : Term -> Term [ctor] .
   op snd : Term -> Term [ctor] .
+  op List : -> Term [ctor] .
+  op nil : -> Term [ctor] .
+  op cons : Term Term -> Term [ctor] .
 
   op var : String -> Var [ctor] .
   op Type : -> Term [ctor] .
@@ -1821,11 +1837,11 @@ fmod calc is
   op Id : Term Term Term -> Term [ctor] .
   op qax : Term Term Term Term -> Term [ctor] .
   
-  op _/_ : Term Term -> Term [ctor prec 25] .
-  op [_:_] : Term Term -> Term [ctor] .
+  op _/_ : Term Term -> Term [ctor prec 25] . ---  a / R, lease a modulo R
+  op [_:_] : Term Term -> Term [ctor] . --- representante [t] en Q
   op qelim : Term Term Term -> Term [ctor] .
 
-  op _[_ / _]: Term Var Term -> Term .
+  op _[_ / _]: Term Var Term -> Term . --- substitutions, lease M[x / N] reemplazar x por N en el cuerpo de M
 
   eq X[X / S] = S .
   ceq X[X' / S] = X if X =/= X' .
@@ -1861,6 +1877,9 @@ fmod calc is
   eq Id(A, a, b)[V / S] = Id(A[V / S], a[V / S], b[V / S]) .
   eq refl(a)[V / S] = refl(a[V / S]) .
   eq qax(a, b, A, T)[V / S] = qax(a[V / S], b[V / S], A[V / S], T[V / S]) .
+  eq List[X / S] = List .
+  eq nil[X / S] = nil .
+  eq cons(T1, T2)[X / S] = cons(T1[X / S], T2[X / S]) .
 
   op norm : Term -> Term .
   op normApp : Term Term -> Term .
@@ -1909,6 +1928,10 @@ fmod calc is
   eq norm(qelim(F, A, R)) = normQe(norm(F), norm(A), norm(R)) .
   eq normQe(F, A, [T : QT]) = norm(F · T) .
   eq normQe(F, A, R) = qelim(F, A, R) [owise] .
+
+  eq norm(List) = List .
+  eq norm(nil) = nil .
+  eq norm(cons(T1, T2)) = cons(norm(T1), norm(T2)) .
 
   op tyEq : Term Term -> Bool .
   eq tyEq(A, B) = norm(A) == norm(B) .
@@ -1994,7 +2017,13 @@ fmod calc is
     if Sigma(X, A, B) := norm(infer(G, T)) .
 
   ceq infer(G, snd(T)) = norm(B[X / fst(T)])
-   if Sigma(X, A, B) := norm(infer(G, T)) .
+  if Sigma(X, A, B) := norm(infer(G, T)) .
+
+  eq infer(G, List) = Type .
+  eq infer(G, nil) = List .
+  ceq infer(G, cons(T1, T2)) = List
+  if true := check(G, T1, Nat)
+  /\ true := check(G, T2, List) .
 
   eq check(G, T, A) = tyEq(infer(G, T), A) .
 endfm
