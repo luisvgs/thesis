@@ -27,7 +27,7 @@ El cálculo lambda es un lenguaje muy potente y, a su vez, sumamente simple. Un 
   \mid \quad & M \; N \tag{3}&
 \end{align}
 
-Donde, $(1)$ es un conjunto infinito de variables, tal que si $x, y, z \in \textit{V}$ y $V \in \Lambda$, entonces $V \in \Lambda$. $(2)$ es una abstracción lambda, si $x \in V$ y además $M \in \Lambda$, entonces $\lambda x.\, M \in \Lambda $. $(3)$ Es una aplicación de dos términos, si $M, N \in \Lambda$ entonces $M N \in \Lambda$.
+Donde, $(1)$ es un conjunto infinito de variables, tal que si $x, y, z \in \textit{V}$ y $V \in \Lambda$, entonces $V \in \Lambda$. $(2)$ es una abstracción lambda, si $x \in V$ y además $M \in \Lambda$, entonces $\lambda x.\, M \in \Lambda $. $(3)$ es una aplicación de dos términos, si $M, N \in \Lambda$ entonces $M N \in \Lambda$.
 
 El lambda cálculo es lo suficientemente potente para permitirnos codificar simples tipos de datos o, al menos, emular el comportamiento que obtendríamos de los mismos en un sistema de tipos más avanzado.
 
@@ -41,7 +41,7 @@ El tipo booleano es un tipo habitado por solo dos posibles términos: $True$ o $
 A continuación se detallan propiedades de sumo interés que articulan, posteriormente, los fundamentos del lenguaje que describe esta tésis: la distinción entre variables libres y ligadas, junto con la $\alpha$-equivalencia que de ella se deriva; la operación de sustitución que evita la captura de variables; y la $\beta$-reducción como noción primaria de cómputo. Se mencionará igualmente la $\eta$-conversión, que captura la extensionalidad de las funciones.
 
 \subsection{$\beta$-reducción}
-La noción de evaluacion de un término viene dada por beta-reducción, donde la notación $\to_\beta$ es empleada. La $\to_\beta$ está basada en la \textit{sustitución}, formalmente expresada como \textit{M[x := N]}, significando que \textit{M} es un término donde en su cuerpo, \textit{x}, ha sido reemplazado por \textit{N}.
+La noción de evaluacion de un término viene dada por beta-reducción, donde la notación $\to_\beta$ es empleada. La $\to_\beta$ está basada en la \textit{sustitución}, formalmente expresada como \textit{M[x := N]}, significando que \textit{M} es un término donde en su cuerpo, la variable \textit{x}, ha sido reemplazado por \textit{N}.
 
 Por tanto, una expresión de la forma $(\lambda x.\, M)\, N$ puede ser reescrita como \textit{M[ x := N]}, donde toda ocurrencia de \textit{x} en \textit{M} (estando \textit{x} libre en \textit{M}), debe ser reemplazada por \textit{N} \citep{geuvers2014}.
 
@@ -63,7 +63,7 @@ Por tanto, una expresión de la forma $(\lambda x.\, M)\, N$ puede ser reescrita
       & = (\lambda y.\, a)\, b \notag \\
       & \to_\beta a[y := b] = a. \notag
   \end{align}
-  N\'otese que el segundo argumento, $b$, es descartado, pues $y$ no ocurre en el  del lambda.
+  N\'otese que el segundo argumento, $b$, es descartado, pues $y$ no ocurre en el cuerpo del lambda.
 \end{example}
 
 \subsection{Variables libres y ligadas}
@@ -149,33 +149,35 @@ La confluencia, conocida también como teorema de Church-Rosser, es una propieda
 Conviene precisar que el teorema habla de la \textit{clausura reflexivo-transitiva} de la reducción, $\to_\beta^{\ast}$, es decir, de cero o más pasos de $\beta$-reducción. Es importante resaltar que la $\beta$-reducción no cumple la versión más fuerte de la propiedad, conocida como propiedad del diamante en un solo paso: si de $M$ contraemos dos redexes distintos en un único paso para obtener $N_1$ y $N_2$, no siempre existe un $N_3$ alcanzable desde ambos en un solo paso. La razón es la duplicación, pues un redex puede copiar a otro cuando el argumento contiene, a su vez, redexes, de modo que un lado de la bifurcación necesita varios pasos para reabsorber las copias que el otro lado ya había contraído. Lo que el teorema de Church-Rosser garantiza es la versión global, sobre $\to_\beta^{\ast}$, que sí se sostiene.
 \newline
 \newline
-Ademas, por simplicidad, hasta ahora hemos de forma ligera abusado del término de confluencia. Resulta importante separar dos nociones de la misma: la confluencia local y la confluencia global. Decimos que un sistema es \textit{localmente confluente} cuando, partiendo de $M$ y dando un paso hacia $N_1$ y otro hacia $N_2$, existe un término común alcanzable desde ambos en cero o máas pasos. La confluencia local es más débil que la confluencia global, y la implicación de la primera a la segunda no siempre se cumple, pues solo se obtiene bajo hipótesis adicionales, como la terminación, por tanto, una relacion (sistema?) terminante es confluente, si es localmente confluente. de acuerdo al lema de Newman. \citep{traat, barendregt1984}. 
+Ademas, por simplicidad, hasta ahora hemos de forma ligera abusado del término de confluencia. Resulta importante separar dos nociones de la misma: la confluencia local y la confluencia global. Decimos que un sistema es \textit{localmente confluente} cuando, partiendo de $M$ y dando un paso hacia $N_1$ y otro hacia $N_2$, existe un término común alcanzable desde ambos en cero o máas pasos. La confluencia local es más débil que la confluencia global, y la implicación de la primera a la segunda no siempre se cumple, pues solo se obtiene bajo hipótesis adicionales, como la terminación, por tanto, una relación terminante es confluente, si es localmente confluente. de acuerdo al lema de Newman. \citep{traat, barendregt1984}. 
 \newline
 \begin{lemma}
-  \begin{enumerate}
-    \item $M$ es una forma normal si $M$ no contiene más redexes.
-    \item $M$ tiene una forma normal si existe un $N$, en forma normal, tal que $M =_\beta N$. Tal $N$ es la forma normal de $M$.
-\end{enumerate}
+    $M$ es una forma normal si $M$ no contiene más redexes. Luego, $M$ tiene una forma normal si existe un $N$, en forma normal, tal que $M =_\beta N$. Tal $N$ es la forma normal de $M$.
 \end{lemma}
 
 Una consecuencia inmediata, y quizá la más útil en la práctica, es la unicidad de la forma normal. Si un término admite forma normal, esta es única salvo $\alpha$-equivalencia.
 
 \begin{corollary}
-  Si $M$ posee una forma normal, esta es única salvo $\alpha$-equivalencia. En efecto, supóngase que $N_1$ y $N_2$ son ambas formas normales de $M$, de modo que $M\to_\beta^{\ast}N_1$ y $M\to_\beta^{\ast}N_2$. Por el teorema de Church-Rosser existe $N_3$ con $N_1\to_\beta^{\ast}N_3$ y $N_2\to_\beta^{\ast}N_3$. Pero $N_1$ y $N_2$ están en forma normal, luego no contienen redex alguno y no pueden reducirse en pasos no triviales, de donde $N_1 =_\alpha N_3 =_\alpha N_2$.
-\end{corollary}
+  Si $M$ posee una forma normal, esta es única salvo $\alpha$-equivalencia.\end{corollary}
+
+En efecto, supóngase que $N_1$ y $N_2$ son ambas formas normales de $M$, de modo que $M\to_\beta^{\ast}N_1$ y $M\to_\beta^{\ast}N_2$. Por el teorema de Church-Rosser existe $N_3$ con $N_1\to_\beta^{\ast}N_3$ y $N_2\to_\beta^{\ast}N_3$. Pero $N_1$ y $N_2$ están en forma normal, luego no contienen redex alguno y no pueden reducirse en pasos no triviales, de donde $N_1 =_\alpha N_3 =_\alpha N_2$.
+
 
 Este corolario, por un lado, justifica que hablemos de \textit{la} forma normal de un término, en singular, cuando esta existe. Por otro, garantiza que el valor de un cómputo, entendido como su forma normal, queda determinado por el término de partida y no por la estrategia de evaluación escogida, de modo que el orden en que decidamos contraer los redexes solo puede afectar a si terminamos, mas no al resultado al que llegamos.
 \newline
 \newline
-La confluencia se representa mediante el siguiente diagrama, cuya forma de rombo explica que la propiedad reciba también el nombre de \textit{propiedad del diamante}. El vértice superior es el término de partida $M$, las dos diagonales descendentes son las reducciones divergentes hacia los términos $N_1$ y $N_2$, y las diagonales punteadas representan los pasos que aún restan, garantizados por el teorema, para reconciliar ambas ramas en un término común $N_3$.
+La confluencia se representa mediante la siguiente figura~\ref{fig:diagrama}, cuya forma de rombo explica que la propiedad reciba también el nombre de \textit{propiedad del diamante}. El vértice superior es el término de partida $M$, las dos diagonales descendentes son las reducciones divergentes hacia los términos $N_1$ y $N_2$, y las diagonales punteadas representan los pasos que aún restan, garantizados por el teorema, para reconciliar ambas ramas en un término común $N_3$.
 
-\[
+\begin{figure}
+  \centering
 \begin{tikzcd}[row sep=2.4em, column sep=2.4em]
  & M \arrow[dl, twoheadrightarrow, "\ast"'] \arrow[dr, twoheadrightarrow, "\ast"] & \\
 N_1 \arrow[dr, twoheadrightarrow, dashed, "\ast"'] & & N_2 \arrow[dl, twoheadrightarrow, dashed, "\ast"] \\
  & N_3 &
 \end{tikzcd}
-\]
+\caption{Confluencia}
+\label{fig:diagrama}
+\end{figure}
 
 \begin{example}
   Considérese el término $M \equiv (\lambda x.\, x\,x)\,((\lambda y.\, y)\, z)$, que presenta
@@ -364,7 +366,7 @@ Adicionalmente, independientemente del sistema de tipos que se describa, las mis
   \\[2ex]
   \infer[\text{Var}]{\Gamma \vdash x : \sigma}{\vdash \Gamma, x : \sigma}
 \end{gather}
-Sobre estos juicios, la igualdad definicional se comporta como una relación de equivalencia, esto es, es reflexiva, simétrica y transitiva, tanto para tipos como para términos, y es además una congruencia respecto de los constructores del lenguaje. A ella se añade la regla de conversión, que permite tratar un término de tipo $\sigma$ como un término de tipo $\tau$ siempre que $\sigma \equiv \tau$. No se detallan aquí el resto de reglas correspondientes, sin embargo, su formulación completa puede consultarse en \citealp{hoffman2009}. En el prototipo que se describe en el \cref{ch:lang}, esta igualdad se decide por normalización de ambos lados y comparación de sus formas normales, según se detalla en la ecuación \texttt{tyEq}, en lugar de axiomatizarse mediante tales reglas.
+Sobre estos juicios, la igualdad definicional se comporta como una relación de equivalencia, esto es, es reflexiva, simétrica y transitiva, tanto para tipos como para términos, y es además una congruencia respecto de los constructores del lenguaje. A ella se añade la regla de conversión, que permite tratar un término de tipo $\sigma$ como un término de tipo $\tau$ siempre que $\sigma \equiv \tau$. No se detallan aquí el resto de reglas correspondientes, sin embargo, su formulación completa puede consultarse en \citep{hoffman2009}. En el prototipo que se describe en el \cref{ch:lang}, esta igualdad se decide por normalización de ambos lados y comparación de sus formas normales, según se detalla en la ecuación \texttt{tyEq}, en lugar de axiomatizarse mediante tales reglas.
 
 
 \newline
@@ -403,7 +405,7 @@ text depth=0.25ex]{
   \label{fig:lambda-cube}
 \end{figure}
 
-la dependencia que define cada vertice, es descrita por la siguiente tabla:
+La dependencia que define cada vertice, es descrita por la siguiente tabla:
 \newline
 \begin{center}
 \begin{tabular}{|l|llll|}
@@ -500,19 +502,17 @@ La forma canónica de implementar tipos en $\lambda$ es, en principio, definir u
         \item Tipo función: donde si $\alpha, \tau \in \mathbb{T}$ entonces $(\alpha \to \tau) \in \mathbb{T}$
 \end{enumerate}
  
-La gramática para el lambda calculo simplemente tipado, se extiende, como se muestra:
-    \begin{definition} Extensión a $\lambda\to$
+La gramática para el lambda cálculo simplemente tipado, se extiende, como se muestra:
     \begin{align*}
       M = \ldots |\, x : \tau \, \mid \lambda x : \tau . e \\
       \mathbb{T} = \{\tau \mid \tau \to \tau\}\
     \end{align*}
-  \end{definition}
 
   Los tipos en $\lambda\to$ nos permiten enunciar juicios de la forma $M : \tau$, que se entiende como \textit{el término $M$ es de tipo $\tau$}, asumiendo que $M \in \Lambda$ y $\tau$ es un tipo bien definido. A continuación, se explican algunos detalles a tomar en cuenta para cada término que, desde ahora, llevan consigo un tipo.
 
   \begin{enumerate}
     \item Aplicación: para cubrir el caso donde $M \cdot N$, es menester conocer la signatura de $M$. Sea $M$ y $N$ términos en $\Lambda$, donde $M$ es de tipo $\sigma  \to \tau$ y $N$ de tipo $\sigma$, es claro observar que $N$ posee el mismo tipo que el del dominio de $M$ por tanto, es acertado confirmar que el tipo de la aplicación es de tipo $M \cdot N : \tau $.
-    \item abstracción: cuando $\lambda x : \tau . M$ donde $M : \gamma$, podemos confirmar que es una abstraccion con codominio en $\gamma$ y dominio en $\tau$.
+    \item Abstracción: cuando $\lambda x : \tau . M$ donde $M : \gamma$, podemos confirmar que es una abstraccion con codominio en $\gamma$ y dominio en $\tau$.
           \end{enumerate}
 
     \section{Tipos dependientes}
@@ -536,7 +536,7 @@ La gramática para el lambda calculo simplemente tipado, se extiende, como se mu
 
     La noción de tipo dependiente es análoga al producto cartesiano dependiente, o generalizado de la teoría de conjuntos. En los conjuntos es posible, para cada conjunto $A$, y una familia de conjuntos $B(x)_{x\in A}$ indexados por $A$, formar un nuevo conjunto $\Pi _{x\in A} B_x$, donde sus elementos son funciones con dominio en $A$, tal que $f(a) \in B_a$ para todo $a \in A$. Consideramos, entonces, $\Pi _{x\in A} B_x$ un producto cartesiano dependiente, pues $B_a$ en el cual $f(a)$ vive, depende de $a$. De igual forma opera el tipo $\Pi$ que hemos mencionado en el conjunto de pseudo-términos que conforman un $PTS$: sea $A$ un tipo definido en $\Gamma$ y $B(x)$ un tipo, donde $x$ es una variale de tipo $A$, decimos pues, que $\Pi x : A . B(x)$ es un tipo dependiente donde para todo $x$ en $A$, existe una familia de tipos $B(x)$.
 
-    \begin{definition} Especificación. La especificación de un PTS es una tripla $\mathcal{S} = (\mathcal{S}, \mathcal{A} , \mathcal{R})$, donde:
+    \begin{definition} La especificación de un PTS es una tripla $\mathcal{S} = (\mathcal{S}, \mathcal{A} , \mathcal{R})$, donde:
       \begin{enumerate}
         \item $\mathcal{S}$ es un conjunto de sorts.
         \item $\mathcal{A} \subseteq \mathcal{S} \times \mathcal{S}$ es un conjunto de axiomas.
@@ -556,7 +556,7 @@ La gramática para el lambda calculo simplemente tipado, se extiende, como se mu
       Sea $S =\{\star, \Box\}$ de sorts y el conjunto $\mathcal{A} =\{(\star : \Box)\}$ de axiomas. Es posible obtener $\lambda P$ extendiendo el conjunto de reglas, de forma que $\mathcal{R} = \{(\star, \star), (\star, \Box)\}$. Permitiendo $\lambda P$ introducir los axiomas $\{\star, \Box\}$ es posible definir los tipos dependientes, por tanto $B : \star$ podria contener una subexpresión $M : A : \star$.
     \end{definition}
 
-    La importancia o interés de estudio de los tipos dependientes, radica en cómo estos habilitan al entendimiento de la correspondencia entre las proposiciones como tipos y los programas como pruebas a la luz de la lógica de predicados. El conjunto de reglas definidas en ~\ref{def:lambdaP} nos muestra que es posible formar expresiones que habitan en $\star$ y así obtener como resultado una expresión que, también, habita en $\star$. De forma intuitiva, esto corresponde a una función ordinaria del tipo $\mathbb{N}\to\mathbb{N} : \star$, donde el dominio es de sort $\star$, y el codominio de sort $\star$. Adicional a ello, el segundo miembro de la tupla, nos indica que podemos formar una expresión que habita en $\star$ y como resultado, obtenemos una que habita en $\Box$. Esto último corresponde a la posibilidad de derivaciones como $\Pi x : A . B(x)$ cuando $A : \star$ y $B : \Box$, siendo $B$ un tipo indexado por $A$. Por tanto, la siguiente derivación es posible:
+    La importancia o interés de estudio de los tipos dependientes radica en cómo estos habilitan al entendimiento de la correspondencia entre las proposiciones como tipos y los programas como pruebas a la luz de la lógica de predicados. El conjunto de reglas definidas en la definición ~\ref{def:lambdaP} nos muestra que es posible formar expresiones que habitan en $\star$ y así obtener como resultado una expresión que, también, habita en $\star$. De forma intuitiva, esto corresponde a una función ordinaria del tipo $\mathbb{N}\to\mathbb{N} : \star$, donde el dominio es de sort $\star$, y el codominio de sort $\star$. Adicional a ello, el segundo miembro de la tupla, nos indica que podemos formar una expresión que habita en $\star$ y como resultado, obtenemos una que habita en $\Box$. Esto último corresponde a la posibilidad de derivaciones como $\Pi x : A . B(x)$ cuando $A : \star$ y $B : \Box$, siendo $B$ un tipo indexado por $A$. Por tanto, la siguiente derivación es posible:
     
 \begin{gather}
   \infer[\text{Vec-Form}]
@@ -564,10 +564,10 @@ La gramática para el lambda calculo simplemente tipado, se extiende, como se mu
   {\Gamma \vdash A : \star & \Gamma \vdash n : \mathbb{N}}
 \end{gather}
 
-Donde $\textit{Vec}\,A\, n : \star$ habita en $\Box$.
+donde $\textit{Vec}\,A\, n : \star$ habita en $\Box$.
 \newline
 \newline
-\indent Dado que a los tipos pudiesen contener términos, una noción de igualdad definicional es necesaria en la teoría, por ejemplo, conviene considerar los términos $0 : \mathbb{N}$ y $0 + 0 : \mathbb{N}$ como definicionalmente iguales y, por tanto, no habría distinción entre \textit{Vec(0)} y \textit{Vec 0 + 0}. Si \textit{M : Vec(0)} y \textit{N: Vec 0 + 0}, nos lleva a un juicio de la forma $M = N : \sigma$ que se lee \textit{M y N son términos definicionalmente iguales en el tipo sigma}, y, además, que $\sigma = \tau : A$, que se lee \textit{sigma y tau son tipos definicionalmente iguales en A}.
+\indent Dado que los tipos pudiesen contener términos, una noción de igualdad definicional es necesaria en la teoría, por ejemplo, conviene considerar los términos $0 : \mathbb{N}$ y $0 + 0 : \mathbb{N}$ como definicionalmente iguales y, por tanto, no habría distinción entre \textit{Vec(0)} y \textit{Vec 0 + 0}. Si \textit{M : Vec(0)} y \textit{N: Vec 0 + 0}, nos lleva a un juicio de la forma $M = N : \sigma$ que se lee \textit{M y N son términos definicionalmente iguales en el tipo sigma}, y, además, que $\sigma = \tau : A$, que se lee \textit{sigma y tau son tipos definicionalmente iguales en A}.
 
 \indent Antes de detallar los constructores que conforman el lenguaje, conviene fijar el esquema con el que cada uno de ellos se presenta. Siguiendo a \citet{hoffman2009}, un tipo queda determinado por cuatro clases de reglas.
 \begin{itemize}
@@ -611,7 +611,7 @@ Finalmente, la regla de cómputo es la $\beta$-reducción, que describe cómo in
   eq 0 + N = N .
   eq s(N) + M = s(N + M) .
 \end{lstlisting}
-En este tipo de igualdad el lenguaje no puede descirnir de dos términos, pues son exactamente iguales por definición. Por ejemplo, es posible afirmar que \textit{0 + N} y \textit{N} son definicionalmente iguales dada la definición inductiva de la suma que en Maude, podemos proponer que \textit{0 + N} reduce a \textit{N} en un  solo paso, por tanto, es posible usar \textit{0 + N} y \textit{N}  de forma intercambiable a lo largo del programa.
+En este tipo de igualdad el lenguaje no puede discernir de dos términos, pues son exactamente iguales por definición. Por ejemplo, es posible afirmar que \textit{0 + N} y \textit{N} son definicionalmente iguales dada la definición inductiva de la suma que en Maude, podemos proponer que \textit{0 + N} reduce a \textit{N} en un  solo paso, por tanto, es posible usar \textit{0 + N} y \textit{N}  de forma intercambiable a lo largo del programa.
 \newline
 \newline
 \indent Sin embargo, esto no siempre es el caso: en contraste \textit{N + 0}, que no es definicionalmente igual a \textit{N} porque \textit{no existe} una ecuación en nuestra definición de la suma que inmediatamente pueda verificar que, en este caso, \textit{0 + N} sí reduce a \textit{N}. Pero sí que podemos demostrar proposicionalmente, mediante una prueba más elaborada por inducción en $N$, de que esta igualdad sí se cumple y, finalmente, concluir que \textit{N + 0} $\equiv$ \textit{N}.
@@ -825,7 +825,7 @@ La noción de tipos cociente, tiene sus origenes en NuPRL, el cual es un sistema
 
 Por otro lado, en NuPRL cada tipo integra su propia relación de equivalencia, y su sistema de tipos garantiza que cualquier término bien tipado respete esa equivalencia. Asimismo, la formalización de tipos cociente en NuPRL se ve limitada porque no permite tomar plena ventaja de la extensionalidad, dado que los cocientes en su sistema asumen que el predicado de igualdad es, de hecho, intensional \citep{nuprl}.
 \section{Tipos cociente en Lean}
-Lean es un lenguaje dependientemente tipado y probador de teoremas relativamente nuevo que posee un sistema de tipos bastante robusto, permitiendo formalizar conceptos matemáticos, probar fórmulas y propiedades de los lenguajes. En los tipos cociente en Lean, todo elemento relacionado bajo $\sim$ es considerado igual, esta relación es dada por una instancia de $Setoid$ que el lenguaje expone como un tipo concreto de forma interna, luego la igualdad es respetada de forma universal por el sistema de tipos. Por tanto, Lean no puede discernir entre dos elementos que son considerados iguales bajo esta relación. Su tipo viene dada por la siguiente signatura:
+Lean es un lenguaje dependientemente tipado y probador de teoremas relativamente nuevo que posee un sistema de tipos bastante robusto, permitiendo formalizar conceptos matemáticos, probar fórmulas y propiedades de los lenguajes. En los tipos cociente en Lean, todo elemento relacionado bajo $\sim$ es considerado igual, esta relación es dada por una instancia de $Setoid$ que el lenguaje expone como un tipo concreto de forma interna, luego la igualdad es respetada de forma universal por el sistema de tipos. Por tanto, Lean no puede discernir entre dos elementos que son considerados iguales bajo esta relación. Su tipo viene dada por la siguiente signatura en Lean:
 \begin{lstlisting}
 Quotient.{u} : {α : Sort u} → Setoid α → Sort u
 \end{lstlisting}
@@ -1479,7 +1479,7 @@ Según lo fijado por la regla, la ecuación en Maude comprueba que el tipo de un
 \indent La decisión de anotar el tipo cociente sobre la clase responde al mismo principio que en el capítulo anterior abordamos con las tuplas del tipo $\Sigma$, donde $\mathrm{pair}$ posee su anotación. Sin dicha anotación, la síntesis del tipo de una clase sería ambigua, pues un mismo representante $t : A$ pertenece a tantos cocientes como relaciones puedan definirse sobre $A$. Portando la clase su tipo cociente, la inferencia permanece dirigida por la sintaxis y, por tanto, se mantiene decidible.
 \newline
 \newline
-\indent Puesto a que $A$ y $R$ son dentro de nuestro universo $\star$, términos, es sensato normalizar ambos argumentos. De manera que la ecuación en Maude es congruente:
+\indent Puesto que $A$ y $R$ son dentro de nuestro universo $\star$, términos, es sensato normalizar ambos argumentos. De manera que la ecuación en Maude es congruente:
 
 \begin{lstlisting}
   eq norm(A / R) = norm(A) / norm(R) .
@@ -1596,7 +1596,7 @@ red infer(
 result Term: Type
 \end{lstlisting}
 
-En este primer caso se declara en el contexto una relación $R$ sobre el tipo $Nat \times Nat$, y se pregunta al sistema por el tipo del cociente que dicha relación induce. Maude resuelve la ecuación asociada a $Q-Form$ verificando sus dos premisas: que $Nat \times Nat$ es un tipo bien formado y que $R$ tiene la signatura de una relación binaria sobre ese tipo, es decir, que habita en $Pi(a, Nat \times Nat, Pi(b, Nat \times Nat, Type))$. Satisfechas ambas por reducción, el sistema concluye que el cociente es de tipo $Type$, tal y como se observa en el resultado.
+En este primer caso se declara en el contexto una relación $R$ sobre el tipo $Nat \times Nat$, y se pregunta al sistema por el tipo del cociente que dicha relación induce. Maude resuelve la ecuación asociada a $Q-Form$ verificando sus dos premisas: que $Nat \times Nat$ es un tipo bien formado y que $R$ tiene la signatura de una relación binaria sobre ese tipo, es decir, que habita en $\Pi a : (Nat \times Nat) .\, \Pi b : (Nat \times Nat) .\, Type$. Satisfechas ambas por reducción, el sistema concluye que el cociente es de tipo $Type$, tal y como se observa en el resultado.
 
 Una vez formado el cociente, la regla $Q-Intro$ permite construir sus clases. El siguiente caso comprueba que un representante concreto, el par $(0, 1)$, habita efectivamente en el cociente.
 
