@@ -2,6 +2,7 @@
 \begin{document}
 \input{include/Portada}
 \input{include/Epigrafe}
+\input{include/Statement}
 \pagenumbering{roman}
 
 \section*{Resumen}
@@ -433,7 +434,7 @@ $\lambda\mathrm{P}\omega = \lambda\mathrm{C}$ & $(\star,\star)$ & $(\square,\sta
 %     & \deduce{\Gamma \vdash t : \mathbb{N}}{}
 %   } \quad \longrightarrow_\beta \quad 3
 (\lambda x : \mathbb{N} . t) 3
-\quad \longrightarrow_\beta \quad 3
+\quad \longrightarrow t[x := 3] \longrightarrow 3
 \end{align}
 \end{example}
 
@@ -567,7 +568,7 @@ La gramática para el lambda cálculo simplemente tipado, se extiende, como se m
 donde $\textit{Vec}\,A\, n : \star$ habita en $\Box$.
 \newline
 \newline
-\indent Dado que los tipos pudiesen contener términos, una noción de igualdad definicional es necesaria en la teoría, por ejemplo, conviene considerar los términos $0 : \mathbb{N}$ y $0 + 0 : \mathbb{N}$ como definicionalmente iguales y, por tanto, no habría distinción entre \textit{Vec(0)} y \textit{Vec 0 + 0}. Si \textit{M : Vec(0)} y \textit{N: Vec 0 + 0}, nos lleva a un juicio de la forma $M = N : \sigma$ que se lee \textit{M y N son términos definicionalmente iguales en el tipo sigma}, y, además, que $\sigma = \tau : A$, que se lee \textit{sigma y tau son tipos definicionalmente iguales en A}.
+\indent Dado que los tipos pudiesen contener términos, una noción de igualdad definicional es necesaria en la teoría, por ejemplo, conviene considerar los términos $0 : \mathbb{N}$ y $0 + 0 : \mathbb{N}$ como definicionalmente iguales y, por tanto, no habría distinción entre \textit{Vec(0)} y \textit{Vec 0 + 0}. Si \textit{M : Vec(0)} y \textit{N: Vec 0 + 0}, nos lleva a un juicio de la forma $M = N : \sigma$ que se lee \textit{M y N son términos definicionalmente iguales en el tipo $\sigma$}.
 
 \indent Antes de detallar los constructores que conforman el lenguaje, conviene fijar el esquema con el que cada uno de ellos se presenta. Siguiendo a \citet{hoffman2009}, un tipo queda determinado por cuatro clases de reglas.
 \begin{itemize}
@@ -605,12 +606,14 @@ Finalmente, la regla de cómputo es la $\beta$-reducción, que describe cómo in
   {\Gamma, x : A \vdash b : B & \Gamma \vdash a : A}
 \end{gather}
 
-\begin{definition}[Igualdad definicional] Decimos que dos términos son definicionalmente iguales cuando reducen, luego de cero o más pasos de reducción, a un término en común \citep{mimram2020}. La igualdad a la que hacemos referencia en este caso, no es igualdad proposicional, denotada con $=$, sino, a la igualdad que es inherente del lenguaje base $\equiv$ que corresponde a la equivalencia de términos bajo $\beta$-reducción. 
+\begin{definition}[Igualdad definicional] Decimos que dos términos son definicionalmente iguales cuando reducen, luego de cero o más pasos de reducción, a un término en común \citep{mimram2020}. La igualdad a la que hacemos referencia en este caso, no es igualdad proposicional, denotada con $=$, sino, a la igualdad que es inherente del lenguaje base $\equiv$ que corresponde a la equivalencia de términos bajo $\beta$-reducción.
 \begin{lstlisting}
   op _+_ : Nat Nat -> Nat .
   eq 0 + N = N .
   eq s(N) + M = s(N + M) .
 \end{lstlisting}
+
+En este ejemplo definimos la operación de la suma, donde el operador $+$ recibe dos argumentos de sort $Nat$ y retorna un elemento del mismo sort. Las ecuaciones siguientes definen su comportamiento de forma recursiva sobre el primer elemento. La primera ecuación cubre el caso base, donde el primer argumento es 0 y, por tanto, se reduce a $N$; la segunda tiene la forma $s(N) + M$ evaluando de forma recursiva a $s(N + M)$
 En este tipo de igualdad el lenguaje no puede discernir de dos términos, pues son exactamente iguales por definición. Por ejemplo, es posible afirmar que \textit{0 + N} y \textit{N} son definicionalmente iguales dada la definición inductiva de la suma que en Maude, podemos proponer que \textit{0 + N} reduce a \textit{N} en un  solo paso, por tanto, es posible usar \textit{0 + N} y \textit{N}  de forma intercambiable a lo largo del programa.
 \newline
 \newline
@@ -1221,34 +1224,40 @@ Se define, a continuación, la semántica operacional \textit{big step} del proc
 \end{gather*}
 
 \begin{center}
-\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
-  $\infer[\Sigma]
+\begin{gather*}
+  \infer[\Sigma]
   {\mathrm{Sigma}(X, A, B) \Downarrow \mathrm{Sigma}(X, A', B')}
-  {A \Downarrow A' \quad B \Downarrow B'}$
-  &
-    \verb|eq norm(Sigma(X, A, B)) = Sigma(X, norm(A), norm(B)) .|
-\end{tabular}
+  {A \Downarrow A' \quad B \Downarrow B'}
+\end{gather*}
+
+\texttt{eq norm(Sigma(X, A, B)) = Sigma(X, norm(A), norm(B)) .}
 \end{center}
 
 \begin{center}
-\begin{tabular}{@{}c@{\qquad}p{6cm}@{}}
-  $\infer[\text{Pair}]
-  {\mathrm{pair}(T_1, T_2, A) \Downarrow \mathrm{pair}(T_1', T_2', A')}
-  {T_1 \Downarrow T_1' \quad T_2 \Downarrow T_2' \quad A \Downarrow A'}$
-  &
-    \verb|eq norm(pair(T1, T2, A)) = pair(norm(T1), norm(T2), norm(A)) .|
-\end{tabular}
+\begin{gather*}
+  \infer[\text{Pair}]
+  {\mathrm{pair}(T_1, T_2, A) \Downarrow
+   \mathrm{pair}(T_1', T_2', A')}
+  {T_1 \Downarrow T_1'
+   \quad
+   T_2 \Downarrow T_2'
+   \quad
+   A \Downarrow A'}
+\end{gather*}
+
+\texttt{eq norm(pair(T1, T2, A)) =
+pair(norm(T1), norm(T2), norm(A)) .}
 \end{center}
 
 \begin{gather*}
   \infer[\text{fst}]
   {\mathrm{fst}(T) \Downarrow \mathrm{normFst}(T')}
   {T \Downarrow T'}
-  \quad
+  \qquad
   \infer[\text{normFst}]
   {\mathrm{normFst}(\mathrm{pair}(T_1, T_2, A)) \Downarrow T_1}
   {}
-  \quad
+  \\[1em]
   \infer[\text{normFst-otherwise}]
   {\mathrm{normFst}(T) \Downarrow \mathrm{fst}(T)}
   {}
@@ -1265,11 +1274,11 @@ Se define, a continuación, la semántica operacional \textit{big step} del proc
   \infer[\text{snd}]
   {\mathrm{snd}(T) \Downarrow \mathrm{normSnd}(T')}
   {T \Downarrow T'}
-  \quad
+  \qquad
   \infer[\text{normSnd}]
   {\mathrm{normSnd}(\mathrm{pair}(T_1, T_2, A)) \Downarrow T_2}
   {}
-  \quad
+  \\[1em]
   \infer[\text{normSnd-otherwise}]
   {\mathrm{normSnd}(T) \Downarrow \mathrm{snd}(T)}
   {}
@@ -1616,11 +1625,11 @@ Obtenemos como tipo el propio cociente, porque Maude comprueba, mediante la prem
 El eliminador \texttt{qelim} permite elevar una función definida sobre representantes a una función definida sobre el cociente. Antes de estudiar la consistencia de estas funciones, conviene comprobar que el eliminador no solo computa un valor, sino que además está bien tipado. El siguiente caso eleva la función sucesor sobre un cociente de $Nat$, computa su valor y sintetiza su tipo.
 
 \begin{lstlisting}
-red norm(qelim(lam(var("x"), Nat, suc(var("x"))), var("resp"), qclass(zero, qtype(Nat, var("R"))))) .
+red norm(qelim(λ x : Nat . suc(x), resp, [zero : Nat / ~])) .
 
 result Term: suc(zero)
 
-red infer(mt, qelim(lam(var("x"), Nat, suc(var("x"))), var("resp"), qclass(zero, qtype(Nat, var("R"))))) .
+red infer(mt, qelim(λ x : Nat . suc(x), resp, [zero : Nat / ~])) .
 
 result Term: Nat
 \end{lstlisting}
@@ -1631,76 +1640,68 @@ De la misma manera es posible elevar operaciones sobre los pares. Tomando la fun
 
 \begin{lstlisting}
 red norm(qelim(
-  lam(var("x"), Sigma(var("_"), Nat, Nat),
-    qclass(pair(suc(fst(var("x"))), snd(var("x")), Sigma(var("_"), Nat, Nat)),
-           qtype(Sigma(var("_"), Nat, Nat), var("R")))),
-  var("resp"),
-  qclass(pair(suc(suc(suc(zero))), suc(zero), Sigma(var("_"), Nat, Nat)),
-         qtype(Sigma(var("_"), Nat, Nat), var("R")))
+  λ x : Sigma(_, Nat, Nat) .
+    [pair(suc(fst(x)), snd(x), Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~],
+  resp,
+  [pair(suc(suc(suc(zero))), suc(zero), Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~]
 )) .
 
-result Term: qclass(pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(var("_"), Nat, Nat)), qtype(Sigma(var("_"), Nat, Nat), var("R")))
+result Term: [pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~]
 \end{lstlisting}
 
-El resultado es la clase de $(4, 1)$, que representa el entero $+3$. Maude aplica la función al representante, incrementa la primera componente del par y devuelve la clase resultante, de modo que la operación sucesor sobre los enteros queda realizada por elevación de una operación sobre sus representantes.
+El resultado es la clase de $(4, 1)$, que representa el entero $3$. Maude aplica la función al representante, incrementa la primera componente del par y devuelve la clase resultante.
 
 \section{Consistencia sobre representantes}
 
-Los pares $(3, 0)$, $(4, 1)$ y $(5, 2)$ son representantes distintos del entero $+3$,
+Los pares $(3, 0)$, $(4, 1)$ y $(5, 2)$ son representantes distintos del entero $3$,
 pues $3 - 0 = 4 - 1 = 5 - 2 = 3$. Al aplicar la función de negación
 $\text{negate} = \lambda(p : \mathbb{N} \times \mathbb{N}).\ [(snd(p),\ fst(p))]$
 a cada uno mediante el eliminador del cociente \texttt{qelim}, esperamos que los resultados sean representantes del mismo entero, es decir, $-3$.
 
 \begin{lstlisting}
 red norm(qelim(
-  lam(var("p"), Sigma(var("_"), Nat, Nat),
-    qclass(pair(snd(var("p")), fst(var("p")), Sigma(var("_"), Nat, Nat)),
-           qtype(Sigma(var("_"), Nat, Nat), var("R")))),
-  var("resp"),
-  qclass(pair(suc(suc(suc(zero))), zero, Sigma(var("_"), Nat, Nat)),
-         qtype(Sigma(var("_"), Nat, Nat), var("R")))
+  λ p : Sigma(_, Nat, Nat) .
+    [pair(snd(p), fst(p), Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~],
+  resp,
+  [pair(suc(suc(suc(zero))), zero, Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~]
 )) .
-
-result Term: qclass(pair(zero, suc(suc(suc(zero))), Sigma(var("_"), Nat, Nat)), qtype(Sigma(var("_"), Nat, Nat), var("R")))
-
-red norm(qelim(
-  lam(var("p"), Sigma(var("_"), Nat, Nat),
-    qclass(pair(snd(var("p")), fst(var("p")), Sigma(var("_"), Nat, Nat)),
-           qtype(Sigma(var("_"), Nat, Nat), var("R")))),
-  var("resp"),
-  qclass(pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(var("_"), Nat, Nat)),
-         qtype(Sigma(var("_"), Nat, Nat), var("R")))
-)) .
-
-result Term: qclass(pair(suc(zero), suc(suc(suc(suc(zero)))), Sigma(var("_"), Nat, Nat)), qtype(Sigma(var("_"), Nat, Nat), var("R")))
-
-red norm(qelim(
-  lam(var("p"), Sigma(var("_"), Nat, Nat),
-    qclass(pair(snd(var("p")), fst(var("p")), Sigma(var("_"), Nat, Nat)),
-           qtype(Sigma(var("_"), Nat, Nat), var("R")))),
-  var("resp"),
-  qclass(pair(suc(suc(suc(suc(suc(zero))))), suc(suc(zero)), Sigma(var("_"), Nat, Nat)),
-         qtype(Sigma(var("_"), Nat, Nat), var("R")))
-)) .
-
-result Term: qclass(pair(suc(suc(zero)), suc(suc(suc(suc(suc(zero))))), Sigma(var("_"), Nat, Nat)), qtype(Sigma(var("_"), Nat, Nat), var("R")))
+result Term: [pair(zero, suc(suc(suc(zero))), Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~]
 \end{lstlisting}
 
-Los resultados son $(0, 3)$, $(1, 4)$ y $(2, 5)$ respectivamente. El sistema devuelve la clase completa \texttt{qclass}, y para abreviar nos referimos a su representante. Aunque son pares
+\begin{lstlisting}
+red norm(qelim(
+  λ p : Sigma(_, Nat, Nat) .
+    [pair(snd(p), fst(p), Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~],
+  resp,
+  [pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~]
+)) .
+result Term: [pair(suc(zero), suc(suc(suc(suc(zero)))), Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~]
+\end{lstlisting}
+
+\begin{lstlisting}
+red norm(qelim(
+  λ p : Sigma(_, Nat, Nat) .
+    [pair(snd(p), fst(p), Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~],
+  resp,
+  [pair(suc(suc(suc(suc(suc(zero))))), suc(suc(zero)), Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~]
+)) .
+result Term: [pair(suc(suc(zero)), suc(suc(suc(suc(suc(zero))))), Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~]
+\end{lstlisting}
+
+Los resultados obtenidos son $(0, 3)$, $(1, 4)$ y $(2, 5)$, respectivamente. El sistema devuelve la clase y, para abreviar nos referimos a su representante. Aunque son pares
 sintácticamente distintos, los tres representan el entero $-3$, pues
 $0 - 3 = 1 - 4 = 2 - 5 = -3$. Esto evidencia que la función \texttt{negate},
 al respetar la relación de equivalencia $R$, produce resultados consistentes
 independientemente del representante elegido.
 
-En contraste, una función como $fst$ aplicada directamente a los pares
-(sin pasar por \texttt{qelim}) produce resultados inconsistentes:
+En contraste, una función como $fst$ aplicada directamente a los pares produce resultados inconsistentes:
 
 \begin{lstlisting}
-red norm(fst(pair(suc(suc(suc(zero))), zero, Sigma(var("_"), Nat, Nat)))) .
+red norm(fst(pair(suc(suc(suc(zero))), zero, Sigma(_, Nat, Nat)))) .
 
-red norm(fst(pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(var("_"), Nat, Nat)))) .
+red norm(fst(pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(_, Nat, Nat)))) .
 
-red norm(fst(pair(suc(suc(suc(suc(suc(zero))))), suc(suc(zero)), Sigma(var("_"), Nat, Nat)))) .
+red norm(fst(pair(suc(suc(suc(suc(suc(zero))))), suc(suc(zero)), Sigma(_, Nat, Nat)))) .
 \end{lstlisting}
 
 Se obtiene $fst((3, 0)) = 3$, $fst((4, 1)) = 4$ y $fst((5, 2)) = 5$, tres resultados distintos para el mismo entero $+3$. La función $fst$ no respeta la relación de equivalencia y, por tanto, no podría proveer una prueba de respeto válida para \texttt{qelim}. El sistema de tipos cociente previene precisamente este tipo de inconsistencia al exigir dicha prueba.
@@ -1721,31 +1722,31 @@ El caso central de esta sección aplica $Q-Ax$. Partiendo de un contexto donde $
 
 \begin{lstlisting}
 red infer(
-  mt ; var("R") : Pi(var("a"), Sigma(var("_"), Nat, Nat), Pi(var("b"), Sigma(var("_"), Nat, Nat), Type))
-     ; var("p") : app(app(var("R"), pair(suc(suc(suc(zero))), zero, Sigma(var("_"), Nat, Nat))),
-                                     pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(var("_"), Nat, Nat))),
-  qax(pair(suc(suc(suc(zero))), zero, Sigma(var("_"), Nat, Nat)),
-      pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(var("_"), Nat, Nat)),
-      qtype(Sigma(var("_"), Nat, Nat), var("R")),
+  mt ; var("R") : Pi(a : Sigma(_, Nat, Nat), Pi(b : Sigma(_, Nat, Nat), Type))
+     ; var("p") : (var("R") · pair(suc(suc(suc(zero))), zero, Sigma(_, Nat, Nat)))
+                            · pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(_, Nat, Nat)),
+  qax(pair(suc(suc(suc(zero))), zero, Sigma(_, Nat, Nat)),
+      pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(_, Nat, Nat)),
+      Sigma(_, Nat, Nat) / ~,
       var("p"))
 ) .
 
-result Term: Id(qtype(Sigma(var("_"), Nat, Nat), var("R")),
-                qclass(pair(suc(suc(suc(zero))), zero, Sigma(var("_"), Nat, Nat)), qtype(Sigma(var("_"), Nat, Nat), var("R"))),
-                qclass(pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(var("_"), Nat, Nat)), qtype(Sigma(var("_"), Nat, Nat), var("R"))))
+result Term: Id(Sigma(_, Nat, Nat) / ~,
+                [pair(suc(suc(suc(zero))), zero, Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~],
+                [pair(suc(suc(suc(suc(zero)))), suc(zero), Sigma(_, Nat, Nat)) : Sigma(_, Nat, Nat) / ~])
 \end{lstlisting}
 
 El resultado es la identidad $[(3, 0)] = [(4, 1)]$ en el cociente. Maude verifica, por la premisa de $Q-Ax$, que $p$ tiene tipo $R\ (3, 0)\ (4, 1)$, esto es, que atestigua la relación entre ambos representantes, y a partir de ello sintetiza el tipo identidad entre sus clases. El propio tipo resultante exhibe los dos representantes dentro de sus respectivas clases. Conviene notar que estas siguen siendo formas normales sintácticamente distintas, por lo que el sistema no las identifica de manera definicional. Lo que $Q-Ax$ produce es la igualdad proposicional, un testigo de que ambas clases coinciden dentro del cociente, que era precisamente lo que en el caso de la negación se observaba solo de forma externa.
 
-Por último, el tipo identidad opera módulo cómputo. El siguiente caso construye la reflexividad sobre un término que primero debe reducirse.
+Por último, el tipo identidad, donde el siguiente caso construye la reflexividad sobre un término que primero debe reducirse.
 
 \begin{lstlisting}
-red infer(mt, refl(norm(app(lam(var("x"), Nat, suc(var("x"))), zero)))) .
+red infer(mt, refl(norm((λ x : Nat . suc(x)) · zero))) .
 
 result Term: Id(Nat, suc(zero), suc(zero))
 \end{lstlisting}
 
-El argumento $(\lambda x : Nat.\ suc(x))\ zero$ se normaliza a $suc(zero)$ antes de que $refl$ actúe, de modo que la identidad se construye sobre el resultado ya reducido. Esto muestra que la igualdad proposicional del sistema es coherente con la reducción del lenguaje base, pues opera sobre la forma normal de los términos y no sobre su forma sintáctica de partida.
+El argumento de $(\lambda x : Nat.\ suc(x))\ zero$ se normaliza a $suc(zero)$ antes de que $refl$ actúe, de modo que la identidad se construye sobre el resultado ya reducido. Esto muestra que la igualdad proposicional del sistema es coherente con la reducción del lenguaje base, pues opera sobre la forma normal de los términos y no sobre su forma sintáctica.
 
 \section{Multiconjuntos bajo relación de permutación}
 
@@ -1758,14 +1759,14 @@ red infer(G, qax(l1, l2, List / R, p)) .
 result Term: Id(List / R, [l1 : List / R], [l2 : List / R])
 \end{lstlisting}
 
-Al igual que en los enteros, una función que respeta la permutación, como la longitud, produce el mismo resultado sobre ambos representantes, mientras que una que no la respeta, como $head$, diverge.
+Al igual que en los enteros, una función que respeta la permutación, como $length$, produce el mismo resultado sobre ambos representantes, mientras que una que no la respeta, como $head$, diverge.
 \chapter{Conclusiones, limitaciones y trabajo futuro}\label{ch:concl}
 
 \section{Conclusiones}
 
-El presente trabajo ha diseñado e implementado en Maude un lenguaje de programación dependientemente tipado y lo ha extendido con tipos cociente, cumpliendo el objetivo general planteado en la introducción. Partiendo de un núcleo basado en el cálculo lambda dependiente de Löh et al. (2010), se construyó un sistema con tipos $\Pi$, $\Sigma$, naturales y su eliminador, sobre el que se añadieron los constructores de formación, introducción, eliminación y computación del cociente siguiendo la formulación de Li (2014), junto con el tipo identidad y la regla $Q-Ax$.
+El presente trabajo ha diseñado e implementado en Maude un lenguaje de programación dependientemente tipado y lo ha extendido con tipos cociente, cumpliendo el objetivo general planteado en la introducción. Partiendo de un núcleo basado en el cálculo lambda dependiente de Löh et al. (2010), se construyó un sistema con tipos $\Pi$, $\Sigma$, naturales y su eliminador, sobre el que se añadieron los constructores de formación, introducción, eliminación y computación del cociente siguiendo la formulación de Li (2014), junto con el tipo identidad.
 
-La aportación central es haber mostrado que la lógica de reescritura constituye un sustrato natural para esta tarea. Cada regla de inferencia del sistema de tipos se traslada de forma directa a una ecuación condicional de Maude, donde las premisas de la regla se corresponden con los fragmentos de la condición y la conclusión con el lado derecho. Esta correspondencia, visible a lo largo de los capítulos 5 y 6, permite que la especificación del lenguaje sea a la vez su implementación ejecutable, sin necesidad de un intérprete externo. La normalización de términos se realiza por reescritura ecuacional, y la verificación bidireccional de tipos reduce el chequeo a la comparación de formas normales.
+La aportación central es haber mostrado que la lógica de reescritura constituye de una base sólida para el estudio de sistemas de tipos. Cada regla de inferencia del sistema de tipos se traslada de forma directa a una ecuación condicional de Maude, donde las premisas de la regla se corresponden con los fragmentos de la condición y la conclusión con el lado derecho. Esta correspondencia, que ya fue visible a lo largo de los capítulos 5 y 6, permite que la especificación del lenguaje sea a la vez su implementación ejecutable. La normalización de términos se realiza por reescritura ecuacional, y la verificación bidireccional de tipos reduce el chequeo a la comparación de formas normales.
 
 Los casos de uso del capítulo 7 validan la factibilidad del prototipo. La construcción de los enteros como pares de naturales cocientados muestra que las funciones que respetan la relación de equivalencia, como la negación y el sucesor, producen resultados consistentes con independencia del representante elegido, mientras que una función que no la respeta, como lo es $head$, produce resultados divergentes. Con la incorporación del tipo identidad y de la regla $Q-Ax$, el sistema es capaz además de enunciar internamente que dos representantes relacionados dan la misma clase, obteniendo un testigo de esa igualdad proposicional dentro del cociente.
 
@@ -1774,9 +1775,9 @@ Asimismo, la formalización de los multiconjuntos como listas cocientadas bajo l
 \section{Limitaciones}
 El sistema habita en un único universo, con la regla $Type : Type$. Esta decisión simplifica la implementación al eliminar la jerarquía de universos, a costa de la consistencia lógica, pues admite la paradoja de Girard. El prototipo es, por tanto, un verificador de tipos y no un asistente de pruebas. Asimismo, su propósito es explorar (o bien, simular en cierto sentido) la mecánica de los cocientes.
 
-La sustitución no renombra las variables ligadas con variables frescas, de modo que no evita la captura en el caso general. Los términos manipulados en los casos de uso son cerrados, por lo que la captura no llega a producirse, pero una extensión a términos abiertos requeriría una operación auxiliar de renombrado y una mecánica más compleja de sustitucion explícita. En la misma línea, la igualdad de tipos se decide por comparación sintáctica de formas normales, lo que no contempla la $\alpha$-equivalencia; términos que difieren solo en el nombre de sus variables ligadas se considerarían distintos.
+La sustitución no renombra las variables ligadas con variables frescas, de modo que no evita la captura en el caso general. Los términos manipulados en los casos de uso son cerrados, por lo que la captura no llega a producirse, una mejora requeriría una operación auxiliar de renombrado y una mecánica más compleja de sustitucion explícita. En la misma línea, la igualdad de tipos se decide por comparación sintáctica de formas normales, lo que no contempla la $\alpha$-equivalencia; términos que difieren solo en el nombre de sus variables ligadas se considerarían distintos.
 
-El testigo $Resp$ del eliminador del cociente se asume válido y no se verifica. El sistema computa la elevación de una función bajo la hipótesis de que dicha función respeta la relación de equivalencia, hipótesis que se garantiza de forma externa. Esta es la posición propia del modelo de setoides, y la validación del capítulo 7 procede en consecuencia por inspección de representantes y no por garantía automática del sistema. Tampoco se verifica que la relación suministrada sea efectivamente una equivalencia, es decir, reflexiva, simétrica y transitiva.
+El testigo $Resp$ del eliminador del cociente se verifica a nivel de tipos, y no tiene efecto alguno sobre la reducción. El sistema computa la elevación de una función bajo la hipótesis de que dicha función respeta la relación de equivalencia, hipótesis que en el cómputo se toma como dada. Además, el sistema verifica que la relación suministrada habite en el tipo $\Pi\, a : A.\, \Pi\, b : A.\, \Type$, pero no que sea efectivamente una equivalencia, es decir, reflexiva, simétrica y transitiva.
 
 Finalmente, aunque el lenguaje incorpora el tipo identidad, la regla de reflexividad y $Q-Ax$, no implementa el eliminador $J$ del tipo identidad. En consecuencia, las pruebas de igualdad que el sistema construye son inertes, pueden enunciarse y exhibirse, pero no pueden emplearse para transportar propiedades de un lado de la igualdad al otro. La igualdad proposicional del prototipo es, en este sentido, de solo introducción.
 
