@@ -7,7 +7,7 @@
 
 \section*{Resumen}
 
-Este trabajo presenta el diseño e implementación de un prototipo de lenguaje de programación con tipos dependientes, extendido con tipos cociente. Los tipos dependientes permiten expresar propiedades de los programas directamente en sus tipos, mientras que los tipos cociente permiten identificar elementos de un tipo que deberían considerarse iguales según una relación de equivalencia dada, garantizando automáticamente que las funciones definidas sobre ellos sean coherentes con dicha relación. La formalización de tipos cociente sobre sistemas de tipos dependientes mendiante lenguajes basados en la reescritura, como Maude, ha recibido poca atención a lo largo de los años, y con el presente trabajo se pretende cubrir esta brecha. Adicional a ello, se pretende demostrar que Maude es totalmente factible para la formalización, exploración y estudio de la teoría de tipos bajo el lente de la reescritura de términos. Como contribuciones principales, se formaliza la sintaxis, semántica y un algoritmo de verificación de tipos bidireccional de manera ecuacional, tratando las reglas de tipado del sistema como una tripla $\mathcal{R} = (\Sigma, E, \mathcal{R})$. Asimismo, el cómputo sobre las clases del cociente se realiza por reducción de términos aplicando una regla de cómputo,que preserva la canonicidad del cálculo. El trabajo se valida con éxito mediante la formalización de los números enteros $\mathbb{Z}$ como pares de naturales cocientados y los multiconjuntos bajo relación de permutación, demostrando así, la consistencia del sistema ante elecciones de representantes equivalentes. El trabajo incluye la definición formal del sistema de tipos, su semántica operacional, justificación de cada decisión de diseño tomada, junto con su implementación completa en Maude.
+Este trabajo presenta el diseño e implementación de un prototipo de lenguaje de programación con tipos dependientes, extendido con tipos cociente. Los tipos dependientes permiten expresar propiedades de los programas directamente en sus tipos, mientras que los tipos cociente permiten identificar elementos de un tipo que deberían considerarse iguales según una relación de equivalencia dada, garantizando automáticamente que las funciones definidas sobre ellos sean coherentes con dicha relación. La formalización de tipos cociente sobre sistemas de tipos dependientes mendiante lenguajes basados en la reescritura, como Maude, ha recibido poca atención a lo largo de los años, y con el presente trabajo se pretende cubrir esta brecha. Adicional a ello, se pretende demostrar que Maude es totalmente factible para la formalización, exploración y estudio de la teoría de tipos bajo el lente de la reescritura de términos. Como contribuciones principales, se formaliza la sintaxis, semántica y un algoritmo de verificación de tipos bidireccional de manera ecuacional, tratando las reglas de tipado del sistema como una tripla $\mathcal{R} = (\Sigma, E, \mathcal{R})$. Asimismo, el cómputo sobre las clases del cociente se realiza por reducción de términos aplicando una regla de cómputo,que preserva la canonicidad del cálculo. Los resultados del presente trabajo se validan mediante la formalización de los números enteros $\mathbb{Z}$ como pares de naturales cocientados y los multiconjuntos bajo relación de permutación, demostrando así, la consistencia del sistema ante elecciones de representantes equivalentes. El trabajo incluye la definición formal del sistema de tipos, su semántica operacional, justificación de cada decisión de diseño tomada, junto con su implementación completa en Maude.
 \tableofcontents
 \input{chapters/Introduction}
 
@@ -1141,7 +1141,10 @@ Se define, a continuación, la semántica operacional \textit{big step} del proc
   {\mathrm{Pi}(X : A,\, B) \Downarrow \mathrm{Pi}(X : A',\, B')}
   {A \Downarrow A' \quad B \Downarrow B'}$
   &
-    \verb|eq norm(Pi(X : A, B)) = Pi(X : norm(A), norm(B)) .|
+  \begin{tabular}[c]{@{}l@{}}
+    \verb|eq norm(Pi(X : A, B)) =|\\
+    \verb|   Pi(X : norm(A), norm(B)) .|
+  \end{tabular}
 \end{tabular}
 \end{center}
 
@@ -1171,7 +1174,10 @@ Se define, a continuación, la semántica operacional \textit{big step} del proc
   {\mathrm{normApp}(T_1, T_2) \Downarrow T_1 \cdot T_2}
   {}$
   &
-    \verb|eq normApp(T1, T2) = (T1 · T2) [owise] .|
+  {\ttfamily
+    eq normApp(T1, T2) =\newline
+    \hspace*{1.5em}(T1 · T2) [owise] .
+  }
 \end{tabular}
 \end{center}
 
@@ -1792,6 +1798,8 @@ Del mismo modo, la incorporación del constructor $\text{Let}$ para definiciones
 % ============================================================
 % BACK MATTER
 % ============================================================
+\nocite{*}
+\bibliography{references}
 \appendix
 
 \chapter{C\'odigo Maude}
@@ -2029,6 +2037,4 @@ fmod calc is
   eq check(G, T, A) = tyEq(infer(G, T), A) .
 endfm
 \end{lstlisting}
-\nocite{*}
-\bibliography{references}
 \end{document}
